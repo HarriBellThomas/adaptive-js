@@ -20,10 +20,10 @@ env:
 before_script:
 - chmod 600 deploy && mv deploy ~/.ssh/id_rsa
 script: phpunit --coverage-text tests/*
-before_install:
-- openssl aes-256-cbc -K $encrypted_c9ee5b34b6c3_key -iv $encrypted_c9ee5b34b6c3_iv
-  -in deploy.enc -out deploy -d
 deploy:
   provider: script
   skip_cleanup: true
   script: "./scripts/deploy.sh"
+before_install:
+- openssl aes-256-cbc -K $encrypted_cbdb4f80c025_key -iv $encrypted_cbdb4f80c025_iv
+  -in deploy.enc -out deploy -d
