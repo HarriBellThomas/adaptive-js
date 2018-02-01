@@ -2,7 +2,7 @@ mkdir ../pkg-js && \
 cp -r $TRAVIS_BUILD_DIR ../pkg-js && \
 tar -czf travis-deploy-js.tgz ../pkg-js/adaptive-js && \
 rm -rf ../pkg-js && \
-openssl aes-256-cbc -K $encrypted_c9ee5b34b6c3_key -iv $encrypted_c9ee5b34b6c3_iv -in deploy.enc -out deploy-hbt-adaptive -d && \
+openssl aes-256-cbc -K $encrypted_cbdb4f80c025_key -iv $encrypted_cbdb4f80c025_iv -in deploy.enc -out deploy-hbt-adaptive -d && \
 ls -la && \
 chmod 0700 deploy-hbt-adaptive && \
 ssh-add deploy-hbt-adaptive && \
