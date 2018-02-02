@@ -1,6 +1,7 @@
 <?php
+  if (!isset($_GET['mod'])) exit("\/* Choose modules *\/");
   $modules = explode(",",$_GET['mod']);
-  $customScope = $_GET['negateglobal'];
+  $customScope = (isset($_GET['negateglobal'])?$_GET['negateglobal']:"N");
   $selfURL = "https://js.adaptive.org.uk/fresh/?negateglobal=".$_GET['negateglobal']."&mod=".$_GET['mod'];
   $body = "\nvar SOURCEJS='".$selfURL."';\n\n";
   for($i=0;$i<count($modules);$i++){
