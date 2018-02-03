@@ -1,6 +1,6 @@
 /* 'ForAll' ENUMs */
 
-registerENUM(["IMAGES","DIVS","VIDEOS","LINKS","TABLES","SPANS"]);
+registerENUM(["IMAGES","DIVS","VIDEOS","LINKS","TABLES","SPANS","BUTTONS"]);
 
 const Operable=function(ls){this.elements = ls;}
 Operable.prototype.where=function(p){
@@ -18,13 +18,28 @@ Operable.prototype.with=function(k){
   return new Operable(comply);
 }
 Operable.prototype.and = Operable.prototype.with;
+
+
+Operable.prototype.contains = function(x,ls){
+  for(var i=0;i<ls.length;i++)
+    if (ls[i]==x) return true;
+  return false;
+}
+
+Operable.prototype.unique = function(){
+  const comply=[];
+  for(var i=0;i<this.elements.length;i++)
+    if (!this.contains(this.elements[i], comply))
+      comply.push(this.elements[i]);
+  return new Operable(comply);
+}
 Operable.prototype.forEach=function(f){
   for(var i=0;i<this.elements.length;i++){
     const v=f(this.elements[i]);
     if (v==undefined) continue;
     this.elements[i] = v;
   }
-  return true;
+  return this;
 }
 Operable.prototype.count=function(){
   return this.elements.length;
@@ -58,6 +73,9 @@ const all=function(typ,$2,$3,$4,$5,$6){
     case SPANS:
       return new Operable(cam.adaptWeb.getElementsByTag("span"));
       break;
+    case BUTTONS:
+      return new Operable(cam.adaptWeb.getElementsByTag("button"));
+      break;
     default:
       return new Operable(cam.adaptWeb.getElementsByTag("*"));
       break;
@@ -87,11 +105,19 @@ const cachedCSS = function(elm, props){
   this.includeAll(props);
 }
 
+cachedCSS.prototype.hasCached = function(prop){
+  for(var i=0;i<this.properties.length;i++){
+    if (this.properties[i] == prop) return true;
+  }
+}
+
 cachedCSS.prototype.includeAll = function(props){
   for(var i=0;i<props.length;i++){
     if (this.element.style[props[i]]!=undefined){
-      this.properties.push(props[i]);
-      this.values.push(this.element.style[props[i]]);
+      if (!this.hasCached(props[i])){
+        this.properties.push(props[i]);
+        this.values.push(this.element.style[props[i]]);
+      }
     }
   }
 }
