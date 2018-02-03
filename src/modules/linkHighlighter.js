@@ -12,6 +12,7 @@ registerNamespace("uk.org.adaptive.linkHighlighter");
 /* We can now set/use member variables */
 
 uk.org.adaptive.linkHighlighter.activeElement = false;
+uk.org.adaptive.linkHighlighter.isActive = false;
 
 /* Now, we can define the member method "apply", which
     takes an object, containing the required properties.
@@ -24,28 +25,31 @@ registerNSMethod(uk.org.adaptive.linkHighlighter, "apply",(
         which properties are permitted, we can simply
         perform simple field/type-checking like:      */
 
-    if (!verifyArgs(properties, [["color", STRINGTYPE]))
+    if (!verifyArgs(properties, [["color", STRINGTYPE]]))
                                               return false;
 
     /* Ensure idempotence by first removing the
         effect if it is present                   */
 
-    if (uk.org.adaptive.linkHighlighter.activeElement !== false)
+    if (uk.org.adaptive.linkHighlighter.isActive)
                         uk.org.adaptive.linkHighlighter.remove();
+
+    uk.org.adaptive.linkHighlighter.isActive = true;
 
     forall(LINKS).do(
       function(a){
         a.onmouseover = function(){
-        /* Ensure non-destructiveness by caching CSS */
-        this.cacheCSSProperties(["color", "background-color",
-                                "padding", "margin",
-                                "border-radius"]);
-        this.style.color = "black";
-        this.style.backgroundColor = properties["color"];
-        this.style.borderRadius = "8px";
-        this.style.padding = "15px 15px 15px 15px";
-        this.style.margin = "-15px -15px";
-        uk.org.adaptive.linkHighlighter.activeElement = this;
+          if (!uk.org.adaptive.linkHighlighter.isActive) return;
+          /* Ensure non-destructiveness by caching CSS */
+          this.cacheCSSProperties(["color", "background-color",
+                                  "padding", "margin",
+                                  "border-radius"]);
+          this.style.color = "black";
+          this.style.backgroundColor = properties["color"];
+          this.style.borderRadius = "8px";
+          this.style.padding = "15px 15px 15px 15px";
+          this.style.margin = "-15px -15px";
+          uk.org.adaptive.linkHighlighter.activeElement = this;
       }
       a.onmouseout = function(){
         uk.org.adaptive.linkHighlighter.activeElement = false;
@@ -53,20 +57,21 @@ registerNSMethod(uk.org.adaptive.linkHighlighter, "apply",(
       }
     });
   }
-);
+));
 
 /* Now we define the method 'remove' which removes the effect
     from the page                                             */
 
 registerNSMethod(uk.org.adaptive.linkHighlighter, "remove",(
   function(){
+    uk.org.adaptive.linkHighlighter.isActive = false;
     if (uk.org.adaptive.linkHighlighter.activeElement === false)
                                                       return true;
     uk.org.adaptive.linkHighlighter.activeElement.resetCSS();
     uk.org.adaptive.linkHighlighter.activeElement = false;
     return true;
   }
-);
+));
 
 /* We can now include this module in page by adding
     "linkHighlighter" to the list of modules in the URL and then
