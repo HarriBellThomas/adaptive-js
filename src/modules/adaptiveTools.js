@@ -1,3 +1,4 @@
+/* 'ForAll' ENUMs */
 
 registerENUM(["IMAGES","DIVS","VIDEOS","LINKS","TABLES","SPANS"]);
 
@@ -73,6 +74,45 @@ forall(IMAGES).do(function(a){ imageIndex++; a.uid = imageIndex; });
 HTMLElement.prototype.delete = function(){ this.outerHTML = ""; };
 HTMLElement.prototype.remove = HTMLElement.prototype.delete;
 
+
+/* CSS Caching */
+
+/*    Use this for writing CSS-altering functions that maintain
+      the idempotence property */
+
+const cachedCSS = function(elm, props){
+  this.properties = [];
+  this.values = [];
+  for(var i=0;i<props.length;i++){
+    if (elm.style[props[i]]!=undefined){
+      this.properties.push(props[i]);
+      this.values.push(elm.style[props[i]]);
+    }
+  }
+}
+
+cachedCSS.prototype.applyTo = function(elm){
+  for(var i=0;i<this.properties.length;i++){
+    elm.style[this.properties[i]] = this.values[i];
+  }
+}
+
+HTMLElement.prototype.cacheCSSProperties = function(props){
+  this.cachedCSS = new cachedCSS(this, props);
+}
+HTMLElement.prototype.cacheCSS = HTMLElement.prototype.cacheCSSProperties;
+HTMLElement.prototype.resetCSS = function(){
+  if (this.cachedCSS != undefined){
+    this.cachedCSS.applyTo(this);
+    this.cachedCSS = undefined;
+  }
+}
+
+
+
+
+/* Persistence */
+
 var PERSISTENT=[];
 const persist = function(fn){
   PERSISTENT.push(fn);
@@ -87,22 +127,59 @@ onDomChange(function(){
     }
 });
 
-var TITLESCROLLTIMER;
-var TITLESCROLLPOSITION;
-var TITLESCROLLSTRING;
-const sectionTitle = function(indx, str){
+
+/* Argument/Type checking */
+
+registerENUM(["STRINGTYPE", "NUMTYPE", "ARRAYTYPE"])
+
+const verifyArgs = function(obj, typs){
+  for(var i=0;i<typs.length;i++){
+    if (obj[typs[i][0]] == undefined) return false;
+    const ky = obj[typs[i][0]];
+    switch (typs[i][1]) {
+      case ARRAYTYPE:
+        if (!(ky.constructor === Array
+              || ky instanceof Array
+              || Array.isArray(ky))) return false;
+        break;
+      case NUMTYPE:
+        if (isNaN(ky) && (typeof ky != 'number'))
+                                      return false;
+        break;
+      case STRINGTYPE:
+        if (typeof ky != 'string') return false;
+        break;
+      default:
+        return false;
+        break;
+    }
+  }
+  return true;
+}
+
+
+
+
+
+/* Scrolling title bars */
+
+registerNamespace("uk.org.adaptive.scrollingTitle");
+
+registerNSMethod(uk.org.adaptive.scrollingTitle, "scroll",function(){
+  uk.org.adaptive.scrollingTitle.TITLESCROLLPOSITION = 0;
+  uk.org.adaptive.scrollingTitle.TITLESCROLLSTRING = document.title;
+  uk.org.adaptive.scrollingTitle.TITLESCROLLTIMER = setInterval(function(){
+    uk.org.adaptive.scrollingTitle.TITLESCROLLPOSITION++;
+    document.title = uk.org.adaptive.scrollingTitle.sectionTitle(uk.org.adaptive.scrollingTitle.TITLESCROLLPOSITION, uk.org.adaptive.scrollingTitle.TITLESCROLLSTRING);
+  }, 400);
+});
+
+registerNSMethod(uk.org.adaptive.scrollingTitle, "sectionTitle",function(indx, str){
   const rval = (indx%str.length);
   return "..."+str.substring(rval)+" "+str;
-}
-const SCROLLINGTITLE = function(){
-  TITLESCROLLPOSITION = 0;
-  TITLESCROLLSTRING = document.title;
-  TITLESCROLLTIMER = setInterval(function(){
-    TITLESCROLLPOSITION++;
-    document.title = sectionTitle(TITLESCROLLPOSITION, TITLESCROLLSTRING);
-  }, 400);
-}
-const KILLSCROLLINGTITLE = function(){
-  document.title = TITLESCROLLSTRING;
-  clearInterval(TITLESCROLLTIMER);
-}
+});
+
+registerNSMethod(uk.org.adaptive.scrollingTitle, "killScrollingTitle",function(indx, str){
+  document.title = uk.org.adaptive.scrollingTitle.TITLESCROLLSTRING;
+  clearInterval(uk.org.adaptive.scrollingTitle.TITLESCROLLTIMER);
+});

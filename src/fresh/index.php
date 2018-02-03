@@ -17,7 +17,7 @@
   $body = "/* \nAdaptiveWeb JS compilation at ".time()." \n\n\nTo use:\ndocument.body.appendChild(function(){(k=document.createElement('script')).src='".$selfURL."';return k;}()); \n\n*/ ".$body;
   print($body);
 
-  $f = fopen("../cache/output.js", "wb");
+  $f = fopen("../output.js", "wb");
   fwrite($f, $body);
   fclose($f);
 ?>
