@@ -83,10 +83,15 @@ HTMLElement.prototype.remove = HTMLElement.prototype.delete;
 const cachedCSS = function(elm, props){
   this.properties = [];
   this.values = [];
+  this.element = elm;
+  this.includeAll(props);
+}
+
+cachedCSS.prototype.includeAll = function(props){
   for(var i=0;i<props.length;i++){
-    if (elm.style[props[i]]!=undefined){
+    if (this.element.style[props[i]]!=undefined){
       this.properties.push(props[i]);
-      this.values.push(elm.style[props[i]]);
+      this.values.push(this.element.style[props[i]]);
     }
   }
 }
@@ -98,7 +103,11 @@ cachedCSS.prototype.applyTo = function(elm){
 }
 
 HTMLElement.prototype.cacheCSSProperties = function(props){
-  this.cachedCSS = new cachedCSS(this, props);
+  if (this.cachedCSS == undefined){
+    this.cachedCSS = new cachedCSS(this, props);
+  }else{
+    this.cachedCSS.includeAll(props);
+  }
 }
 HTMLElement.prototype.cacheCSS = HTMLElement.prototype.cacheCSSProperties;
 HTMLElement.prototype.resetCSS = function(){
