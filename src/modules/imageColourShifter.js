@@ -63,7 +63,7 @@ registerNSMethod(uk.org.adaptive.imageColourShifter, "green_red",(
 
                     if (!uk.org.adaptive.imageColourShifter.isActive) return;
 
-                    var type = properties["blindtype"];
+                    var type = properties["blindtype"]; 
                     var matrix = ColorMatrixMatrixes[type];
 
                     return {
