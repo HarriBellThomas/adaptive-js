@@ -2,7 +2,7 @@ registerNamespace("uk.org.adaptive.imageColourShifter");
 
 uk.org.adaptive.imageColourShifter.isActive = false;
 
-registerNSMethod(uk.org.adaptive.imageColourShifter, "red-green",(
+registerNSMethod(uk.org.adaptive.imageColourShifter, "red_green",(
     function(){
 
         if (uk.org.adaptive.imageColourShifter.isActive)
@@ -49,7 +49,7 @@ registerNSMethod(uk.org.adaptive.imageColourShifter, "red-green",(
     }
 ));
 
-registerNSMethod(uk.org.adaptive.imageColourShifter, "green-red",(
+registerNSMethod(uk.org.adaptive.imageColourShifter, "green_red",(
     function(){
 
         if (uk.org.adaptive.imageColourShifter.isActive)
