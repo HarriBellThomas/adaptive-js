@@ -24,7 +24,7 @@
     $compiled = "\n\n(function(){".$compiled."})();";
   }
   header('Content-Type:text/plain');
-  $compiled = "/* \nAdaptiveWeb JS compilation at ".time()." \n\n\nTo use:\ndocument.body.appendChild(function(){(k=document.createElement('script')).src='".$selfURL."';return k;}()); \n\n*/\n".$stringFile."\n\n".$compiled;
+  $compiled = "/* \nAdaptiveWeb JS compilation at ".time()." \n\n\nTo use:\ndocument.body.appendChild(function(){(k=document.createElement('script')).src='".$selfURL."';return k;}()); \n\n*/\n".$stringsF."\n\n".$compiled;
   print($compiled);
 
 
