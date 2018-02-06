@@ -37,6 +37,7 @@ registerNSMethod(uk.org.adaptive, "init", (
             // Check for auth return
             try {
                 var hash = window.atob(window.location.hash.substr(1, window.location.hash.length - 1));
+                console.log(hash);
                 var data = JSON.parse(hash);
                 console.log(data);
             } catch(e) {
