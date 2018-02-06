@@ -44,11 +44,11 @@ registerNSMethod(cam.adaptWeb, "copyImageDataFromArray", function(canvasdata, wi
 
 registerNSMethod(cam.adaptWeb, "imageReplaceSmartUnchecked", function(img, indx, cache, f){
     const c = document.createElement("canvas");
-    c.width = img.width;
-    c.height = img.height;
+    c.width = img.clientWidth;
+    c.height = img.clientHeight;
     const ctx = c.getContext("2d");
     ctx.drawImage(img,0,0);
-    var canvasDataOld = ctx.getImageData(0, 0, img.width, img.height);
+    var canvasDataOld = ctx.getImageData(0, 0, img.clientWidth, img.clientHeight);
     if (cam.adaptWeb.IMAGE_CACHE[indx] == undefined){
       img.adaptiveMode = true;
       var copy = cam.adaptWeb.copyImageDataFromArray(canvasDataOld, c.width, c.height);
@@ -56,7 +56,7 @@ registerNSMethod(cam.adaptWeb, "imageReplaceSmartUnchecked", function(img, indx,
     }else{
       canvasDataOld = cam.adaptWeb.copyImageDataFromArray(cam.adaptWeb.IMAGE_CACHE[indx], c.width, c.height);
     }
-    const canvasDataNew = cam.adaptWeb.applyRGBAFunctionToImageData(canvasDataOld, f, img.width, img.height);
+    const canvasDataNew = cam.adaptWeb.applyRGBAFunctionToImageData(canvasDataOld, f, img.clientWidth, img.clientHeight);
     ctx.putImageData(canvasDataNew, 0, 0);
     const newdata = c.toDataURL("image/png");
     img.src = newdata;
