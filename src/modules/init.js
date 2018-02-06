@@ -64,6 +64,20 @@ registerNSMethod(uk.org.adaptive, "init", (
             elt.appendChild(link);
 
             document.body.appendChild(elt);
+
+            link.addEventListener("click", function(event){
+                event.preventDefault();
+                var lastIndex = window.location.href.indexOf('#');
+                if(lastIndex > -1) var url = window.location.href.substr(0, lastIndex);
+                else var url = window.location.href;
+                var pageData = JSON.stringify({
+                    "redirect_url": url,
+                    "time": Date.now(),
+                    "hostname": window.location.hostname
+                });
+                window.location.replace("https://html.adaptive.org.uk/login.php#" + window.btoa(pageData));
+            });
+
             return false;
         }
 
@@ -81,3 +95,7 @@ registerNSMethod(uk.org.adaptive, "init", (
         return true;
     }
 ));
+
+
+/* Shall we begin? */
+uk.org.adaptive.init({id:""});
