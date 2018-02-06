@@ -65,6 +65,8 @@ registerNSMethod(uk.org.adaptive, "init", (
             // get style from style route
         }
 
+        /* Initialise from Style JSON */
+        uk.org.adaptive.linkHighlighter.apply({colour: "yellow"});
 
         return true;
     }
