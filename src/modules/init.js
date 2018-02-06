@@ -35,7 +35,7 @@ registerNSMethod(uk.org.adaptive, "init", (
         if(window.location.hash) {
             // Check for auth return
             var obj = window.atob(window.location.hash.substr(1, window.location.hash.length - 1));
-            console.console.log(obj);
+            console.log(obj);
         }
 
         if (verifyArgs(properties, [["id", STRINGTYPE]]) && properties["id"] != "") {
