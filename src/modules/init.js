@@ -55,9 +55,15 @@ registerNSMethod(uk.org.adaptive, "init", (
         if(requireAuth) {
             // Run run auth
             // Will redirect away
-            var x = document.createElement("div");
-            x.textContent = "Hello, world";         // Sets the text content
-            document.body.appendChild(x);
+            var elt = document.createElement("div");
+            elt.style.cssText = "position: fixed;bottom: 0;z-index: 999999;width: 100%;background-color: aliceblue;padding: 10px;";
+
+            var link = document.createElement("a");
+            link.innerHTML = "Login";
+            link.href = "https://google.com";
+            elt.appendChild(link);
+
+            document.body.appendChild(elt);
             return false;
         }
 
