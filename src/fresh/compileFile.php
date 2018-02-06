@@ -39,14 +39,12 @@
   }
   function validPosition(){
     global $fileIndex, $length;
-    //print($fileIndex."/".$length.(($fileIndex < $length)?"True":"False")."<br>");
     return ($fileIndex < $length);
   }
 
-  function compileFile($fl, $stringsF, $stringsC){
+  function compileFile($fl, $stringsC){
     global $fileIndex, $length, $output, $escaped, $input, $outputFile;
     $input = file_get_contents($fl);
-
     /* Single line comments removal */
     $input = preg_replace("/\/\/(.)*[\n|\r|\r\n]/", "", $input);
 
@@ -162,7 +160,7 @@
     fclose($fp);
 
 
-    return array($outputFile, $stringsF.$stringsFile, $vars);
+    return array($outputFile, $stringsFile, $vars);
   }
 
 

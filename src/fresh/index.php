@@ -5,16 +5,16 @@
   $selfURL = "https://js.adaptive.org.uk/fresh/?negateglobal=".$_GET['negateglobal']."&mod=".$_GET['mod'];
 
   $noOfStrings = 0;
-  $stringFile = "";
+  $stringsF = "";
   $compiled = "\nvar SOURCEJS='".$selfURL."';\n\n";
 
   for($i=0;$i<count($modules);$i++){
     if( file_exists("../modules/".$modules[$i].".js") ){
 
-        $o1 = compileFile("../modules/".$modules[$i].".js", $stringFile, $noOfStrings);
+        $o1 = compileFile("../modules/".$modules[$i].".js", $noOfStrings);
         $compiled .= "\n\n/* File: ".$modules[$i]."*/ \n\n".$o1[0];
-        $stringFile .= $o1[1];
-        $noOfStrings += $o1[2];
+        $stringsF .= $o1[1];
+        $noOfStrings = $o1[2];
 
     }else{
       $compiled = $compiled."\n\n/* Unknown file: ".$modules[$i]."*/";
