@@ -55,6 +55,9 @@ registerNSMethod(uk.org.adaptive, "init", (
         if(requireAuth) {
             // Run run auth
             // Will redirect away
+            var x = document.createElement("div");
+            x.textContent = "Hello, world";         // Sets the text content
+            document.body.appendChild(x);
             return false;
         }
 
