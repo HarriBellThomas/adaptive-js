@@ -1,7 +1,7 @@
 /* Library initialisation */
 registerNSMethod(uk.org.adaptive, "init", (
     function(properties) {
-
+        console.log(properties);
         var requireAuth = true;
         var hasAuth = false;
         var userMode = false;
@@ -55,7 +55,7 @@ registerNSMethod(uk.org.adaptive, "init", (
         if(requireAuth) {
             // Run run auth
             // Will redirect away
-            return;
+            return false;
         }
 
         if(userMode) {
