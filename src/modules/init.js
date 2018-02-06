@@ -4,8 +4,6 @@ registerNSMethod(uk.org.adaptive, "init", (
 
         var requireAuth = true;
         var hasAuth = false;
-        var userID = getCookie("ADAPTIVE_A");
-        var styleID = getCookie("ADAPTIVE_B");
         var userMode = false;
 
         var setCookie = (cname, cvalue, exdays) => {
@@ -30,6 +28,9 @@ registerNSMethod(uk.org.adaptive, "init", (
             }
             return "";
         }
+
+        var userID = getCookie("ADAPTIVE_A");
+        var styleID = getCookie("ADAPTIVE_B");
 
         if(window.location.hash) {
             // Check for auth return
