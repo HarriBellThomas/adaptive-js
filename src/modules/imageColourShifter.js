@@ -1,3 +1,5 @@
+registerNamespace("uk.org.adaptive.imageColourShifter");
+
 uk.org.adaptive.imageColourShifter.isActive = false;
 
 var ColorMatrixMatrixes = {
