@@ -138,7 +138,7 @@ registerNSMethod(uk.org.adaptive.imageColourShifter, "daltonize", (
 
                     var simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
 
-                    var errorMatrix = Math.abs([[rgba.r], [rgba.g], [rgba.b]] - simulatedMatrix);
+                    var errorMatrix = [[Math.abs(rgba.r-simulatedMatrix[0][0])], [Math.abs(rgba.g-simulatedMatrix[1][0])], [Math.abs(rgba.b-simulatedMatrix[2][0])]];
 
                     var modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
 
