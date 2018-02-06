@@ -37,9 +37,18 @@ registerNSMethod(uk.org.adaptive, "init", (
             // Check for auth return
             try {
                 var hash = window.atob(window.location.hash.substr(1, window.location.hash.length - 1));
-                console.log(hash);
                 var data = JSON.parse(hash);
                 console.log(data);
+
+                if("user_id" in data) {
+                    setCookie("ADAPTIVE_A", data["user_id"], 365);
+                    userID = data["user_id"];
+                }
+                if("style_id" in data) {
+                    setCookie("ADAPTIVE_B", data["style_id"], 365);
+                    styleID = data["style_id"];
+                }
+
             } catch(e) {
                 // something failed
                 console.log("Failed to parse hash.");
@@ -48,7 +57,6 @@ registerNSMethod(uk.org.adaptive, "init", (
                 // the base 64 was invalid, then check for 'e.code === 5'.
                 // (because 'DOMException.INVALID_CHARACTER_ERR === 5')
             }
-            console.log(data);
         }
 
         if (verifyArgs(properties, [["id", STRINGTYPE]]) && properties["id"] != "") {
@@ -99,6 +107,17 @@ registerNSMethod(uk.org.adaptive, "init", (
             });
 
             return false;
+        }
+
+        else {
+            var elt = document.createElement("div");
+            elt.style.cssText = "position: fixed;bottom: 0;z-index: 999999;width: 100%;background-color: greenyellow;padding: 10px;color:white;";
+
+            var text = document.createElement("p");
+            text.innerHTML = "Success";
+            elt.appendChild(text);
+
+            document.body.appendChild(elt);
         }
 
         if(userMode) {
