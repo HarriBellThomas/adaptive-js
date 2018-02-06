@@ -132,13 +132,13 @@ registerNSMethod(uk.org.adaptive.imageColourShifter, "daltonize", (
 
                     var type = properties["blindType"];
 
-                    var LMSMatrix = multiply(rgb2lms, [[rgba.r, rgba.g, rgba.b]]);
+                    var LMSMatrix = multiply(rgb2lms, [[rgba.r], [rgba.g], [rgba.b]]);
 
                     var colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
 
                     var simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
 
-                    var errorMatrix = Math.abs([[rgba.r, rgba.g, rgba.b]] - simulatedMatrix);
+                    var errorMatrix = Math.abs([[rgba.r], [rgba.g], [rgba.b]] - simulatedMatrix);
 
                     var modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
 
@@ -151,8 +151,8 @@ registerNSMethod(uk.org.adaptive.imageColourShifter, "daltonize", (
                     };
                     return {
                         r: limit(rgba.r + fixedMatrix[0][0]),
-                        g: limit(rgba.g + fixedMatrix[0][1]),
-                        b: limit(rgba.b + fixedMatrix[0][2]),
+                        g: limit(rgba.g + fixedMatrix[1][0]),
+                        b: limit(rgba.b + fixedMatrix[2][0]),
                         a: rgba.a
                     }
                 })
