@@ -5,6 +5,7 @@ registerNSMethod(uk.org.adaptive, "init", (
         var requireAuth = true;
         var hasAuth = false;
         var userMode = false;
+        var loginRoute = "https://html.adaptive.org.uk/login.php#";
 
         var setCookie = (cname, cvalue, exdays) => {
             var d = new Date();
@@ -34,7 +35,17 @@ registerNSMethod(uk.org.adaptive, "init", (
 
         if(window.location.hash) {
             // Check for auth return
-            var obj = window.atob(window.location.hash.substr(1, window.location.hash.length - 1));
+            try {
+                var hash = window.atob(window.location.hash.substr(1, window.location.hash.length - 1));
+                var data = JSON.parse(hash);
+                console.log(data);
+            } catch(e) {
+                // something failed
+
+                // if you want to be specific and only catch the error which means
+                // the base 64 was invalid, then check for 'e.code === 5'.
+                // (because 'DOMException.INVALID_CHARACTER_ERR === 5')
+            }
             console.log(obj);
         }
 
@@ -60,7 +71,7 @@ registerNSMethod(uk.org.adaptive, "init", (
 
             var link = document.createElement("a");
             link.innerHTML = "Login";
-            link.href = "https://google.com";
+            link.href = loginRoute;
             elt.appendChild(link);
 
             document.body.appendChild(elt);
@@ -68,14 +79,21 @@ registerNSMethod(uk.org.adaptive, "init", (
             link.addEventListener("click", function(event){
                 event.preventDefault();
                 var lastIndex = window.location.href.indexOf('#');
-                if(lastIndex > -1) var url = window.location.href.substr(0, lastIndex);
-                else var url = window.location.href;
+                if(lastIndex > -1) {
+                    var url = window.location.href.substr(0, lastIndex);
+                    var hash = window.location.href.substr(lastIndex + 1, window.location.href.length - window.location.hash.length - 1);
+                }
+                else {
+                    var url = window.location.href;
+                    var hash = "";
+                }
                 var pageData = JSON.stringify({
                     "redirect_url": url,
+                    "hash": hash,
                     "time": Date.now(),
                     "hostname": window.location.hostname
                 });
-                window.location.replace("https://html.adaptive.org.uk/login.php#" + window.btoa(pageData));
+                window.location.replace(loginRoute + window.btoa(pageData));
             });
 
             return false;
