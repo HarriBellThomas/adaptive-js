@@ -111,7 +111,7 @@ registerNSMethod(uk.org.adaptive, "init", (
 
         else {
             var elt = document.createElement("div");
-            elt.style.cssText = "position: fixed;bottom: 0;z-index: 999999;width: 100%;background-color: greenyellow;padding: 10px;color:white;";
+            elt.style.cssText = "position: fixed;bottom: 0;z-index: 999999;width: 100%;background-color: greenyellow;padding: 10px;font-weight: 700;";
 
             var text = document.createElement("p");
             text.innerHTML = "Success";
@@ -129,7 +129,7 @@ registerNSMethod(uk.org.adaptive, "init", (
         }
 
         /* Initialise from Style JSON */
-        uk.org.adaptive.linkHighlighter.apply({colour: "yellow"});
+        uk.org.adaptive.linkHighlighter.apply({color: "yellow"});
 
         return true;
     }
