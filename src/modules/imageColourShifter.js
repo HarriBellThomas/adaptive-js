@@ -84,9 +84,9 @@ registerNSMethod(uk.org.adaptive.imageColourShifter, "apply", (
 
 /*Colorspace transformation matrices*/
 var cb_matrices = {
-    "Deuteranopia": [[1, 0, 0], [0.494207, 0, 1.24827], [0, 0, 1]],
-    "Protanopia": [[0, 2.02344, -2.52581], [0, 1, 0], [0, 0, 1]],
-    "Tritanopia": [[1, 0, 0], [0, 1, 0], [-0.395913, 0.801109, 0]]
+    Deuteranopia: [[1, 0, 0], [0.494207, 0, 1.24827], [0, 0, 1]],
+    Protanopia: [[0, 2.02344, -2.52581], [0, 1, 0], [0, 0, 1]],
+    Tritanopia: [[1, 0, 0], [0, 1, 0], [-0.395913, 0.801109, 0]]
 };
 var rgb2lms = [[17.8824, 43.5161, 4.11935],
     [3.45565, 27.1554, 3.86714],
