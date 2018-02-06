@@ -1,23 +1,35 @@
 <?php
-  if (!isset($_GET['mod'])) exit("\/* Choose modules *\/");
+  require("compileFile.php");
   $modules = explode(",",$_GET['mod']);
-  $customScope = (isset($_GET['negateglobal'])?$_GET['negateglobal']:"N");
+  $customScope = $_GET['negateglobal'];
   $selfURL = "https://js.adaptive.org.uk/fresh/?negateglobal=".$_GET['negateglobal']."&mod=".$_GET['mod'];
-  $body = "\nvar SOURCEJS='".$selfURL."';\n\n";
+
+  $noOfStrings = 0;
+  $stringFile = "";
+  $compiled = "\nvar SOURCEJS='".$selfURL."';\n\n";
+
   for($i=0;$i<count($modules);$i++){
     if( file_exists("../modules/".$modules[$i].".js") ){
-      $body = $body."\n\n/* File: ".$modules[$i]."*/ \n\n".file_get_contents("../modules/".$modules[$i].".js");
+
+        $o1 = compileFile("../modules/".$modules[$i].".js", $stringFile, $noOfStrings);
+        $compiled .= "\n\n/* File: ".$modules[$i]."*/ \n\n".$o1[0];
+        $stringFile .= $o1[1];
+        $noOfStrings += $o1[2];
+
     }else{
-      $body = $body."\n\n/* Unknown file: ".$modules[$i]."*/";
+      $compiled = $compiled."\n\n/* Unknown file: ".$modules[$i]."*/";
     }
   }
   if ($customScope=="Y"){
-    $body = "\n\n(function(){".$body."})();";
+    $compiled = "\n\n(function(){".$compiled."})();";
   }
-  $body = "/* \nAdaptiveWeb JS compilation at ".time()." \n\n\nTo use:\ndocument.body.appendChild(function(){(k=document.createElement('script')).src='".$selfURL."';return k;}()); \n\n*/ ".$body;
-  print($body);
+  header('Content-Type:text/plain');
+  $compiled = "/* \nAdaptiveWeb JS compilation at ".time()." \n\n\nTo use:\ndocument.body.appendChild(function(){(k=document.createElement('script')).src='".$selfURL."';return k;}()); \n\n*/\n".$stringFile."\n\n".$compiled;
+  print($compiled);
 
-  $f = fopen("../output.js", "wb");
-  fwrite($f, $body);
+
+
+  $f = fopen("../cache/output.js", "wb");
+  fwrite($f, $compiled);
   fclose($f);
 ?>
