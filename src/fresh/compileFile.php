@@ -155,7 +155,7 @@
     $outputFile = preg_replace("/\(([A-Z|a-z|\ |\\r|\\n|\,|\)|\(]*)[\ |\r\n|\r|\n]*\=\>[\ |\r\n|\r|\n]*([^[\;|\r|\n]+)[\ |\r\n|\r|\n]*\)/", "(function($1){ return $2; })", $outputFile);
 
     /* Multi-line arrow functions */
-    $outputFile = preg_replace("/\(([A-Z|a-z|\ |\\r|\\n|\,|\)|\(]*)[\ |\r\n|\r|\n]*\=\>[\ |\r\n|\r|\n]*\{(.*?)[\ |\r\n|\r|\n]*\}\)/s", "(function($1){ $2 })", $outputFile);
+    $outputFile = preg_replace("/\(\(?([A-Z|a-z|\ |\\r|\\n|\,|\)|\(]*)\)?[\ |\r\n|\r|\n]*\=\>[\ |\r\n|\r|\n]*\{(.*?)[\ |\r\n|\r|\n]*\}\)/s", "(function($1){ $2 })", $outputFile);
 
     /* Replace const with var */
     $outputFile = preg_replace("/([^[A-Z|a-z|\_|\-|\.]]*)?(const)\ /s", "$1var ", $outputFile);
