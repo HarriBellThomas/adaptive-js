@@ -18,9 +18,10 @@ registerNSMethod(self, "changeSaturation", (
         applyToImage(a, function () {
 
           if (!self.isActive) return;
-          
+
           var value = properties["factor"];
-          this.style.filter = "saturate(" + value + "%)";
+          var filterString = "saturate("+value+")";
+          this.style.filter = filterString;
         })
       });
   }
