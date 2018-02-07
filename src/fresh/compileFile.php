@@ -46,7 +46,7 @@
     global $fileIndex, $length, $output, $escaped, $input, $outputFile;
     $input = file_get_contents($fl);
     /* Single line comments removal */
-    $input = preg_replace("/\/\/(.)*[\n|\r|\r\n]/", "", $input);
+    //$input = preg_replace("/\/\/(.)*[\n|\r|\r\n]/", "", $input);
 
     $length = strlen($input);
     $fileIndex = 0;
@@ -68,12 +68,25 @@
         - 1 = comment
         - 2 = string '
         - 3 = string "
+        - 4 = comment line
     */
 
     while(validPosition()){
       if (peekChars(2) == "/*" && $mode == 0){
         $mode = 1;
         popCharsClean(2);
+        continue;
+      }
+
+      if (peekChars(2) == "//" && $mode == 0){
+        $mode = 4;
+        popCharsClean(2);
+        continue;
+      }
+
+      if (peekChars(1) == "\n" && $mode == 4){
+        $mode = 0;
+        popCharsClean(1);
         continue;
       }
 
@@ -129,7 +142,7 @@
       if ($mode == 2 || $mode == 3){
         $currentString .= peekChars(1);
         popCharsClean(1);
-      }else if($mode ==1){
+      }else if($mode ==1 || $mode ==4){
         popCharsClean(1);
       }else{
         popChar();
