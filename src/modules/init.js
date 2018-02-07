@@ -9,10 +9,10 @@ registerNSMethod(uk.org.adaptive, "init", (
 
         var setCookie = ((cname, cvalue, exdays) => {
             var d = new Date();
-            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
             var expires = "expires="+ d.toUTCString();
             document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-        })
+        });
 
         var getCookie = ((cname) => {
             var name = cname + "=";
@@ -28,7 +28,7 @@ registerNSMethod(uk.org.adaptive, "init", (
                 }
             }
             return "";
-        })
+        });
 
         var userID = getCookie("ADAPTIVE_A");
         var styleID = getCookie("ADAPTIVE_B");
@@ -98,10 +98,10 @@ registerNSMethod(uk.org.adaptive, "init", (
                     var hash = "";
                 }
                 var pageData = JSON.stringify({
-                    "redirect_url": url,
-                    "hash": hash,
-                    "time": Date.now(),
-                    "hostname": window.location.hostname
+                    redirect_url: url,
+                    hash: hash,
+                    time: Date.now(),
+                    hostname: window.location.hostname
                 });
                 window.location.replace(loginRoute + window.btoa(pageData));
             });
