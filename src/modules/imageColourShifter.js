@@ -1,6 +1,6 @@
 registerNamespace("uk.org.adaptive.imageColourShifter");
 
-uk.org.adaptive.imageColourShifter.isActive = false;
+self.isActive = false;
 
 var ColorMatrixMatrixes = {
     Normal: {
@@ -50,22 +50,22 @@ var ColorMatrixMatrixes = {
     }
 };
 
-registerNSMethod(uk.org.adaptive.imageColourShifter, "apply", (
+registerNSMethod(self, "apply", (
     function (properties) {
 
         if (!verifyArgs(properties, [["blindType", STRINGTYPE]]))
             return false;
 
-        if (uk.org.adaptive.imageColourShifter.isActive)
-            uk.org.adaptive.imageColourShifter.remove();
+        if (self.isActive)
+            self.remove();
 
-        uk.org.adaptive.imageColourShifter.isActive = true;
+        self.isActive = true;
 
         forall(IMAGES).do(
             function (a) {
                 applyToImage(a, function (xy, rgba) {
 
-                    if (!uk.org.adaptive.imageColourShifter.isActive) return;
+                    if (!self.isActive) return;
 
                     var type = properties["blindType"];
                     var matrix = ColorMatrixMatrixes[type];
@@ -98,16 +98,16 @@ var lms2rgb = [[8.09444479e-02, -1.30504409e-01, 1.16721066e-01],
     [-3.65296938e-04, -4.12161469e-03, 6.93511405e-01]];
 
 
-registerNSMethod(uk.org.adaptive.imageColourShifter, "daltonize", (
+registerNSMethod(self, "daltonize", (
     function (properties) {
 
         if (!verifyArgs(properties, [["blindType", STRINGTYPE]]))
             return false;
 
-        if (uk.org.adaptive.imageColourShifter.isActive)
-            uk.org.adaptive.imageColourShifter.remove();
+        if (self.isActive)
+            self.remove();
 
-        uk.org.adaptive.imageColourShifter.isActive = true;
+        self.isActive = true;
 
         var multiply = function (a, b) {
             var aNumRows = a.length, aNumCols = a[0].length,
@@ -128,7 +128,7 @@ registerNSMethod(uk.org.adaptive.imageColourShifter, "daltonize", (
             function (a) {
                 applyToImage(a, function (xy, rgba) {
 
-                    if (!uk.org.adaptive.imageColourShifter.isActive) return;
+                    if (!self.isActive) return;
 
                     var type = properties["blindType"];
 
@@ -159,9 +159,9 @@ registerNSMethod(uk.org.adaptive.imageColourShifter, "daltonize", (
             })
     }));
 
-registerNSMethod(uk.org.adaptive.imageColourShifter, "remove", (
+registerNSMethod(self, "remove", (
     function () {
-        uk.org.adaptive.imageColourShifter.isActive = false;
+        self.isActive = false;
         return true;
     }
 ));
