@@ -7,14 +7,14 @@ registerNSMethod(uk.org.adaptive, "init", (
         var userMode = false;
         var loginRoute = "https://html.adaptive.org.uk/login.php#";
 
-        var setCookie = (cname, cvalue, exdays) => {
+        var setCookie = ((cname, cvalue, exdays) => {
             var d = new Date();
             d.setTime(d.getTime() + (exdays*24*60*60*1000));
             var expires = "expires="+ d.toUTCString();
             document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-        }
+        })
 
-        var getCookie = (cname) => {
+        var getCookie = ((cname) => {
             var name = cname + "=";
             var decodedCookie = decodeURIComponent(document.cookie);
             var ca = decodedCookie.split(';');
@@ -28,7 +28,7 @@ registerNSMethod(uk.org.adaptive, "init", (
                 }
             }
             return "";
-        }
+        })
 
         var userID = getCookie("ADAPTIVE_A");
         var styleID = getCookie("ADAPTIVE_B");
