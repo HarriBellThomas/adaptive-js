@@ -92,7 +92,7 @@ registerNSMethod(self, "apply", (
         c = a.style.color;
 
 
-        bColorRGBArray = bc.split("(");
+        bColorRGBArray = bc.split("("); 
         bColorRGBArray = bColorRGBArray[1].split(")");
         bColorRGBArray = bColorRGBArray[1].split(", ");
 
