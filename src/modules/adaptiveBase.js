@@ -25,7 +25,7 @@ registerNSMethod(self, "getElementsByTag",function(k){
 registerNSMethod(self, "elementsToArray",function(els){
   var ig, elarr = [];
   for (var i=function(){ig = els; return 0;}
-      ();;i++){
+      ();i<ig.length;i++){
     elarr.push(ig[i]); if (i==ig.length-1) return elarr;
   }
 });
@@ -88,7 +88,7 @@ registerNSMethod(self, "imageReplaceSmart", function(img, f, i){
     }else{
       // Need to apply domain fix
       console.log("Fixing "+img.src);
-      imageurl = "https://js.adaptive.org.uk/helpers/image.php?url="+encodeURIComponent(img.src);
+      imageurl = "https://cp.md/adaptive/v2/src/helpers/image.php?url="+encodeURIComponent(img.src);
     }
     console.log(img.oldsrc);
     // The security fix:
