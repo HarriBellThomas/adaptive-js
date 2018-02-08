@@ -41,8 +41,10 @@ registerNSMethod(uk.org.adaptive, "init", (
               if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                   console.log(xhr.responseText);
+                  data = JSON.parse(xhr.responseText);
                 } else {
                   console.error(xhr.statusText);
+                  alert("Well that hasn't gone well...");
                 }
               }
             };
@@ -153,9 +155,13 @@ registerNSMethod(uk.org.adaptive, "init", (
         }
 
         /* Initialise from Style JSON */
-        uk.org.adaptive.linkHighlighter.apply({color: "yellow"});
+        if(data != null) {
+            for(i = 0; i < data["modules"].length; i++) {
+                uk.org.adaptive[data["modules"][i]["module"]].apply(data["modules"][i]["properties"]);
+            }
+            return true;
+        } else return false;
 
-        return true;
     }
 ));
 
