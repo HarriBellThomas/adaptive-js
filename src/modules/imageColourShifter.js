@@ -80,7 +80,7 @@ registerNSMethod(self, "apply", (
         })
       });
 
-    forall(DIVS,LINKS,SPANS,BUTTONS).do(
+    forall(DIVS,LINKS,SPANS,TABLES).do(
       function (a) {
 
         if (!self.isActive) return;
