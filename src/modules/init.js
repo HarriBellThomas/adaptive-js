@@ -63,22 +63,16 @@ registerNSMethod(uk.org.adaptive, "init", (
         });
 
         var applyStyles = function() {
-            console.log("Applying");
             if(self.data != null && "modules" in self.data) {
                 for(i = 0; i < self.data["modules"].length; i++) {
-                    console.log(i);
                     var module = self.data["modules"][i];
-                    console.log(module.module);
                     if(module["module"] in uk.org.adaptive) {
                         // Module has been defined
                         console.log("Loading module: " + module["module"]);
                         uk.org.adaptive[module["module"]].apply(module["properties"]);
                     }
-
-                    //module.apply(self.data["modules"][i]["properties"]);
                 }
-                //return true;
-            } //else return false;
+            }
 
         }
 
