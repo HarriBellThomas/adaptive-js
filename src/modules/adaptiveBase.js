@@ -88,7 +88,7 @@ registerNSMethod(self, "imageReplaceSmart", function(img, f, i){
     }else{
       // Need to apply domain fix
       console.log("Fixing "+img.src);
-      imageurl = "https://cp.md/adaptive/v2/src/helpers/image.php?url="+encodeURIComponent(img.src);
+      imageurl = "https://js.adaptive.org.uk/helpers/image.php?url="+encodeURIComponent(img.src);
     }
     console.log(img.oldsrc);
     // The security fix:
