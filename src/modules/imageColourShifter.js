@@ -80,7 +80,7 @@ registerNSMethod(self, "apply", (
         })
       });
 
-    forall(DIVS,LINKS,TABLES,SPANS,BUTTONS).do(
+    forall(DIVS,LINKS,SPANS,BUTTONS).do(
       function (a) {
 
         if (!self.isActive) return;
@@ -92,7 +92,7 @@ registerNSMethod(self, "apply", (
         c = a.style.color;
 
 
-        bColorRGBArray = bc.split("("); 
+        bColorRGBArray = bc.split("(");
         bColorRGBArray = bColorRGBArray[1].split(")");
         bColorRGBArray = bColorRGBArray[1].split(", ");
 
