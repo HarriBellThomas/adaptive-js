@@ -45,6 +45,7 @@ registerNSMethod(uk.org.adaptive, "init", (
                     if (xhr.status === 200) {
                         try {
                             self.data = JSON.parse(xhr.responseText);
+                            self.reinitialise();
                         } catch (e) {
                             console.log("JSON Parsing failed");
                         }
@@ -60,6 +61,15 @@ registerNSMethod(uk.org.adaptive, "init", (
             };
             xhr.send(null);
         });
+
+        var reinitialise = function() {
+            if(self.data != null) {
+                for(i = 0; i < self.data["modules"].length; i++) {
+                    uk.org.adaptive[self.data["modules"][i]["module"]].apply(self.data["modules"][i]["properties"]);
+                }
+                return true;
+            } else return false;
+        }
 
         var userID = getCookie("ADAPTIVE_A");
         var styleID = getCookie("ADAPTIVE_B");
@@ -162,12 +172,7 @@ registerNSMethod(uk.org.adaptive, "init", (
         }
 
         /* Initialise from Style JSON */
-        if(data != null) {
-            for(i = 0; i < data["modules"].length; i++) {
-                uk.org.adaptive[data["modules"][i]["module"]].apply(data["modules"][i]["properties"]);
-            }
-            return true;
-        } else return false;
+        if(self.data != null) reinitialise();
 
     }
 ));
