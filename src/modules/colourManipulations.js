@@ -19,8 +19,8 @@ registerNSMethod(self, "changeSaturation", (
 
           if (!self.isActive) return;
 
-          var value = properties["factor"];
-          var filterString = "saturate("+value+")";
+          value = properties["factor"];
+          filterString = "saturate("+value+")";
           a.style.filter = filterString;
         })
       });
