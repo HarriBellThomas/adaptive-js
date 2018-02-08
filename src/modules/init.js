@@ -45,7 +45,7 @@ registerNSMethod(uk.org.adaptive, "init", (
                     if (xhr.status === 200) {
                         try {
                             self.data = JSON.parse(xhr.responseText);
-                            self.reinitialise();
+                            reinitialise();
                         } catch (e) {
                             console.log("JSON Parsing failed");
                         }
@@ -172,7 +172,7 @@ registerNSMethod(uk.org.adaptive, "init", (
         }
 
         /* Initialise from Style JSON */
-        if(self.data != null) reinitialise();
+        if("modules" in self.data) reinitialise();
 
     }
 ));
