@@ -79,6 +79,48 @@ registerNSMethod(self, "apply", (
           }
         })
       });
+
+    forall(DIVS,LINKS,TABLES,SPANS,BUTTONS).do(
+      function (a) {
+
+        if (!self.isActive) return;
+
+        var type = properties["blindType"];
+        var matrix = ColorMatrixMatrixes[type];
+
+        var bc = this.style.backgroundColor;
+        var c = this.style.color;
+
+
+        bColorRGBArray = bc.split("(");
+        bColorRGBArray = bColorRGBArray[1].split(")");
+        bColorRGBArray = bColorRGBArray[1].split(", ");
+
+        colorRGBArray = c.split("(");
+        colorRGBArray = colorRGBArray[1].split(")");
+        colorRGBArray = colorRGBArray[1].split(", ");
+
+        var bRed = bColorRGBArray[0];
+        var bGreen = bColorRGBArray[1];
+        var bBlue = bColorRGBArray[2];
+
+        var red = colorRGBArray[0];
+        var green = colorRGBArray[1];
+        var blue = colorRGBArray[2];
+
+        bRed = bRed * matrix.R[0] / 100.0 +bGreen * matrix.R[1] / 100.0 + bBlue * matrix.R[2] / 100.0;
+        bGreen = bRed * matrix.G[0] / 100.0 +bGreen * matrix.G[1] / 100.0 + bBlue * matrix.G[2] / 100.0;
+        bBlue = bRed * matrix.B[0] / 100.0 + bGreen * matrix.B[1] / 100.0 + bBlue * matrix.B[2] / 100.0;
+
+        red = red * matrix.R[0] / 100.0 + green * matrix.R[1] / 100.0 + blue * matrix.R[2] / 100.0;
+        green = red * matrix.G[0] / 100.0 + green * matrix.G[1] / 100.0 + blue * matrix.G[2] / 100.0;
+        blue = red * matrix.B[0] / 100.0 + green * matrix.B[1] / 100.0 + blue * matrix.B[2] / 100.0;
+
+        a.style.backgroundColor = "rgb("+bRed+","+bGreen+","+bBlue+")";
+        a.style.color = "rgb("+red+","+green+","+blue+")";
+
+      }
+    )
   }
 ));
 
