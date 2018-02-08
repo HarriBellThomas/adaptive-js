@@ -67,8 +67,8 @@ registerNSMethod(uk.org.adaptive, "init", (
                 for(i = 0; i < self.data["modules"].length; i++) {
                     uk.org.adaptive[self.data["modules"][i]["module"]].apply(self.data["modules"][i]["properties"]);
                 }
-                return true;
-            } else return false;
+                //return true;
+            } //else return false;
         }
 
         var userID = getCookie("ADAPTIVE_A");
@@ -172,7 +172,7 @@ registerNSMethod(uk.org.adaptive, "init", (
         }
 
         /* Initialise from Style JSON */
-        if("modules" in self.data) reinitialise();
+        if(self.data != null && "modules" in self.data) reinitialise();
 
     }
 ));
