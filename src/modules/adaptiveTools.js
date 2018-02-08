@@ -50,34 +50,34 @@ const all=function(typ,$2,$3,$4,$5,$6){
   if($2!=undefined) return all($2,$3,$4,$5,$6).with(all(typ));
   switch (typ){
     case IMAGES:
-      return new Operable(cam.adaptWeb.getElementsByTag("img"));
+      return new Operable(uk.org.adaptive.core.getElementsByTag("img"));
       break;
     case VIDEOS:
-      return new Operable(cam.adaptWeb.getElementsByTag("video"));
+      return new Operable(uk.org.adaptive.core.getElementsByTag("video"));
       break;
     case DIVS:
-      return (new Operable(cam.adaptWeb.getElementsByTag("span"))).and(
-        new Operable(cam.adaptWeb.getElementsByTag("div"))
+      return (new Operable(uk.org.adaptive.core.getElementsByTag("span"))).and(
+        new Operable(uk.org.adaptive.core.getElementsByTag("div"))
       );
       break;
     case LINKS:
-      return new Operable(cam.adaptWeb.getElementsByTag("a"));
+      return new Operable(uk.org.adaptive.core.getElementsByTag("a"));
       break;
     case TABLES:
-      return (new Operable(cam.adaptWeb.getElementsByTag("table"))).and(
-        (new Operable(cam.adaptWeb.getElementsByTag("tbody"))).and(
-          new Operable(cam.adaptWeb.getElementsByTag("td"))
+      return (new Operable(uk.org.adaptive.core.getElementsByTag("table"))).and(
+        (new Operable(uk.org.adaptive.core.getElementsByTag("tbody"))).and(
+          new Operable(uk.org.adaptive.core.getElementsByTag("td"))
         )
       );
       break;
     case SPANS:
-      return new Operable(cam.adaptWeb.getElementsByTag("span"));
+      return new Operable(uk.org.adaptive.core.getElementsByTag("span"));
       break;
     case BUTTONS:
-      return new Operable(cam.adaptWeb.getElementsByTag("button"));
+      return new Operable(uk.org.adaptive.core.getElementsByTag("button"));
       break;
     default:
-      return new Operable(cam.adaptWeb.getElementsByTag("*"));
+      return new Operable(uk.org.adaptive.core.getElementsByTag("*"));
       break;
   }
 }
@@ -85,7 +85,7 @@ const forAll = all;
 const forall = all;
 
 applyToImage = function(img, f){
-  cam.adaptWeb.imageReplaceSmart(img, f, img.uid);
+  uk.org.adaptive.core.imageReplaceSmart(img, f, img.uid);
 }
 var imageIndex = 0;
 forall(IMAGES).do(function(a){ imageIndex++; a.uid = imageIndex; });
