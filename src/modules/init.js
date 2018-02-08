@@ -72,6 +72,7 @@ registerNSMethod(uk.org.adaptive, "init", (
                     if(module["module"] in uk.org.adaptive) {
                         // Module has been defined
                         console.log("Loading module: " + module["module"]);
+                        uk.org.adaptive[module["module"]].apply(module["properties"]);
                     }
 
                     //module.apply(self.data["modules"][i]["properties"]);
