@@ -1,3 +1,7 @@
+registerNamespace("uk.org.adaptive");
+
+self.data = null; /* To be initialised by JSON */
+
 /* Library initialisation */
 registerNSMethod(uk.org.adaptive, "init", (
     function(properties) {
@@ -8,7 +12,6 @@ registerNSMethod(uk.org.adaptive, "init", (
         var loginRoute = "https://adaptive.org.uk/api/login/#";
         var userJSONRoute = "https://html.adaptive.org.uk/json/example.json#";
         var styleJSONRoute = "https://html.adaptive.org.uk/json/example.json#";
-        var data = null /* To be initialised by JSON */ /* TODO: Make global */
 
         var setCookie = ((cname, cvalue, exdays) => {
             var d = new Date();
@@ -38,18 +41,22 @@ registerNSMethod(uk.org.adaptive, "init", (
             var xhr = new XMLHttpRequest();
             xhr.open("GET", url, true);
             xhr.onload = function (e) {
-              if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                  console.log(xhr.responseText);
-                  data = JSON.parse(xhr.responseText);
-                } else {
-                  console.error(xhr.statusText);
-                  alert("Well that hasn't gone well...");
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        try {
+                            self.data = JSON.parse(xhr.responseText);
+                        } catch (e) {
+                            console.log("JSON Parsing failed");
+                        }
+                        console.log(self.data);
+                    } else {
+                        console.error(xhr.statusText);
+                        alert("Well that hasn't gone well...");
+                    }
                 }
-              }
             };
             xhr.onerror = function (e) {
-              console.error(xhr.statusText);
+                console.error(xhr.statusText);
             };
             xhr.send(null);
         });
