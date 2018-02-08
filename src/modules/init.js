@@ -1,11 +1,14 @@
 /* Library initialisation */
 registerNSMethod(uk.org.adaptive, "init", (
     function(properties) {
-        console.log(properties);
+
         var requireAuth = true;
         var hasAuth = false;
         var userMode = false;
         var loginRoute = "https://adaptive.org.uk/api/login/#";
+        var userJSONRoute = "https://html.adaptive.org.uk/json/example.json#";
+        var styleJSONRoute = "https://html.adaptive.org.uk/json/example.json#";
+        var data = null /* To be initialised by JSON */ /* TODO: Make global */
 
         var setCookie = ((cname, cvalue, exdays) => {
             var d = new Date();
@@ -28,6 +31,25 @@ registerNSMethod(uk.org.adaptive, "init", (
                 }
             }
             return "";
+        });
+
+        var retrieveJSON = ((url) => {
+            console.log("Starting async JSON retrieval");
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.onload = function (e) {
+              if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                  console.log(xhr.responseText);
+                } else {
+                  console.error(xhr.statusText);
+                }
+              }
+            };
+            xhr.onerror = function (e) {
+              console.error(xhr.statusText);
+            };
+            xhr.send(null);
         });
 
         var userID = getCookie("ADAPTIVE_A");
@@ -122,10 +144,12 @@ registerNSMethod(uk.org.adaptive, "init", (
 
         if(userMode) {
             // get style from user default style url
+            retrieveJSON(userJSONRoute + userID);
         }
 
         else {
             // get style from style route
+            retrieveJSON(userJSONRoute + styleID);
         }
 
         /* Initialise from Style JSON */
