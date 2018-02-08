@@ -5,7 +5,7 @@ registerNSMethod(uk.org.adaptive, "init", (
         var requireAuth = true;
         var hasAuth = false;
         var userMode = false;
-        var loginRoute = "https://html.adaptive.org.uk/login.php#";
+        var loginRoute = "https://adaptive.org.uk/api/login/#";
 
         var setCookie = ((cname, cvalue, exdays) => {
             var d = new Date();
