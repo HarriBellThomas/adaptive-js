@@ -3,7 +3,7 @@
   $url = $_GET['url'];
   $headers = get_headers($url);
   $ch = curl_init();
-  header($headers[10]);
+  header("Content-Type: ".$headers[10]);
   curl_setopt($ch, CURLOPT_URL, $url);
   curl_setopt($ch, CURLOPT_HEADER, false);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
