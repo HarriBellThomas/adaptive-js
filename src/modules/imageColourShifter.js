@@ -2,7 +2,7 @@ registerNamespace("uk.org.adaptive.imageColourShifter");
 
 self.isActive = false;
 
-var ColorMatrixMatrixes = {
+ColorMatrixMatrixes = {
   Normal: {
     R: [100, 0, 0],
     G: [0, 100, 0],
@@ -67,8 +67,8 @@ registerNSMethod(self, "apply", (
 
           if (!self.isActive) return;
 
-          var type = properties["blindType"];
-          var matrix = ColorMatrixMatrixes[type];
+          type = properties["blindType"];
+          matrix = ColorMatrixMatrixes[type];
 
           return {
 
@@ -85,11 +85,11 @@ registerNSMethod(self, "apply", (
 
         if (!self.isActive) return;
 
-        var type = properties["blindType"];
-        var matrix = ColorMatrixMatrixes[type];
+        type = properties["blindType"];
+        matrix = ColorMatrixMatrixes[type];
 
-        var bc = this.style.backgroundColor;
-        var c = this.style.color;
+        bc = a.style.backgroundColor;
+        c = a.style.color;
 
 
         bColorRGBArray = bc.split("(");
@@ -100,13 +100,13 @@ registerNSMethod(self, "apply", (
         colorRGBArray = colorRGBArray[1].split(")");
         colorRGBArray = colorRGBArray[1].split(", ");
 
-        var bRed = bColorRGBArray[0];
-        var bGreen = bColorRGBArray[1];
-        var bBlue = bColorRGBArray[2];
+        bRed = bColorRGBArray[0];
+        bGreen = bColorRGBArray[1];
+        bBlue = bColorRGBArray[2];
 
-        var red = colorRGBArray[0];
-        var green = colorRGBArray[1];
-        var blue = colorRGBArray[2];
+        red = colorRGBArray[0];
+        green = colorRGBArray[1];
+        blue = colorRGBArray[2];
 
         bRed = bRed * matrix.R[0] / 100.0 +bGreen * matrix.R[1] / 100.0 + bBlue * matrix.R[2] / 100.0;
         bGreen = bRed * matrix.G[0] / 100.0 +bGreen * matrix.G[1] / 100.0 + bBlue * matrix.G[2] / 100.0;
@@ -125,17 +125,17 @@ registerNSMethod(self, "apply", (
 ));
 
 /*Colorspace transformation matrices*/
-var cb_matrices = {
+const cb_matrices = {
   Deuteranopia: [[1, 0, 0], [0.494207, 0, 1.24827], [0, 0, 1]],
   Protanopia: [[0, 2.02344, -2.52581], [0, 1, 0], [0, 0, 1]],
   Tritanopia: [[1, 0, 0], [0, 1, 0], [-0.395913, 0.801109, 0]]
 };
-var rgb2lms = [[17.8824, 43.5161, 4.11935],
+const rgb2lms = [[17.8824, 43.5161, 4.11935],
   [3.45565, 27.1554, 3.86714],
   [0.0299566, 0.184309, 1.46709]];
 
 /*Precomputed inverse*/
-var lms2rgb = [[8.09444479e-02, -1.30504409e-01, 1.16721066e-01],
+const lms2rgb = [[8.09444479e-02, -1.30504409e-01, 1.16721066e-01],
   [-1.02485335e-02, 5.40193266e-02, -1.13614708e-01],
   [-3.65296938e-04, -4.12161469e-03, 6.93511405e-01]];
 
@@ -151,7 +151,7 @@ registerNSMethod(self, "daltonize", (
 
     self.isActive = true;
 
-    var multiply = function (a, b) {
+    multiply = function (a, b) {
       var aNumRows = a.length, aNumCols = a[0].length,
         bNumRows = b.length, bNumCols = b[0].length,
         m = new Array(aNumRows);  // initialize array of rows
@@ -172,21 +172,21 @@ registerNSMethod(self, "daltonize", (
 
           if (!self.isActive) return;
 
-          var type = properties["blindType"];
+          let type = properties["blindType"];
 
-          var LMSMatrix = multiply(rgb2lms, [[rgba.r], [rgba.g], [rgba.b]]);
+          let LMSMatrix = multiply(rgb2lms, [[rgba.r], [rgba.g], [rgba.b]]);
 
-          var colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
+          let colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
 
-          var simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
+          let simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
 
-          var errorMatrix = [[Math.abs(rgba.r - simulatedMatrix[0][0])], [Math.abs(rgba.g - simulatedMatrix[1][0])], [Math.abs(rgba.b - simulatedMatrix[2][0])]];
+          let errorMatrix = [[Math.abs(rgba.r - simulatedMatrix[0][0])], [Math.abs(rgba.g - simulatedMatrix[1][0])], [Math.abs(rgba.b - simulatedMatrix[2][0])]];
 
-          var modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
+          let modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
 
-          var fixedMatrix = multiply(modMatrix, errorMatrix);
+          let fixedMatrix = multiply(modMatrix, errorMatrix);
 
-          var limit = function (a) {
+          let limit = function (a) {
             if (a > 255) return 255;
             else if (a < 0) return 0;
             else return a;
