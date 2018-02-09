@@ -183,4 +183,4 @@ registerNSMethod(self, "scriptCapturesEnclosingScope", function(tr){
   }
 });
 
-self.scriptCapturesEnclosingScope(true);
+self.scriptCapturesEnclosingScope(false);
