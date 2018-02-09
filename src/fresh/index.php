@@ -29,7 +29,7 @@
 
 
 
-  $f = fopen("../cache/output.js", "wb");
+  $f = fopen("../output.js", "wb");
   fwrite($f, $compiled);
   fclose($f);
 ?>
