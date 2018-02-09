@@ -27,7 +27,7 @@ registerNSMethod(self, "elementsToArray",function(els){
   for (var i=function(){ig = els; return 0;}
       ();i<ig.length;i++){
     elarr.push(ig[i]); if (i==ig.length-1) return elarr;
-  }
+  } return [];
 });
 
 registerNSMethod(self, "copyImageDataFromArray", function(canvasdata, width, height){
