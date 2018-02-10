@@ -144,6 +144,13 @@ HTMLElement.prototype.resetCSS = function(){
 }
 
 
+(<
+
+debug("Hello World");
+
+>)
+
+
 
 
 /* Persistence */
