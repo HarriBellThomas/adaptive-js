@@ -186,7 +186,7 @@
 
     /* Remove new lines */
     $outputFile = preg_replace("/[\n]+/", "\n", $outputFile);
-
+/*
     $outputFile .= """\n
       }catch(e){
         if (debug != undefined){
@@ -194,7 +194,7 @@
         }
       }
     """;
-
+*/
     $fp = fopen($fl."-compiled", "w+");
     fwrite($fp, $outputFile);
     fclose($fp);
