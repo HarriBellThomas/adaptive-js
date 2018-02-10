@@ -186,15 +186,12 @@
 
     /* Remove new lines */
     $outputFile = preg_replace("/[\n]+/", "\n", $outputFile);
-/*
-    $outputFile .= """\n
-      }catch(e){
-        if (debug != undefined){
-          debug('Module exception ('+e+')');
-        }
-      }
-    """;
-*/
+
+    $outputFile .= "\n}catch(e){";
+    $outputFile .= "\nif (debug != undefined){";
+    $outputFile .= "\ndebug('Module ".$fl."exception ('+e+')');";
+    $outputFile .= "}}";
+
     $fp = fopen($fl."-compiled", "w+");
     fwrite($fp, $outputFile);
     fclose($fp);
