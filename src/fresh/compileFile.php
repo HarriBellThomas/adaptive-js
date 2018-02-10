@@ -56,6 +56,7 @@
 
 
     $stringsFile = "";
+    $testsFile = "";
 
     $moduleName = false;
 
@@ -69,11 +70,24 @@
         - 2 = string '
         - 3 = string "
         - 4 = comment line
+        - 5 = external resource
     */
 
     while(validPosition()){
       if (peekChars(2) == "/*" && $mode == 0){
         $mode = 1;
+        popCharsClean(2);
+        continue;
+      }
+
+      if (peekChars(2) == "(<" && $mode == 0){
+        $mode = 5;
+        popCharsClean(2);
+        continue;
+      }
+
+      if (peekChars(2) == ">)" && $mode == 5){
+        $mode = 0;
         popCharsClean(2);
         continue;
       }
@@ -142,6 +156,9 @@
       if ($mode == 2 || $mode == 3){
         $currentString .= peekChars(1);
         popCharsClean(1);
+      }else if ($mode == 5){
+        $testsFile .= peekChars(1);
+        popCharsClean(1);
       }else if($mode ==1 || $mode ==4){
         popCharsClean(1);
       }else{
@@ -158,7 +175,6 @@
     $outputFile = preg_replace("/\(\(([A-Z|a-z|\ |\\r|\\n|\,|\)|\(]*)\)[\ |\r\n|\r|\n]*\=\>[\ |\r\n|\r|\n]*\{(.*?)[\ |\r\n|\r|\n]*\}\)/s", "(function($1){ $2 })", $outputFile);
 
 
-
     /* Multi-line arrow functions */
     $outputFile = preg_replace("/\(([A-Z|a-z|\ |\\r|\\n|\,|\)|\(]*)[\ |\r\n|\r|\n]*\=\>[\ |\r\n|\r|\n]*\{(.*?)[\ |\r\n|\r|\n]*\}\)/s", "(function($1){ $2 })", $outputFile);
 
@@ -168,17 +184,23 @@
     /* Replace self with package name */
     $outputFile = preg_replace("/([^[A-Z|a-z|\_|\-]]*)?self([^[A-Z|a-z|\_|\-]]*)?/s", "$1".$moduleName."$2", $outputFile);
 
+    /* Remove new lines */
+    $outputFile = preg_replace("/[\n]+/", "\n", $outputFile);
+
     $fp = fopen($fl."-compiled", "w+");
     fwrite($fp, $outputFile);
     fclose($fp);
-
 
     $fp = fopen($fl."-strings", "w+");
     fwrite($fp, $stringsFile);
     fclose($fp);
 
+    $fp = fopen($fl."-tests", "w+");
+    fwrite($fp, $testsFile);
+    fclose($fp);
 
-    return array($outputFile, $stringsFile, $vars);
+
+    return array($outputFile, $stringsFile, $vars, $testsFile);
   }
 
 

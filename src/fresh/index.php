@@ -7,6 +7,7 @@
 
   $noOfStrings = 0;
   $stringsF = "";
+  $testsF = "";
   $compiled = "\nvar SOURCEJS='".$selfURL."';\n\n";
 
   for($i=0;$i<count($modules);$i++){
@@ -16,6 +17,7 @@
         $compiled .= "\n\n/* File: ".$modules[$i]."*/ \n\n".$o1[0];
         $stringsF .= $o1[1];
         $noOfStrings = $o1[2];
+        $testsF .= $o1[3];
 
     }else{
       $compiled = $compiled."\n\n/* Unknown file: ".$modules[$i]."*/";
@@ -29,6 +31,10 @@
   print($compiled);
 
 
+
+  $f = fopen("../tests.js", "wb");
+  fwrite($f, $testsF);
+  fclose($f);
 
   $f = fopen("../output.js", "wb");
   fwrite($f, $compiled);
