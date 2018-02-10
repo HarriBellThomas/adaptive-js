@@ -1,5 +1,6 @@
 <?php
   require("compileFile.php");
+  header("Access-Control-Allow-Origin: *");
   $modules = explode(",",$_GET['mod']);
   $customScope = $_GET['negateglobal'];
   $selfURL = "https://js.adaptive.org.uk/fresh/?negateglobal=".$_GET['negateglobal']."&mod=".$_GET['mod'];
