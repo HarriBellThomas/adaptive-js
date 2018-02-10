@@ -200,7 +200,7 @@
     fclose($fp);
 
 
-    return array($outputFile, $stringsFile, $vars, $testsFile);
+    return array($outputFile, $stringsFile, $vars, "debug('Starting tests for ".$fl."');\n".$testsFile);
   }
 
 
