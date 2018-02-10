@@ -189,7 +189,7 @@
 
     $outputFile .= "\n}catch(e){";
     $outputFile .= "\nif (debug != undefined){";
-    $outputFile .= "\ndebug('Module ".$fl."exception ('+e+')');";
+    $outputFile .= "\ndebug('Module ".$fl." exception ('+e+')');commit(false);";
     $outputFile .= "}}";
 
     $fp = fopen($fl."-compiled", "w+");
