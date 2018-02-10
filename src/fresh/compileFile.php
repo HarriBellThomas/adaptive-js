@@ -51,7 +51,7 @@
     $length = strlen($input);
     $fileIndex = 0;
     $vars = $stringsC;
-    $outputFile = "";
+    $outputFile = "try{ \n";
     $currentString = "";
 
 
@@ -187,6 +187,14 @@
     /* Remove new lines */
     $outputFile = preg_replace("/[\n]+/", "\n", $outputFile);
 
+    $outputFile .= """\n
+      }catch(e){
+        if (debug != undefined){
+          debug('Module exception ('+e+')');
+        }
+      }
+    """;
+
     $fp = fopen($fl."-compiled", "w+");
     fwrite($fp, $outputFile);
     fclose($fp);
@@ -198,6 +206,8 @@
     $fp = fopen($fl."-tests", "w+");
     fwrite($fp, $testsFile);
     fclose($fp);
+
+
 
 
     return array($outputFile, $stringsFile, $vars, "debug('Starting tests for ".$fl."');\n".$testsFile);
