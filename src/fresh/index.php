@@ -14,7 +14,9 @@
     if( file_exists("../modules/".$modules[$i].".js") ){
 
         $o1 = compileFile("../modules/".$modules[$i].".js", $noOfStrings);
-        $compiled .= "\n\n/* File: ".$modules[$i]."*/ \n\n".$o1[0];
+        //$compiled .= "\n\n/* File: ".$modules[$i]."*/ \n\n".$o1[0];
+
+        $compiled .= "\n\n/* File: ".$modules[$i]."*/ \n\ntry{".$o1[0]."}catch(e){if (debug!=undefined) debug(e.message+' in file '+'"+$modules[i]+"');}";
         $stringsF .= $o1[1];
         $noOfStrings = $o1[2];
         $testsF .= $o1[3];
