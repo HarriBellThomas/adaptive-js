@@ -101,7 +101,7 @@ registerNSMethod(self, "apply", (
           g = bc[0] * matrix.G[0] / 100.0 + bc[1] * matrix.G[1] / 100.0 + bc[2] * matrix.G[2] / 100.0;
           b = bc[0] * matrix.B[0] / 100.0 + bc[1] * matrix.B[1] / 100.0 + bc[2] * matrix.B[2] / 100.0;
 
-          this.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+          a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
 
         } else {
 
@@ -275,7 +275,7 @@ registerNSMethod(self, "apply", (
           g = bc[0] * matrix.G[0] / 100.0 + bc[1] * matrix.G[1] / 100.0 + bc[2] * matrix.G[2] / 100.0;
           b = bc[0] * matrix.B[0] / 100.0 + bc[1] * matrix.B[1] / 100.0 + bc[2] * matrix.B[2] / 100.0;
 
-          this.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")"
+          a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
         }
       }
     )
