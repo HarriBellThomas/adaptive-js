@@ -88,8 +88,8 @@ registerNSMethod(self, "apply", (
         type = properties["blindType"];
         matrix = ColorMatrixMatrixes[type];
 
-        bc = a.currentStyle.backgroundColor;
-        c = a.currentStyle.color;
+        bc = window.getComputedStyle(a,null).backgroundColor;
+        c = window.getComputedStyle(a,null).color;
 
         if (bc.startsWith("rgb")) {
 
