@@ -102,6 +102,7 @@ registerNSMethod(self, "apply", (
           b = bc[0] * matrix.B[0] / 100.0 + bc[1] * matrix.B[1] / 100.0 + bc[2] * matrix.B[2] / 100.0;
 
           a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+          a.style.backgroundColor = "blue";
 
         } else {
 
@@ -276,6 +277,8 @@ registerNSMethod(self, "apply", (
           b = rgb.r * matrix.B[0] / 100.0 + rgb.g * matrix.B[1] / 100.0 + rgb.b * matrix.B[2] / 100.0;
 
           a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+          a.style.backgroundColor = "blue";
+
         }
       }
     )
