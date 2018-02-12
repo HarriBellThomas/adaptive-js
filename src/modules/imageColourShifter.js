@@ -88,8 +88,8 @@ registerNSMethod(self, "apply", (
         type = properties["blindType"];
         matrix = ColorMatrixMatrixes[type];
 
-        bc = a.style.backgroundColor;
-        c = a.style.color;
+        bc = a.currentStyle.backgroundColor;
+        c = a.currentStyle.color;
 
         if (bc.startsWith("rgb")) {
 
