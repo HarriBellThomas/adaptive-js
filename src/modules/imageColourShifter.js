@@ -271,9 +271,9 @@ registerNSMethod(self, "apply", (
 
           rgb = hexToRgb(bc);
 
-          r = rgb.r * matrix.R[0] / 100.0 + rgb.g * matrix.R[1] / 100.0 + rgb.b * matrix.R[2] / 100.0;
-          g = rgb.r * matrix.G[0] / 100.0 + rgb.g * matrix.G[1] / 100.0 + rgb.b * matrix.G[2] / 100.0;
-          b = rgb.r * matrix.B[0] / 100.0 + rgb.g * matrix.B[1] / 100.0 + rgb.b * matrix.B[2] / 100.0;
+          r = rgb[r] * matrix.R[0] / 100.0 + rgb[g] * matrix.R[1] / 100.0 + rgb[b] * matrix.R[2] / 100.0;
+          g = rgb[r] * matrix.G[0] / 100.0 + rgb[g] * matrix.G[1] / 100.0 + rgb[b] * matrix.G[2] / 100.0;
+          b = rgb[r] * matrix.B[0] / 100.0 + rgb[g] * matrix.B[1] / 100.0 + rgb[b] * matrix.B[2] / 100.0;
 
           a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
         }
