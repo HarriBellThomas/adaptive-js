@@ -1,5 +1,6 @@
 <?php
 
+  header("Access-Control-Allow-Origin: *");
   $url = $_GET['url'];
   $headers = get_headers($url);
   $ch = curl_init();
