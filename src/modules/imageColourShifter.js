@@ -252,11 +252,12 @@ registerNSMethod(self, "apply", (
         bc = window.getComputedStyle(a,null).backgroundColor;
         c = window.getComputedStyle(a,null).color;
 
-        if (bc.startsWith("rgb")) {
+        if (bc.startsWith("rgb") && !bc.includes("rgba(0,0,0,0)")) {
 
           bc = bc.substring(5, bc.length - 3)
             .replace(/ /g, '')
             .split(',');
+
 
           r = bc[0] * matrix.R[0] / 100.0 + bc[1] * matrix.R[1] / 100.0 + bc[2] * matrix.R[2] / 100.0;
           g = bc[0] * matrix.G[0] / 100.0 + bc[1] * matrix.G[1] / 100.0 + bc[2] * matrix.G[2] / 100.0;
@@ -278,7 +279,7 @@ registerNSMethod(self, "apply", (
           a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
         }
 
-        if (c.startsWith("rgb")) {
+        if (c.startsWith("rgb") && !c.includes("rgba(0,0,0,0)")) {
 
           c = c.substring(4, c.length - 1)
             .replace(/ /g, '')
