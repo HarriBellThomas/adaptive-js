@@ -32,7 +32,7 @@ registerNSMethod(self, "apply",(
 
     self.isActive = true;
 
-    forall(IMAGES,DIVS,VIDEOS,TABLES,SPANS,BUTTONS).do(
+    forall().do(
       a => {
           if (!self.isActive) return;
           /* Ensure non-destructiveness by caching CSS */
