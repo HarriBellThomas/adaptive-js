@@ -254,7 +254,7 @@ registerNSMethod(self, "apply", (
 
         if (bc.startsWith("rgb")) {
 
-          bc = bc.substring(4, bc.length - 1)
+          bc = bc.substring(5, bc.length - 1)
             .replace(/ /g, '')
             .split(',');
 
@@ -397,7 +397,7 @@ registerNSMethod(self, "daltonize", (
 
         if (bc.startsWith("rgb")) {
 
-          bc = bc.substring(4, bc.length - 1)
+          bc = bc.substring(5, bc.length - 1)
             .replace(/ /g, '')
             .split(',');
 
