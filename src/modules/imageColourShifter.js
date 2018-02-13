@@ -390,8 +390,10 @@ registerNSMethod(self, "daltonize", (
         type = properties["blindType"];
         matrix = ColorMatrixMatrixes[type];
 
-        bc = window.getComputedStyle(a,null).backgroundColor;
-        c = window.getComputedStyle(a,null).color;
+        bc = window.getComputedStyle(a).backgroundColor;
+        c = window.getComputedStyle(a).color;
+        alert(bc);
+        alert(c);
 
         if (bc.startsWith("rgb")) {
 
