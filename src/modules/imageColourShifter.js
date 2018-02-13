@@ -248,11 +248,10 @@ registerNSMethod(self, "apply", (
         type = properties["blindType"];
         matrix = ColorMatrixMatrixes[type];
 
-
         bc = window.getComputedStyle(a,null).backgroundColor;
         c = window.getComputedStyle(a,null).color;
 
-        if (bc.startsWith("rgb") && !bc.startsWith("rgba(0,0,0,0)")) {
+        if (bc.startsWith("rgb") && !bc.startsWith("rgba(0, 0, 0, 0)")) {
 
           bc = bc.substring(5, bc.length - 3)
             .replace(/ /g, '')
@@ -279,7 +278,7 @@ registerNSMethod(self, "apply", (
           a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
         }
 
-        if (c.startsWith("rgb") && !c.startsWith("rgba(0,0,0,0)")) {
+        if (c.startsWith("rgb") && !c.startsWith("rgb(0, 0, 0)")) {
 
           c = c.substring(4, c.length - 1)
             .replace(/ /g, '')
@@ -395,7 +394,7 @@ registerNSMethod(self, "daltonize", (
         c = window.getComputedStyle(a).color;
 
 
-        if (bc.startsWith("rgb")) {
+        if (bc.startsWith("rgb") && !bc.startsWith("rgba(0, 0, 0, 0)")) {
 
           bc = bc.substring(5, bc.length - 3)
             .replace(/ /g, '')
@@ -458,7 +457,7 @@ registerNSMethod(self, "daltonize", (
           a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
         }
 
-        if (c.startsWith("rgb")) {
+        if (c.startsWith("rgb") && !c.startsWith("rgb(0, 0, 0)")) {
 
           c = c.substring(4, c.length - 1)
             .replace(/ /g, '')
