@@ -248,22 +248,24 @@ registerNSMethod(self, "apply", (
         type = properties["blindType"];
         matrix = ColorMatrixMatrixes[type];
 
-        bc = window.getComputedStyle(a,null).backgroundColor;
-        c = window.getComputedStyle(a,null).color;
+        bc = window.getComputedStyle(a, null).backgroundColor;
+        c = window.getComputedStyle(a, null).color;
 
-        if (bc.startsWith("rgb") && !bc.startsWith("rgba(0, 0, 0, 0)")) {
+        if (bc.startsWith("rgb")) {
 
-          bc = bc.substring(5, bc.length - 3)
-            .replace(/ /g, '')
-            .split(',');
+          if (!bc.startsWith("rgba(0, 0, 0, 0)")) {
+            bc = bc.substring(5, bc.length - 3)
+              .replace(/ /g, '')
+              .split(',');
 
 
-          r = bc[0] * matrix.R[0] / 100.0 + bc[1] * matrix.R[1] / 100.0 + bc[2] * matrix.R[2] / 100.0;
-          g = bc[0] * matrix.G[0] / 100.0 + bc[1] * matrix.G[1] / 100.0 + bc[2] * matrix.G[2] / 100.0;
-          b = bc[0] * matrix.B[0] / 100.0 + bc[1] * matrix.B[1] / 100.0 + bc[2] * matrix.B[2] / 100.0;
+            r = bc[0] * matrix.R[0] / 100.0 + bc[1] * matrix.R[1] / 100.0 + bc[2] * matrix.R[2] / 100.0;
+            g = bc[0] * matrix.G[0] / 100.0 + bc[1] * matrix.G[1] / 100.0 + bc[2] * matrix.G[2] / 100.0;
+            b = bc[0] * matrix.B[0] / 100.0 + bc[1] * matrix.B[1] / 100.0 + bc[2] * matrix.B[2] / 100.0;
 
-          a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+            a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
 
+          }
         } else {
           if (!bc.startsWith("#")) {
             bc = colourNameToHex(bc);
@@ -278,17 +280,19 @@ registerNSMethod(self, "apply", (
           a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
         }
 
-        if (c.startsWith("rgb") && !c.startsWith("rgb(0, 0, 0)")) {
+        if (c.startsWith("rgb")) {
 
-          c = c.substring(4, c.length - 1)
-            .replace(/ /g, '')
-            .split(',');
+          if (!c.startsWith("rgb(0, 0, 0)")) {
+            c = c.substring(4, c.length - 1)
+              .replace(/ /g, '')
+              .split(',');
 
-          cr = c[0] * matrix.R[0] / 100.0 + c[1] * matrix.R[1] / 100.0 + c[2] * matrix.R[2] / 100.0;
-          cg = c[0] * matrix.G[0] / 100.0 + c[1] * matrix.G[1] / 100.0 + c[2] * matrix.G[2] / 100.0;
-          cb = c[0] * matrix.B[0] / 100.0 + c[1] * matrix.B[1] / 100.0 + c[2] * matrix.B[2] / 100.0;
-          a.style.color = "rgb(" + cr + "," + cg + "," + cb + ")";
+            cr = c[0] * matrix.R[0] / 100.0 + c[1] * matrix.R[1] / 100.0 + c[2] * matrix.R[2] / 100.0;
+            cg = c[0] * matrix.G[0] / 100.0 + c[1] * matrix.G[1] / 100.0 + c[2] * matrix.G[2] / 100.0;
+            cb = c[0] * matrix.B[0] / 100.0 + c[1] * matrix.B[1] / 100.0 + c[2] * matrix.B[2] / 100.0;
+            a.style.color = "rgb(" + cr + "," + cg + "," + cb + ")";
 
+          }
         } else {
           if (!c.startsWith("#")) {
             c = colourNameToHex(c);
@@ -394,37 +398,39 @@ registerNSMethod(self, "daltonize", (
         c = window.getComputedStyle(a).color;
 
 
-        if (bc.startsWith("rgb") && !bc.startsWith("rgba(0, 0, 0, 0)")) {
+        if (bc.startsWith("rgb")) {
 
-          bc = bc.substring(5, bc.length - 3)
-            .replace(/ /g, '')
-            .split(',');
+          if (!bc.startsWith("rgba(0, 0, 0, 0)")) {
+            bc = bc.substring(5, bc.length - 3)
+              .replace(/ /g, '')
+              .split(',');
 
-          let type = properties["blindType"];
+            let type = properties["blindType"];
 
-          let LMSMatrix = multiply(rgb2lms, [[bc[0]], [bc[1]], [bc[2]]]);
+            let LMSMatrix = multiply(rgb2lms, [[bc[0]], [bc[1]], [bc[2]]]);
 
-          let colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
+            let colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
 
-          let simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
+            let simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
 
-          let errorMatrix = [[Math.abs(bc[0] - simulatedMatrix[0][0])], [Math.abs(bc[1] - simulatedMatrix[1][0])], [Math.abs(bc[2] - simulatedMatrix[2][0])]];
+            let errorMatrix = [[Math.abs(bc[0] - simulatedMatrix[0][0])], [Math.abs(bc[1] - simulatedMatrix[1][0])], [Math.abs(bc[2] - simulatedMatrix[2][0])]];
 
-          let modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
+            let modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
 
-          let fixedMatrix = multiply(modMatrix, errorMatrix);
+            let fixedMatrix = multiply(modMatrix, errorMatrix);
 
-          let limit = function (a) {
-            if (a > 255) return 255;
-            else if (a < 0) return 0;
-            else return a;
-          };
-            r= limit(bc[0] + fixedMatrix[0][0]);
-            g= limit(bc[1] + fixedMatrix[1][0]);
-            b= limit(bc[2] + fixedMatrix[2][0]);
+            let limit = function (a) {
+              if (a > 255) return 255;
+              else if (a < 0) return 0;
+              else return a;
+            };
+            r = limit(bc[0] + fixedMatrix[0][0]);
+            g = limit(bc[1] + fixedMatrix[1][0]);
+            b = limit(bc[2] + fixedMatrix[2][0]);
 
-          a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+            a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
 
+          }
         } else {
           if (!bc.startsWith("#")) {
             bc = colourNameToHex(bc);
@@ -450,44 +456,46 @@ registerNSMethod(self, "daltonize", (
             else if (a < 0) return 0;
             else return a;
           };
-          r= limit(rgb.r + fixedMatrix[0][0]);
-          g= limit(rgb.g + fixedMatrix[1][0]);
-          b= limit(rgb.b + fixedMatrix[2][0]);
+          r = limit(rgb.r + fixedMatrix[0][0]);
+          g = limit(rgb.g + fixedMatrix[1][0]);
+          b = limit(rgb.b + fixedMatrix[2][0]);
 
           a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
         }
 
-        if (c.startsWith("rgb") && !c.startsWith("rgb(0, 0, 0)")) {
+        if (c.startsWith("rgb")) {
 
-          c = c.substring(4, c.length - 1)
-            .replace(/ /g, '')
-            .split(',');
+          if (!c.startsWith("rgb(0, 0, 0)")) {
+            c = c.substring(4, c.length - 1)
+              .replace(/ /g, '')
+              .split(',');
 
-          let type = properties["blindType"];
+            let type = properties["blindType"];
 
-          let LMSMatrix = multiply(rgb2lms, [[c[0]], [c[1]], [c[2]]]);
+            let LMSMatrix = multiply(rgb2lms, [[c[0]], [c[1]], [c[2]]]);
 
-          let colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
+            let colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
 
-          let simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
+            let simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
 
-          let errorMatrix = [[Math.abs(c[0] - simulatedMatrix[0][0])], [Math.abs(c[1] - simulatedMatrix[1][0])], [Math.abs(c[2] - simulatedMatrix[2][0])]];
+            let errorMatrix = [[Math.abs(c[0] - simulatedMatrix[0][0])], [Math.abs(c[1] - simulatedMatrix[1][0])], [Math.abs(c[2] - simulatedMatrix[2][0])]];
 
-          let modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
+            let modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
 
-          let fixedMatrix = multiply(modMatrix, errorMatrix);
+            let fixedMatrix = multiply(modMatrix, errorMatrix);
 
-          let limit = function (a) {
-            if (a > 255) return 255;
-            else if (a < 0) return 0;
-            else return a;
-          };
-          r= limit(c[0] + fixedMatrix[0][0]);
-          g= limit(c[1] + fixedMatrix[1][0]);
-          b= limit(c[2] + fixedMatrix[2][0]);
+            let limit = function (a) {
+              if (a > 255) return 255;
+              else if (a < 0) return 0;
+              else return a;
+            };
+            r = limit(c[0] + fixedMatrix[0][0]);
+            g = limit(c[1] + fixedMatrix[1][0]);
+            b = limit(c[2] + fixedMatrix[2][0]);
 
-          a.style.color = "rgb(" + r + "," + g + "," + b + ")";
+            a.style.color = "rgb(" + r + "," + g + "," + b + ")";
 
+          }
         } else {
           if (!c.startsWith("#")) {
             c = colourNameToHex(c);
@@ -513,9 +521,9 @@ registerNSMethod(self, "daltonize", (
             else if (a < 0) return 0;
             else return a;
           };
-          r= limit(rgb.r + fixedMatrix[0][0]);
-          g= limit(rgb.g + fixedMatrix[1][0]);
-          b= limit(rgb.b + fixedMatrix[2][0]);
+          r = limit(rgb.r + fixedMatrix[0][0]);
+          g = limit(rgb.g + fixedMatrix[1][0]);
+          b = limit(rgb.b + fixedMatrix[2][0]);
 
           a.style.color = "rgb(" + r + "," + g + "," + b + ")";
         }
