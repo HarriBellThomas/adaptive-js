@@ -252,7 +252,7 @@ registerNSMethod(self, "apply", (
         bc = window.getComputedStyle(a,null).backgroundColor;
         c = window.getComputedStyle(a,null).color;
 
-        if (bc.startsWith("rgb") && !bc.includes("rgba(0,0,0,0)")) {
+        if (bc.startsWith("rgb") && !bc.startsWith("rgba(0,0,0,0)")) {
 
           bc = bc.substring(5, bc.length - 3)
             .replace(/ /g, '')
@@ -279,7 +279,7 @@ registerNSMethod(self, "apply", (
           a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
         }
 
-        if (c.startsWith("rgb") && !c.includes("rgba(0,0,0,0)")) {
+        if (c.startsWith("rgb") && !c.startsWith("rgba(0,0,0,0)")) {
 
           c = c.substring(4, c.length - 1)
             .replace(/ /g, '')
