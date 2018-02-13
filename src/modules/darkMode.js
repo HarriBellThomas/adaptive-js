@@ -36,7 +36,7 @@ registerNSMethod(self, "apply",(
       a => {
           if (!self.isActive) return;
           /* Ensure non-destructiveness by caching CSS */
-          a.cacheCSSProperties(["color", "background-color"]);
+          this.cacheCSSProperties(["color", "background-color"]);
           a.style.color = "white";
           a.style.backgroundColor = "rgb(38,38,38)";
         }
@@ -59,6 +59,7 @@ registerNSMethod(self, "apply",(
 registerNSMethod(self, "remove",(
   function(){
     self.isActive = false;
+    this.resetCSS();
     return true;
   }
 ));
