@@ -32,7 +32,7 @@ registerNSMethod(self, "apply",(
 
     self.isActive = true;
 
-    forall().do(
+    forall(IMAGES,DIVS,VIDEOS,TABLES,SPANS,BUTTONS).do(
       a => {
           if (!self.isActive) return;
           /* Ensure non-destructiveness by caching CSS */
@@ -46,7 +46,7 @@ registerNSMethod(self, "apply",(
       a => {
         if (!self.isActive) return;
         /* Ensure non-destructiveness by caching CSS */
-        a.cacheCSSProperties(["color"]);
+        this.cacheCSSProperties(["color"]);
         a.style.color = "lightblue";
       }
     );
