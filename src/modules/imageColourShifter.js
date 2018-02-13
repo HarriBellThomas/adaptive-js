@@ -240,7 +240,7 @@ registerNSMethod(self, "apply", (
         })
       });
 
-    forall(DIVS, LINKS, SPANS, TABLES).do(
+    forall().do(
       function (a) {
 
         if (!self.isActive) return;
@@ -382,7 +382,7 @@ registerNSMethod(self, "daltonize", (
         })
       });
 
-    forall(DIVS, LINKS, SPANS, TABLES).do(
+    forall().do(
       function (a) {
 
         if (!self.isActive) return;
@@ -392,7 +392,7 @@ registerNSMethod(self, "daltonize", (
 
         bc = window.getComputedStyle(a).backgroundColor;
         c = window.getComputedStyle(a).color;
-        
+
 
         if (bc.startsWith("rgb")) {
 
