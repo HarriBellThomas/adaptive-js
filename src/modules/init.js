@@ -10,7 +10,7 @@ registerNSMethod(uk.org.adaptive, "init", (
         var hasAuth = false;
         var userMode = false;
         var loginRoute = "https://adaptive.org.uk/api/login/#";
-        var userJSONRoute = "https://html.adaptive.org.uk/json/example.json#";
+        var userJSONRoute = "https://adaptive.org.uk/api/default/";
         var styleJSONRoute = "https://html.adaptive.org.uk/json/example.json#";
 
         var setCookie = ((cname, cvalue, exdays) => {
