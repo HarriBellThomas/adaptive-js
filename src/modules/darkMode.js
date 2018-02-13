@@ -36,7 +36,7 @@ registerNSMethod(self, "apply",(
       a => {
           if (!self.isActive) return;
           /* Ensure non-destructiveness by caching CSS */
-          this.cacheCSSProperties(["color", "background-color"]);
+          self.cacheCSSProperties(["color", "background-color"]);
           a.style.color = "white";
           a.style.backgroundColor = "rgb(38,38,38)";
         }
@@ -46,7 +46,7 @@ registerNSMethod(self, "apply",(
       a => {
         if (!self.isActive) return;
         /* Ensure non-destructiveness by caching CSS */
-        this.cacheCSSProperties(["color"]);
+        self.cacheCSSProperties(["color"]);
         a.style.color = "lightblue";
       }
     );
