@@ -38,9 +38,11 @@ registerNSMethod(self, "apply",(
           /* Ensure non-destructiveness by caching CSS */
           try {
             a.cacheCSSProperties(["color", "background-color"]);
-          } catch (e) {}
+          } catch (e) {
+            /* some elements do not work with cacheCSSProperties */
+          }
           a.style.color = "white";
-          a.style.backgroundColor = "rgb(38,38,38)";
+          a.style.backgroundColor = "rgb(25,25,25)";
         }
       );
 
@@ -61,7 +63,13 @@ registerNSMethod(self, "apply",(
 registerNSMethod(self, "remove",(
   function(){
     self.isActive = false;
-    this.resetCSS();
+    forall().do(a=> {
+      try {
+        a.resetCSS();
+      } catch(e){
+        /* some elements do not work with cacheCSSProperties */
+      }
+    });
     return true;
   }
 ));
