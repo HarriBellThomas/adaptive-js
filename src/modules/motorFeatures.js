@@ -36,8 +36,8 @@ registerNSMethod(self, "apply",(
     if (!verifyArgs(properties, [["time", NUMTYPE]]))
                                               return false;
 
-    if (properties["time"] < 1) return false;
-    self.waitTime = properties["time"];
+    if (properties["delay"] < 1) return false;
+    self.waitTime = properties["delay"];
     /* Ensure idempotence by first removing the
         effect if it is present                   */
 
