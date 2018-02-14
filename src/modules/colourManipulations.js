@@ -13,7 +13,7 @@ registerNSMethod(self, "changeSaturation", (
 
     self.isActive = true;
 
-    forall(IMAGES).do(
+    forall(VISUALS).do(
       function (a) {
         applyToImage(a, function () {
 
@@ -80,6 +80,10 @@ registerNSMethod(self, "changeBrightness", (
 registerNSMethod(self, "remove", (
   function () {
     self.isActive = false;
+    forall(VISUALS).do(function(a){applyToImage(a, function (xy,rgba) {
+      return {r: rgba.r, g:rgba.g, b: rgba.b, a:rgba.a}
+    })});
+
     return true;
   }
 ));
