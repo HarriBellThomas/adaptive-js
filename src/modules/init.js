@@ -44,7 +44,7 @@ registerNSMethod(uk.org.adaptive, "init", (
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         try {
-                            self.data = JSON.parse(unescape(xhr.responseText));
+                            self.data = (xhr.responseText);
                             applyStyles();
                         } catch (e) {
                             console.log("JSON Parsing failed: " + e);
