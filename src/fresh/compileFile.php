@@ -11,7 +11,7 @@
       $fileIndex ++;
       $outputFile .= $input[$fileIndex-1];
       return $input[$fileIndex-1];
-    }else{
+    } else {
       return false;
     }
   }
@@ -145,11 +145,9 @@
           continue;
         }
       }
-
+      $forceEscape = false;
       if (peekChars(1) == "\\"){
-        popChar();
-        $escaped = true;
-        continue;
+        $forceEscape = true;
       }
 
 
@@ -164,33 +162,58 @@
       }else{
         popChar();
       }
+      $escaped = $forceEscape;
     }
 
 
 
     /* Simple arrow functions */
-    $outputFile = preg_replace("/\(([A-Z|a-z|\ |\\r|\\n|\,|\)|\(]*)[\ |\r\n|\r|\n]*\=\>[\ |\r\n|\r|\n]*([^[\;|\r|\n]+)[\ |\r\n|\r|\n]*\)/", "(function($1){ return $2; })", $outputFile);
+//    $outputFile = preg_replace("/\(\s*([A-Za-z\ \r\n\,\)\(]*)\s*\=\>\s*([^[\;\r\n]+)\s*\)/", "(function($1){ return $2; })", $outputFile);
 
     /* Multi-line arrow functions */
-    $outputFile = preg_replace("/\(\(([A-Z|a-z|\ |\\r|\\n|\,|\)|\(]*)\)[\ |\r\n|\r|\n]*\=\>[\ |\r\n|\r|\n]*\{(.*?)[\ |\r\n|\r|\n]*\}\)/s", "(function($1){ $2 })", $outputFile);
+//    $outputFile = preg_replace("/\(\s*([A-Za-z\ \r\n\,\)\(]*)\)\s*\=\>\s*\{(.*?)\s*\}\)/s", "(function($1){ $2 })", $outputFile);
 
 
     /* Multi-line arrow functions */
-    $outputFile = preg_replace("/\(([A-Z|a-z|\ |\\r|\\n|\,|\)|\(]*)[\ |\r\n|\r|\n]*\=\>[\ |\r\n|\r|\n]*\{(.*?)[\ |\r\n|\r|\n]*\}\)/s", "(function($1){ $2 })", $outputFile);
+//    $outputFile = preg_replace("/\(\s*([A-Za-z\ \r\n\,\)\(]*)\s*\=\>\s*\{(.*?)\s*\}\)/s", "(function($1){ $2 })", $outputFile);
 
-    /* Replace const with var */
-    $outputFile = preg_replace("/([^[A-Z|a-z|\_|\-|\.]]*)?(const)\ /s", "$1var ", $outputFile);
+    /* Replace 'const' and 'let' with var */
+//    $outputFile = preg_replace("/([^[A-Za-z\_\-\.]]*)?(const)\ /s", "$1var ", $outputFile);
+//    $outputFile = preg_replace("/([^[A-Za-z\_\-\.]]*)?(let)\ /s", "$1var ", $outputFile);
+//
+    /* Replace self with package name */
+//    $outputFile = preg_replace("/([^[A-Za-z\_\-]]*)?self([^[A-Za-z\_\-]]*)?/s", "$1".$moduleName."$2", $outputFile);
+
+    /* Remove new lines */
+//    $outputFile = preg_replace("/[\n]+/", "\n", $outputFile);
+
+
+
+    /* Simple arrow functions */
+    $outputFile = preg_replace("/\(\s*([A-Za-z\ \r\n\,\)\(]*)\s*\=\>\s*([^[\;\r\n]+)\)/", "(function($1){ return $2; })", $outputFile);
+
+    /* Multi-line arrow functions */
+    $outputFile = preg_replace("/\(\s*\(([A-Za-z\ \r\n\,\)\(]*)\)\s*\=\>\s*\{(.*?)\}\)/s", "(function($1){ $2 })", $outputFile);
+
+
+    /* Multi-line arrow functions */
+    $outputFile = preg_replace("/\(\s*([A-Za-z\ \r\n\,\)\(]*)\s*\=\>\s*\{(.*?)\}\)/s", "(function($1){ $2 })", $outputFile);
+
+    /* Replace 'const' and 'let' with var */
+    $outputFile = preg_replace("/([^[A-Za-z\_\-\.]]*)?(const)\ /s", "$1var ", $outputFile);
+    $outputFile = preg_replace("/([^[A-Za-z\_\-\.]]*)?(let)\ /s", "$1var ", $outputFile);
 
     /* Replace self with package name */
-    $outputFile = preg_replace("/([^[A-Z|a-z|\_|\-]]*)?self([^[A-Z|a-z|\_|\-]]*)?/s", "$1".$moduleName."$2", $outputFile);
+    $outputFile = preg_replace("/([^[A-Za-z\_\-]]*)?self([^[A-Za-z\_\-]]*)?/s", "$1".$moduleName."$2", $outputFile);
 
     /* Remove new lines */
     $outputFile = preg_replace("/[\n]+/", "\n", $outputFile);
 
+
+
     $outputFile .= "\n}catch(e){";
-    $outputFile .= "\nif (debug != undefined){";
-    $outputFile .= "\ndebug('Module ".$fl." exception ('+e+')');commit(false);";
-    $outputFile .= "}}";
+    $outputFile .= "\nthrow ('Module ".$fl." exception: '+e);";
+    $outputFile .= "}";
 
     $fp = fopen($fl."-compiled", "w+");
     fwrite($fp, $outputFile);

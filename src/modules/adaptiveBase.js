@@ -14,8 +14,8 @@ registerNSMethod(self, "main",(function(){
 
 // Set-up:
 
-self.IMAGE_DOMAIN_FIX = [];
 self.IMAGE_CACHE = {};
+self.IMAGE_SIZES = {};
 
 registerNSMethod(self, "getElementsByTag",function(k){
   return self.elementsToArray(document.getElementsByTagName(k));
@@ -30,38 +30,6 @@ registerNSMethod(self, "elementsToArray",function(els){
   } return [];
 });
 
-registerNSMethod(self, "copyImageDataFromArray", function(canvasdata, width, height){
-  const d = canvasdata.data;
-  const c1 = document.createElement("canvas");
-  c1.width = width;
-  c1.height = height;
-  const ctx1 = c1.getContext("2d");
-  const newdata = ctx1.getImageData(0, 0, width, height);
-  for(var i=0;i<d.length;i++){
-      newdata.data[i] = d[i];
-  }
-  return newdata;
-});
-
-registerNSMethod(self, "imageReplaceSmartUnchecked", function(img, indx, cache, f){
-    const c = document.createElement("canvas");
-    c.width = img.width;
-    c.height = img.height;
-    const ctx = c.getContext("2d");
-    ctx.drawImage(img,0,0);
-    var canvasDataOld = ctx.getImageData(0, 0, img.width, img.height);
-    if (self.IMAGE_CACHE[indx] == undefined){
-      img.adaptiveMode = true;
-      var copy = self.copyImageDataFromArray(canvasDataOld, c.width, c.height);
-      self.IMAGE_CACHE[indx] = copy;
-    }else{
-      canvasDataOld = self.copyImageDataFromArray(self.IMAGE_CACHE[indx], c.width, c.height);
-    }
-    const canvasDataNew = self.applyRGBAFunctionToImageData(canvasDataOld, f, img.width, img.height);
-    ctx.putImageData(canvasDataNew, 0, 0);
-    const newdata = c.toDataURL("image/png");
-    img.src = newdata;
-});
 
 registerNSMethod(self, "extractHostname", function(url){
   // Stolen from SO:
@@ -80,14 +48,131 @@ registerNSMethod(self, "extractHostname", function(url){
   return hostname;
 });
 
-registerNSMethod(self, "imageReplaceSmart", function(img, f, i){
+registerENUM(["STATEBASE","STATESTRING","STATESTRINGSINGLE","STATETAG","TAGNAME"]);
+
+registerNSMethod(self, "simpleTagParseComponents", function(el){
+  var outer = el.outerHTML;
+  var indx = 0;
+  var state = STATETAG;
+  var output = {tags: [], inner:el.innerHTML, outer:[]};
+  var currentTag = "";
+  while(indx<outer.length){
+    const v = outer[indx];
+    const vp = (indx+1<outer.length)?outer[indx+1]:false;
+    if ((state==STATETAG)||(state==STATESTRINGSINGLE)||(state==STATESTRING)){
+      currentTag += v;
+    }
+    if (v=="'"){
+      if (state==STATETAG){
+        state=STATESTRINGSINGLE; // Increase to string
+      }else if (state==STATESTRINGSINGLE){
+        state=STATETAG; // Decrease to tag
+      }
+    }
+    if (v=="\""){
+      if (state==STATETAG){
+        state=STATESTRING; // Increase to string
+      }else if (state==STATESTRING){
+        state=STATETAG; // Decrease to tag
+      }
+    }
+    if (v=="<" && vp!=" " && state==STATEBASE){
+      currentTag += v;
+      state=STATETAG;
+    }
+    if (v==">"&&state==STATETAG){
+      output.tags.push(currentTag);
+      currentTag="";
+      state=STATEBASE;
+    }
+    indx++;
+  }
+  output.outer = [output.tags[0], output.tags[output.tags.length-1]];
+  return output;
+});
+
+registerNSMethod(self, "closestMinAndNotNeg", function(v1,v2){
+  const u = (v1>0)?((v2>0)?Math.min(v1,v2):v1):((v2>0)?v2:-1);
+  if (u==-1) throw "Malformed string input";
+  return u;
+});
+
+registerNSMethod(self, "transformTags", function(tgs,tagname){
+  const startTag = tgs[0];
+  const endTag = tgs[1];
+  const pStart = self.closestMinAndNotNeg(startTag.indexOf(" "), startTag.indexOf(">"));
+  const pEnd = self.closestMinAndNotNeg(endTag.indexOf(" "), endTag.indexOf(">"));
+  const startTagOutput = "<"+tagname+startTag.substring(pStart);
+  const endTagOutput = "</"+tagname+endTag.substring(pEnd);
+  return [startTagOutput,endTagOutput];
+});
+
+registerNSMethod(self, "removeTrailingQuote", function(a){
+  if (a[a.length-1] == "'" || a[a.length-1] == "\""){
+    return a.substring(0, a.length-1);
+  }else{
+    return a;
+  }
+});
+
+
+
+registerNSMethod(self, "copyImageDataFromArray", function(canvasdata, width, height){
+  const d = canvasdata.data;
+  const c1 = document.createElement("canvas");
+  c1.width = width;
+  c1.height = height;
+  const ctx1 = c1.getContext("2d");
+  const newdata = ctx1.getImageData(0, 0, width, height);
+  for(var i=0;i<d.length;i++){
+      newdata.data[i] = d[i];
+  }
+  return newdata;
+});
+
+registerNSMethod(self, "imageGetRawSize", function(src,callback){
+  const i=document.createElement("img");
+  i.style.visibility = "hidden";
+  i.onload = function(){
+    const output = {width:i.clientWidth, height:i.clientHeight};
+    i.outerHTML = "";
+    callback(output);
+  }
+  document.body.appendChild(i);
+  i.src = src;
+
+});
+
+registerNSMethod(self, "imageReplaceSmartUnchecked", function(img, indx, cache, f, cb){
+    const c = document.createElement("canvas");
+    const IMAGEWIDTH = self.IMAGE_SIZES[indx].width;
+    const IMAGEHEIGHT = self.IMAGE_SIZES[indx].height;
+    c.width = IMAGEWIDTH;
+    c.height = IMAGEHEIGHT;
+    const ctx = c.getContext("2d");
+    ctx.drawImage(img,0,0);
+    var canvasDataOld = ctx.getImageData(0, 0, c.width, c.height);
+    if (self.IMAGE_CACHE[indx] == undefined){
+      img.adaptiveMode = true;
+      var copy = self.copyImageDataFromArray(canvasDataOld, c.width, c.height);
+      self.IMAGE_CACHE[indx] = copy;
+    }else{
+      canvasDataOld = self.copyImageDataFromArray(self.IMAGE_CACHE[indx], c.width, c.height);
+    }
+    const canvasDataNew = self.applyRGBAFunctionToImageData(canvasDataOld, f, IMAGEWIDTH, IMAGEHEIGHT);
+    ctx.putImageData(canvasDataNew, 0, 0);
+    const newdata = c.toDataURL("image/png");
+    img.src = newdata;
+    img.onload = cb;
+});
+
+registerNSMethod(self, "imageReplaceSmart", function(img, f, i, cb){
   if (!img.originFix){
     var imageurl;
     if (self.extractHostname(img.src) == document.domain){
       imageurl = img.src;
     }else{
       // Need to apply domain fix
-      console.log("Fixing "+img.src);
       imageurl = "https://js.adaptive.org.uk/helpers/image.php?url="+encodeURIComponent(img.src);
     }
     console.log(img.oldsrc);
@@ -100,12 +185,16 @@ registerNSMethod(self, "imageReplaceSmart", function(img, f, i){
       img.onload = function(){
         this.onload = function(){};
         img.originFix = true;
-        self.imageReplaceSmartUnchecked(img, i, true, f);
+        self.imageGetRawSize(imageurl, function(j){
+          self.IMAGE_SIZES[i] = j;
+          self.imageReplaceSmartUnchecked(img, i, true, f, cb);
+        });
+
       }
     }, 100);
 
   }else{
-    self.imageReplaceSmartUnchecked(img, i, false, f);
+    self.imageReplaceSmartUnchecked(img, i, false, f, cb);
   }
 });
 

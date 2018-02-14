@@ -1,6 +1,6 @@
 /* 'ForAll' ENUMs */
 
-registerENUM(["IMAGES","DIVS","VIDEOS","LINKS","TABLES","SPANS","BUTTONS"]);
+registerENUM(["IMAGES","DIVS","VIDEOS","LINKS","TABLES","SPANS","BUTTONS","VISUALS"]);
 
 const Operable=function(ls){this.elements = ls;}
 Operable.prototype.where=function(p){
@@ -76,6 +76,9 @@ const all=function(typ,$2,$3,$4,$5,$6){
     case BUTTONS:
       return new Operable(uk.org.adaptive.core.getElementsByTag("button"));
       break;
+    case VISUALS:
+      return forall().where(a=> a.tagName != "SCRIPT" && a.src != undefined);
+      break;
     default:
       return new Operable(uk.org.adaptive.core.getElementsByTag("*"));
       break;
@@ -84,11 +87,23 @@ const all=function(typ,$2,$3,$4,$5,$6){
 const forAll = all;
 const forall = all;
 
-applyToImage = function(img, f){
-  uk.org.adaptive.core.imageReplaceSmart(img, f, img.uid);
+const applyToImage = function(img, f){
+  if (img.tagName != "IMG"){
+    // we create a proxy image to apply changes to
+    const prox = document.createElement("img");
+    imageIndex++;
+    prox.uid = img.uid;
+    prox.src = img.src;
+    prox.onload = function(){
+      uk.org.adaptive.core.imageReplaceSmart(prox, f, prox.uid, function(){
+        img.style.backgroundImage = "url("+prox.src+")";
+      });
+    }
+  }
+  uk.org.adaptive.core.imageReplaceSmart(img, f, img.uid, function(){});
 }
 var imageIndex = 0;
-forall(IMAGES).do(function(a){ imageIndex++; a.uid = imageIndex; });
+forall().do(function(a){ imageIndex++; a.uid = imageIndex; });
 HTMLElement.prototype.delete = function(){ this.outerHTML = ""; };
 HTMLElement.prototype.remove = HTMLElement.prototype.delete;
 
@@ -128,6 +143,7 @@ cachedCSS.prototype.applyTo = function(elm){
   }
 }
 
+
 HTMLElement.prototype.cacheCSSProperties = function(props){
   if (this.cachedCSS == undefined){
     this.cachedCSS = new cachedCSS(this, props);
@@ -144,9 +160,31 @@ HTMLElement.prototype.resetCSS = function(){
 }
 
 
+forall().where(function(a){
+  var style = window.getComputedStyle(a, null);
+  return (style.backgroundImage.indexOf("url(") > -1);}
+).do(
+    function(a){
+      var style = window.getComputedStyle(a, null);
+      a.src = uk.org.adaptive.core.removeTrailingQuote((/[\'\"]?(.*)/g).exec(
+              (/(?:url\()(.*)\)/g).exec(style.backgroundImage)[1]
+            )[1]);
+    });
+
+
+HTMLElement.prototype.switchTag = function(to){
+  const components = uk.org.adaptive.core.transformTags(uk.org.adaptive.core.simpleTagParseComponents(this).outer, to);
+  this.outerHTML = components[0]+this.innerHTML+components[1];
+}
+
+
+
+
 (<
 
 debug("Hello World");
+
+
 
 >)
 
