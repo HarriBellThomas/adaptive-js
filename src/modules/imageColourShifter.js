@@ -240,7 +240,7 @@ registerNSMethod(self, "apply", (
         })
       });
 
-    forall().do(
+    /*forall().do(
       function (a) {
 
         if (!self.isActive) return;
@@ -267,7 +267,7 @@ registerNSMethod(self, "apply", (
             try {
               a.cacheCSSProperties(["background-color"]);
             } catch (e) {
-              /* some elements do not work with cacheCSSProperties */
+              * some elements do not work with cacheCSSProperties *
             }
             a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
 
@@ -288,7 +288,7 @@ registerNSMethod(self, "apply", (
           try {
             a.cacheCSSProperties(["background-color"]);
           } catch (e) {
-            /* some elements do not work with cacheCSSProperties */
+            * some elements do not work with cacheCSSProperties *
           }a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
         }
 
@@ -307,7 +307,7 @@ registerNSMethod(self, "apply", (
             try {
               a.cacheCSSProperties(["color"]);
             } catch (e) {
-              /* some elements do not work with cacheCSSProperties */
+              * some elements do not work with cacheCSSProperties *
             }
             a.style.color = "rgb(" + cr + "," + cg + "," + cb + ")";
 
@@ -325,12 +325,12 @@ registerNSMethod(self, "apply", (
           try {
             a.cacheCSSProperties(["color"]);
           } catch (e) {
-            /* some elements do not work with cacheCSSProperties */
+            * some elements do not work with cacheCSSProperties *
           }
           a.style.color = "rgb(" + cr + "," + cg + "," + cb + ")";
         }
       }
-    )
+    ) */
   }
 ));
 
@@ -581,13 +581,9 @@ registerNSMethod(self, "daltonize", (
 registerNSMethod(self, "remove", (
   function () {
     self.isActive = false;
-    forall().do(a=> {
-      try {
-        a.resetCSS();
-      } catch(e){
-        /* some elements do not work with cacheCSSProperties */
-      }
-    });
+    forall(IMAGES).do(a=> applyToImage(a, (xy,rgba)=> {
+      return {r: rgba.r, g:rgba.g, b: rgba.b, a:rgba.a}
+    }));
 
     return true;
   }
