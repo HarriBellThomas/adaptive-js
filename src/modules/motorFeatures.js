@@ -33,7 +33,7 @@ registerNSMethod(self, "apply",(
         which properties are permitted, we can simply
         perform simple field/type-checking like:      */
 
-    if (!verifyArgs(properties, [["time", NUMTYPE]]))
+    if (!verifyArgs(properties, [["delay", NUMTYPE]]))
                                               return false;
 
     if (properties["delay"] < 1) return false;
