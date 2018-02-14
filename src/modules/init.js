@@ -74,8 +74,22 @@ registerNSMethod(uk.org.adaptive, "init", (
                     }
                 }
             }
-
         }
+
+        var removeStyles = function() {
+            if(self.data != null && "modules" in self.data) {
+                for(i = 0; i < self.data["modules"][0].length; i++) {
+                    var module = self.data["modules"][0][i];
+                    if(module["module"] in uk.org.adaptive) {
+                        // Module has been defined
+                        console.log("Removing module: " + module["module"]);
+                        uk.org.adaptive[module["module"]].remove();
+                    }
+                }
+            }
+        }
+
+
 
         var userID = getCookie("ADAPTIVE_A");
         var styleID = getCookie("ADAPTIVE_B");
@@ -144,16 +158,9 @@ registerNSMethod(uk.org.adaptive, "init", (
 
         document.body.appendChild(adaptiveBar);
 
-
-
-        if(requireAuth) {
-            // Will redirect away...
-
-            status.className = "disabled";
-            status.innerHTML = "Disabled";
-
-            status.addEventListener("click", function(event){
-                event.preventDefault();
+        status.addEventListener("click", function(event){
+            event.preventDefault();
+            if(status.className == "enabled") {
                 var lastIndex = window.location.href.indexOf('#');
                 if(lastIndex > -1) {
                     var url = window.location.href.substr(0, lastIndex);
@@ -170,12 +177,19 @@ registerNSMethod(uk.org.adaptive, "init", (
                     hostname: window.location.hostname
                 });
                 window.location.replace(loginRoute + window.btoa(pageData));
-            });
+            }
 
-            return false;
-        }
+            else {
+                removeStyles();
+                status.className = "disabled";
+                status.innerHTML = "Disabled";
+            }
+        });
 
-        else {
+        if(requireAuth) {
+            status.className = "disabled";
+            status.innerHTML = "Disabled";
+        } else {
             status.className = "enabled";
             status.innerHTML = "Enabled";
         }
