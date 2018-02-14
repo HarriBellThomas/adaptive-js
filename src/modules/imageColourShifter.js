@@ -226,6 +226,14 @@ registerNSMethod(self, "remove", (
     forall(VISUALS).do(function(a){applyToImage(a, function (xy,rgba) {
       return {r: rgba.r, g:rgba.g, b: rgba.b, a:rgba.a}
     })});
+      forall().do(a=> {
+        try {
+          a.resetCSS();
+        } catch (e) {
+          /* some elements do not work with cacheCSSProperties */
+        }
+      }
+    )
     return true;
   }
 ));
