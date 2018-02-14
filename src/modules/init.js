@@ -125,6 +125,7 @@ registerNSMethod(uk.org.adaptive, "init", (
         document.body.appendChild(style);
 
         var adaptiveBar = document.createElement("div");
+        adaptiveBar.setAttribute("data-adaptive", "ignore");
         adaptiveBar.id = "adaptive-bar";
 
         var imageLink = document.createElement("a");
