@@ -23,11 +23,16 @@ registerNSMethod(self, "getElementsByTag",function(k){
 
 
 registerNSMethod(self, "elementsToArray",function(els){
-  var ig, elarr = [];
-  for (var i=function(){ig = els; return 0;}
-      ();i<ig.length;i++){
-    elarr.push(ig[i]); if (i==ig.length-1) return elarr;
-  } return [];
+  // var ig, elarr = [];
+  // for (   var i=function(){ig = els; return 0;}();   i<ig.length;   i++){
+  //   elarr.push(ig[i]); if (i==ig.length-1) return elarr;
+  // } return [];
+
+  var elarr = [];
+  for(var i = 0; i < els.length - 1; i++) {
+    if(els[i].getAttribute("data-adaptive") != "ignore") elarr.push(els[i]);
+  }
+  return elarr;
 });
 
 

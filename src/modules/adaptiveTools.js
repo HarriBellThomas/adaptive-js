@@ -1,6 +1,6 @@
 /* 'ForAll' ENUMs */
 
-registerENUM(["IMAGES","DIVS","VIDEOS","LINKS","TABLES","SPANS","BUTTONS","VISUALS"]);
+registerENUM(["IMAGES","DIVS","VIDEOS","LINKS","TABLES","SPANS","BUTTONS","VISUALS","PARAGRAPHS"]);
 
 const Operable=function(ls){this.elements = ls;}
 Operable.prototype.where=function(p){
@@ -78,6 +78,9 @@ const all=function(typ,$2,$3,$4,$5,$6){
       break;
     case VISUALS:
       return forall().where(a=> a.tagName != "SCRIPT" && a.src != undefined);
+      break;
+     case PARAGRAPHS:
+      return new Operable(uk.org.adaptive.core.getElementsByTag("p"));
       break;
     default:
       return new Operable(uk.org.adaptive.core.getElementsByTag("*"));
