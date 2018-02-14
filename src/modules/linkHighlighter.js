@@ -25,14 +25,13 @@ registerNSMethod(self, "apply",(
         which properties are permitted, we can simply
         perform simple field/type-checking like:      */
 
-    if (!verifyArgs(properties, [["color", STRINGTYPE]]))
+    if (!verifyArgs(properties, [["bgColor", STRINGTYPE]]))
                                               return false;
 
     /* Ensure idempotence by first removing the
         effect if it is present                   */
 
-    if (self.isActive)
-                        self.remove();
+    if (self.isActive) self.remove();
 
     self.isActive = true;
 
@@ -45,7 +44,7 @@ registerNSMethod(self, "apply",(
                                   "padding", "margin",
                                   "border-radius"]);
           this.style.color = "black";
-          this.style.backgroundColor = properties["color"];
+          this.style.backgroundColor = properties["bgColor"];
           this.style.borderRadius = "8px";
           this.style.padding = "15px 15px 15px 15px";
           this.style.margin = "-15px -15px";
@@ -65,8 +64,7 @@ registerNSMethod(self, "apply",(
 registerNSMethod(self, "remove",(
   function(){
     self.isActive = false;
-    if (self.activeElement === false)
-                                                      return true;
+    if (self.activeElement === false) return true;
     self.activeElement.resetCSS();
     self.activeElement = false;
     return true;
