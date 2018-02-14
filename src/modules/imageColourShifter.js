@@ -177,8 +177,8 @@ registerNSMethod(self, "daltonize", (
         type = properties["blindType"];
         matrix = ColorMatrixMatrixes[type];
 
-        bc = rgbValue(extractColour(element, backgroundColor));
-        c = rgbValue(extractColour(element, color));
+        bc = rgbValue(extractColour(a, backgroundColor));
+        c = rgbValue(extractColour(a, color));
 
         let type = properties["blindType"];
         let LMSMatrix = multiply(rgb2lms, [[bc.r], [bc.g], [bc.b]]);
