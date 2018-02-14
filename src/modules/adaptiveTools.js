@@ -273,8 +273,9 @@ registerNSMethod(uk.org.adaptive.scrollingTitle, "killScrollingTitle",function(i
 
 
 
-/* Extracting rgb/hex values from element */
-/* Example: colour = rgbValue(extractColour(element, backgroundColor))
+/* Extracting rgb/hex values from element
+
+ Example: colour = rgbValue(extractColour(element, backgroundColor))
             colour = hexValue(extractColour(element, color))
 */
 
