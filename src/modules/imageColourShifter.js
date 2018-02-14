@@ -581,9 +581,9 @@ registerNSMethod(self, "daltonize", (
 registerNSMethod(self, "remove", (
   function () {
     self.isActive = false;
-    forall(IMAGES).do(a=> applyToImage(a, function (xy,rgba) {
+    forall(IMAGES).do(function(a){applyToImage(a, function (xy,rgba) {
       return {r: rgba.r, g:rgba.g, b: rgba.b, a:rgba.a}
-    }));
+    })});
 
     return true;
   }
