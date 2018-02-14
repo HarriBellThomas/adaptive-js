@@ -221,7 +221,7 @@ registerNSMethod(self, "apply", (
 
     self.isActive = true;
 
-    forall(IMAGES).do(
+    forall(VISUALS).do(
       function (a) {
         applyToImage(a, function (xy, rgba) {
 
@@ -240,7 +240,7 @@ registerNSMethod(self, "apply", (
         })
       });
 
-    forall().do(
+    /*forall().do(
       function (a) {
 
         if (!self.isActive) return;
@@ -263,6 +263,12 @@ registerNSMethod(self, "apply", (
             g = bc[0] * matrix.G[0] / 100.0 + bc[1] * matrix.G[1] / 100.0 + bc[2] * matrix.G[2] / 100.0;
             b = bc[0] * matrix.B[0] / 100.0 + bc[1] * matrix.B[1] / 100.0 + bc[2] * matrix.B[2] / 100.0;
 
+
+            try {
+              a.cacheCSSProperties(["background-color"]);
+            } catch (e) {
+              * some elements do not work with cacheCSSProperties *
+            }
             a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
 
           }
@@ -277,7 +283,13 @@ registerNSMethod(self, "apply", (
           g = rgb.r * matrix.G[0] / 100.0 + rgb.g * matrix.G[1] / 100.0 + rgb.b * matrix.G[2] / 100.0;
           b = rgb.r * matrix.B[0] / 100.0 + rgb.g * matrix.B[1] / 100.0 + rgb.b * matrix.B[2] / 100.0;
 
-          a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+
+
+          try {
+            a.cacheCSSProperties(["background-color"]);
+          } catch (e) {
+            * some elements do not work with cacheCSSProperties *
+          }a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
         }
 
         if (c.startsWith("rgb")) {
@@ -290,6 +302,13 @@ registerNSMethod(self, "apply", (
             cr = c[0] * matrix.R[0] / 100.0 + c[1] * matrix.R[1] / 100.0 + c[2] * matrix.R[2] / 100.0;
             cg = c[0] * matrix.G[0] / 100.0 + c[1] * matrix.G[1] / 100.0 + c[2] * matrix.G[2] / 100.0;
             cb = c[0] * matrix.B[0] / 100.0 + c[1] * matrix.B[1] / 100.0 + c[2] * matrix.B[2] / 100.0;
+
+
+            try {
+              a.cacheCSSProperties(["color"]);
+            } catch (e) {
+              * some elements do not work with cacheCSSProperties *
+            }
             a.style.color = "rgb(" + cr + "," + cg + "," + cb + ")";
 
           }
@@ -303,10 +322,15 @@ registerNSMethod(self, "apply", (
           cg = crgb.r * matrix.G[0] / 100.0 + crgb.g * matrix.G[1] / 100.0 + crgb.b * matrix.G[2] / 100.0;
           cb = crgb.r * matrix.B[0] / 100.0 + crgb.g * matrix.B[1] / 100.0 + crgb.b * matrix.B[2] / 100.0;
 
+          try {
+            a.cacheCSSProperties(["color"]);
+          } catch (e) {
+            * some elements do not work with cacheCSSProperties *
+          }
           a.style.color = "rgb(" + cr + "," + cg + "," + cb + ")";
         }
       }
-    )
+    ) */
   }
 ));
 
@@ -352,7 +376,7 @@ registerNSMethod(self, "daltonize", (
       }
       return m;
     };
-    forall(IMAGES).do(
+    forall(VISUALS).do(
       function (a) {
         applyToImage(a, function (xy, rgba) {
 
@@ -386,7 +410,7 @@ registerNSMethod(self, "daltonize", (
         })
       });
 
-    forall().do(
+    /*forall().do(
       function (a) {
 
         if (!self.isActive) return;
@@ -428,6 +452,12 @@ registerNSMethod(self, "daltonize", (
             g = limit(bc[1] + fixedMatrix[1][0]);
             b = limit(bc[2] + fixedMatrix[2][0]);
 
+
+            try {
+              a.cacheCSSProperties(["background-color"]);
+            } catch (e) {
+               some elements do not work with cacheCSSProperties
+            }
             a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
 
           }
@@ -460,7 +490,12 @@ registerNSMethod(self, "daltonize", (
           g = limit(rgb.g + fixedMatrix[1][0]);
           b = limit(rgb.b + fixedMatrix[2][0]);
 
-          a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+
+          try {
+            a.cacheCSSProperties(["background-color"]);
+          } catch (e) {
+            /* some elements do not work with cacheCSSProperties *
+          }          a.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
         }
 
         if (c.startsWith("rgb")) {
@@ -493,6 +528,12 @@ registerNSMethod(self, "daltonize", (
             g = limit(c[1] + fixedMatrix[1][0]);
             b = limit(c[2] + fixedMatrix[2][0]);
 
+
+            try {
+              a.cacheCSSProperties(["color"]);
+            } catch (e) {
+              /* some elements do not work with cacheCSSProperties *
+            }
             a.style.color = "rgb(" + r + "," + g + "," + b + ")";
 
           }
@@ -525,15 +566,25 @@ registerNSMethod(self, "daltonize", (
           g = limit(rgb.g + fixedMatrix[1][0]);
           b = limit(rgb.b + fixedMatrix[2][0]);
 
+
+          try {
+            a.cacheCSSProperties(["color"]);
+          } catch (e) {
+            /* some elements do not work with cacheCSSProperties *
+          }
           a.style.color = "rgb(" + r + "," + g + "," + b + ")";
         }
       }
-    )
+    )*/
   }));
 
 registerNSMethod(self, "remove", (
   function () {
     self.isActive = false;
+    forall(VISUALS).do(function(a){applyToImage(a, function (xy,rgba) {
+      return {r: rgba.r, g:rgba.g, b: rgba.b, a:rgba.a}
+    })});
+
     return true;
   }
 ));

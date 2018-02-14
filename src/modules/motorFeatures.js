@@ -33,11 +33,11 @@ registerNSMethod(self, "apply",(
         which properties are permitted, we can simply
         perform simple field/type-checking like:      */
 
-    if (!verifyArgs(properties, [["time", NUMTYPE]]))
+    if (!verifyArgs(properties, [["delay", NUMTYPE]]))
                                               return false;
 
-    if (properties["time"] < 1) return false;
-    self.waitTime = properties["time"];
+    if (properties["delay"] < 1) return false;
+    self.waitTime = properties["delay"];
     /* Ensure idempotence by first removing the
         effect if it is present                   */
 
@@ -69,7 +69,7 @@ registerNSMethod(self, "apply",(
           document.location = this.getAttribute("href");
         }, a.onmouseout, a.onclick);
         self.buttonMappings[a.buttonID] = prof;
-        a.onmousedown = function(){ this.style.border = "5px solid green"; this.style.color = "white"; this.style.backgroundColor = "green"; self.activeElement = this; self.prepareTimer(); }
+        a.onmousedown = function(){ this.style.border = "2px solid green"; this.style.color = "white"; this.style.backgroundColor = "green"; self.activeElement = this; self.prepareTimer(); }
         a.onmouseup = function(){  self.activeElement.style.cursor = "default"; this.style.border = "2px solid red"; this.style.color = "red"; this.style.backgroundColor = "rgba(0,0,0,0)"; self.queryOutcome(); }
         a.onmouseout = function(){ self.activeElement.style.cursor = "default"; this.style.border = "2px solid red"; this.style.color = "red"; this.style.backgroundColor = "rgba(0,0,0,0)"; self.cancelOutcome(); }
         a.onmouseover = function(){};
