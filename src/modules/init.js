@@ -52,7 +52,7 @@ registerNSMethod(uk.org.adaptive, "init", (
                         console.log(self.data);
                     } else {
                         console.error(xhr.statusText);
-                        alert("Well that hasn't gone well...");
+                        // alert("Well that hasn't gone well...");
                     }
                 }
             };
@@ -119,20 +119,38 @@ registerNSMethod(uk.org.adaptive, "init", (
         }
 
 
+        var style = document.createElement("style");
+        style.innerHTML = "div#adaptive-bar #status,div#adaptive-bar img{padding:12px;float:right;max-height:16px}div#adaptive-bar{position:fixed;z-index:999999;bottom:0;right:0;height:40px;padding:0;margin:0;background-color:#fff;font-family:Helvetica,system;font-weight:400;font-size:1em;line-height:40px;vertical-align:middle;border-color:#000;border-width:1px 0 0 1px;border-style:solid;-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}div#adaptive-bar #status{font-family:monospace;font-size:1em;line-height:16px;font-weight:1000;background-color:#fff}div#adaptive-bar #status:hover{opacity:.7}div#adaptive-bar #status.enabled{background-color:green;color:#fff;cursor:pointer}div#adaptive-bar #status.disabled,div#adaptive-bar  #status.login{background-color:#e20000;color:#fff;cursor:pointer}";
+        document.body.appendChild(style);
+
+        var adaptiveBar = document.createElement("div");
+        adaptiveBar.id = "adaptive-bar";
+
+        var imageLink = document.createElement("a");
+        imageLink.href = "https://adaptive.org.uk/";
+
+        var image = document.createElement("img");
+        image.src = "https://adaptive.org.uk/images/logo-colourful.png";
+
+        imageLink.appendChild(image);
+
+        var status = document.createElement("span");
+        status.id = "status";
+
+        adaptiveBar.appendChild(imageLink);
+        adaptiveBar.appendChild(status);
+
+        document.body.appendChild(adaptiveBar);
+
+
+
         if(requireAuth) {
-            // Run run auth
-            // Will redirect away
-            var elt = document.createElement("div");
-            elt.style.cssText = "position: fixed;bottom: 0;z-index: 999999;width: 100%;background-color: aliceblue;padding: 10px;";
+            // Will redirect away...
 
-            var link = document.createElement("a");
-            link.innerHTML = "Login";
-            link.href = loginRoute;
-            elt.appendChild(link);
+            status.className = "disabled";
+            status.innerHTML = "Disabled";
 
-            document.body.appendChild(elt);
-
-            link.addEventListener("click", function(event){
+            status.addEventListener("click", function(event){
                 event.preventDefault();
                 var lastIndex = window.location.href.indexOf('#');
                 if(lastIndex > -1) {
@@ -156,14 +174,8 @@ registerNSMethod(uk.org.adaptive, "init", (
         }
 
         else {
-            var elt = document.createElement("div");
-            elt.style.cssText = "position: fixed;bottom: 0;z-index: 999999;width: 100%;background-color: greenyellow;padding: 10px;font-weight: 700;";
-
-            var text = document.createElement("p");
-            text.innerHTML = "Success";
-            elt.appendChild(text);
-
-            document.body.appendChild(elt);
+            status.className = "enabled";
+            status.innerHTML = "Enabled";
         }
 
         if(userMode) {
