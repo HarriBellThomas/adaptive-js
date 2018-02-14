@@ -160,7 +160,7 @@ registerNSMethod(uk.org.adaptive, "init", (
 
         status.addEventListener("click", function(event){
             event.preventDefault();
-            if(status.className == "enabled") {
+            if(status.className == "disabled") {
                 var lastIndex = window.location.href.indexOf('#');
                 if(lastIndex > -1) {
                     var url = window.location.href.substr(0, lastIndex);
