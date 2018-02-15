@@ -83,6 +83,7 @@ registerNSMethod(self, "apply", (
 
         bc = rgbaValue(extractColour(a, "backgroundColor"));
         c = rgbaValue(extractColour(a, "color"));
+        boc = rgbaValue(extractColour(a, "border-color"));
 
         r = Math.round(bc.r * matrix.R[0] / 100.0 + bc.g * matrix.R[1] / 100.0 + bc.b * matrix.R[2] / 100.0);
         g = Math.round(bc.r * matrix.G[0] / 100.0 + bc.g * matrix.G[1] / 100.0 + bc.b * matrix.G[2] / 100.0);
@@ -92,18 +93,21 @@ registerNSMethod(self, "apply", (
         cg = Math.round(c.r * matrix.G[0] / 100.0 + c.g * matrix.G[1] / 100.0 + c.b * matrix.G[2] / 100.0);
         cb = Math.round(c.r * matrix.B[0] / 100.0 + c.g * matrix.B[1] / 100.0 + c.b * matrix.B[2] / 100.0);
 
+        bocr = Math.round(boc.r * matrix.R[0] / 100.0 + boc.g * matrix.R[1] / 100.0 + boc.b * matrix.R[2] / 100.0);
+        bocg = Math.round(boc.r * matrix.G[0] / 100.0 + boc.g * matrix.G[1] / 100.0 + boc.b * matrix.G[2] / 100.0);
+        bocb = Math.round(boc.r * matrix.B[0] / 100.0 + boc.g * matrix.B[1] / 100.0 + boc.b * matrix.B[2] / 100.0);
+
         try {
           a.cacheCSSProperties(["background-color"]);
           a.cacheCSSProperties(["color"]);
+          a.cacheCSSProperties(["border-color"]);
 
         } catch (e) {
           /* some elements do not work with cacheCSSProperties */
         }
-        console.log(bc);
-        console.log(r,g,b,bc.a);
         a.style.backgroundColor = "rgba("+r+","+g+","+b+","+bc.a+")";
-        /*a.style.backgroundColor = "rgba(0,0,255,1)";*/
         a.style.color = "rgba("+cr+","+cg+","+cb+","+c.a+")";
+        a.style.borderColor = "rgba("+bocr+","+bocg+","+bocb+","+boc.a+")";
       })}));
 
 /*Colorspace transformation matrices*/
@@ -180,8 +184,10 @@ registerNSMethod(self, "daltonize", (
         type = properties["blindType"];
         matrix = ColorMatrixMatrixes[type];
 
-        bc = rgbValue(extractColour(a, "backgroundColor"));
-        c = rgbValue(extractColour(a, "color"));
+        bc = rgbaValue(extractColour(a, "backgroundColor"));
+        c = rgbaValue(extractColour(a, "color"));
+        boc = rgbaValue(extractColour(a, "border-color"));
+
 
         let type = properties["blindType"];
         let LMSMatrix = multiply(rgb2lms, [[bc.r], [bc.g], [bc.b]]);
@@ -195,17 +201,18 @@ registerNSMethod(self, "daltonize", (
           else if (a < 0) return 0;
           else return a;
         };
-        r = limit(bc.r + fixedMatrix[0][0]);
-        g = limit(bc.g + fixedMatrix[1][0]);
-        b = limit(bc.b + fixedMatrix[2][0]);
+        r = Math.round(limit(bc.r + fixedMatrix[0][0]));
+        g = Math.round(limit(bc.g + fixedMatrix[1][0]));
+        b = Math.round(limit(bc.b + fixedMatrix[2][0]));
 
         try {
           a.cacheCSSProperties(["background-color"]);
           a.cacheCSSProperties(["color"]);
+          a.cacheCSSProperties(["border-color"]);
         } catch (e) {
           /*some elements do not work with cacheCSSProperties*/
         }
-        a.style.backgroundColor = "rgb("+r+","+g+","+b+")";
+        a.style.backgroundColor = "rgba("+r+","+g+","+b+","+bc.a+")";
 
         type = properties["blindType"];
         LMSMatrix = multiply(rgb2lms, [[c.r], [c.g], [c.b]]);
@@ -214,11 +221,24 @@ registerNSMethod(self, "daltonize", (
         errorMatrix = [[Math.abs(c.r - simulatedMatrix[0][0])], [Math.abs(c.g - simulatedMatrix[1][0])], [Math.abs(c.b - simulatedMatrix[2][0])]];
         modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
         fixedMatrix = multiply(modMatrix, errorMatrix);
-        r = limit(c.r + fixedMatrix[0][0]);
-        g = limit(c.g + fixedMatrix[1][0]);
-        b = limit(c.b + fixedMatrix[2][0]);
+        r = Math.round(limit(c.r + fixedMatrix[0][0]));
+        g = Math.round(limit(c.g + fixedMatrix[1][0]));
+        b = Math.round(limit(c.b + fixedMatrix[2][0]));
 
-        a.style.color = "rgb("+r+","+g+","+b+")";
+        a.style.color = "rgba("+r+","+g+","+b+","+c.a+")";
+
+        type = properties["blindType"];
+        LMSMatrix = multiply(rgb2lms, [[boc.r], [boc.g], [boc.b]]);
+        colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
+        simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
+        errorMatrix = [[Math.abs(boc.r - simulatedMatrix[0][0])], [Math.abs(boc.g - simulatedMatrix[1][0])], [Math.abs(boc.b - simulatedMatrix[2][0])]];
+        modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
+        fixedMatrix = multiply(modMatrix, errorMatrix);
+        r = Math.round(limit(boc.r + fixedMatrix[0][0]));
+        g = Math.round(limit(boc.g + fixedMatrix[1][0]));
+        b = Math.round(limit(boc.b + fixedMatrix[2][0]));
+
+        a.style.borderColor = "rgba("+r+","+g+","+b+","+boc.a+")";
 
       })}));
 
