@@ -1,4 +1,4 @@
-registerNamespace("uk.org.adaptive.imageColourShifter");
+registerNamespace("uk.org.adaptive.colourTest");
 
 self.isActive = false;
 
@@ -50,6 +50,12 @@ ColorMatrixMatrixes = {
   }
 };
 
+let limit = function (a) {
+  if (a > 255) return 255;
+  else if (a < 0) return 0;
+  else return a;
+};
+
 registerNSMethod(self, "apply", (
   function (properties) {
     if (!verifyArgs(properties, [["blindType", STRINGTYPE]]))
@@ -84,14 +90,13 @@ registerNSMethod(self, "apply", (
         bc = rgbValue(extractColour(a, "backgroundColor"));
         c = rgbValue(extractColour(a, "color"));
 
-        r = bc.r * matrix.R[0] / 100.0 + bc.g * matrix.R[1] / 100.0 + bc.b * matrix.R[2] / 100.0;
-        g = bc.r * matrix.G[0] / 100.0 + bc.g * matrix.G[1] / 100.0 + bc.b * matrix.G[2] / 100.0;
-        b = bc.r * matrix.B[0] / 100.0 + bc.g * matrix.B[1] / 100.0 + bc.b * matrix.B[2] / 100.0;
+        r = limit(bc.r + 50);
+        g = limit(bc.g + 50);
+        b = limit(bc.b + 50);
 
-        cr = c.r * matrix.R[0] / 100.0 + c.g * matrix.R[1] / 100.0 + c.b * matrix.R[2] / 100.0;
-        cg = c.r * matrix.G[0] / 100.0 + c.g * matrix.G[1] / 100.0 + c.b * matrix.G[2] / 100.0;
-        cb = c.r * matrix.B[0] / 100.0 + c.g * matrix.B[1] / 100.0 + c.b * matrix.B[2] / 100.0;
-
+        cr = limit(c.r + 50);
+        cg = limit(c.r + 50);
+        cb = limit(c.r + 50);
         try {
           a.cacheCSSProperties(["background-color"]);
           a.cacheCSSProperties(["color"]);
@@ -155,11 +160,6 @@ registerNSMethod(self, "daltonize", (
           let modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
           let fixedMatrix = multiply(modMatrix, errorMatrix);
 
-          let limit = function (a) {
-            if (a > 255) return 255;
-            else if (a < 0) return 0;
-            else return a;
-          };
           return {
             r: limit(rgba.r + fixedMatrix[0][0]),
             g: limit(rgba.g + fixedMatrix[1][0]),
@@ -226,14 +226,14 @@ registerNSMethod(self, "remove", (
     forall(VISUALS).do(function(a){applyToImage(a, function (xy,rgba) {
       return {r: rgba.r, g:rgba.g, b: rgba.b, a:rgba.a}
     })});
-      forall().do(a=> {
+    forall().do(a=> {
         try {
           a.resetCSS();
         } catch (e) {
           /* some elements do not work with cacheCSSProperties */
         }
       }
-    );
+    )
     return true;
   }
 ));
