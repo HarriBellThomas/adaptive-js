@@ -53,13 +53,14 @@ registerNSMethod(self, "apply",(
 
     forall(BUTTONS).do(a=> {
       a.buttonID = self.buttonID;
-      self.buttonID ++;
+      self.buttonID++;
 
       a.style["-webkit-appearance"] = "none";
       a.style["border"] = "2px solid red";
       a.style["border-radius"] = "4px";
       a.style["background-color"] = "rgba(0,0,0,0)";
       a.style["color"] = "red";
+      a.style["outline"] = "0";
       a.style["-webkit-transition"] = "border "+self.waitTime+"ms ease, color "+self.waitTime+"ms ease, background-color "+self.waitTime+"ms ease";
       a.style["transition"] = "border "+self.waitTime+"ms ease, color "+self.waitTime+"ms ease, background-color "+self.waitTime+"ms ease";
     });

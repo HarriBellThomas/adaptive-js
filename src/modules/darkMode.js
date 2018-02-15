@@ -13,19 +13,8 @@ registerNamespace("uk.org.adaptive.darkMode");
 
 self.isActive = false;
 
-/* Now, we can define the member method "apply", which
-    takes an object, containing the required properties.
-    For example, a darken module might take the object
-    {value: 30} in order to specify a darkness of 30     */
-
 registerNSMethod(self, "apply",(
   function(){
-    /* Since we can't specify in the function prototype
-        which properties are permitted, we can simply
-        perform simple field/type-checking like:      */
-
-    /* Ensure idempotence by first removing the
-        effect if it is present                   */
 
     if (self.isActive)
       self.remove();
@@ -56,9 +45,6 @@ registerNSMethod(self, "apply",(
     );
   }
 ));
-
-/* Now we define the method 'remove' which removes the effect
-    from the page                                             */
 
 registerNSMethod(self, "remove",(
   function(){
