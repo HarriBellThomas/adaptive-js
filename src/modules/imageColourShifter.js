@@ -90,7 +90,7 @@ registerNSMethod(self, "apply", (
 
         cr = Math.round(c.r * matrix.R[0] / 100.0 + c.g * matrix.R[1] / 100.0 + c.b * matrix.R[2] / 100.0);
         cg = Math.round(c.r * matrix.G[0] / 100.0 + c.g * matrix.G[1] / 100.0 + c.b * matrix.G[2] / 100.0);
-        cb = Mat.round(c.r * matrix.B[0] / 100.0 + c.g * matrix.B[1] / 100.0 + c.b * matrix.B[2] / 100.0);
+        cb = Math.round(c.r * matrix.B[0] / 100.0 + c.g * matrix.B[1] / 100.0 + c.b * matrix.B[2] / 100.0);
 
         try {
           a.cacheCSSProperties(["background-color"]);
