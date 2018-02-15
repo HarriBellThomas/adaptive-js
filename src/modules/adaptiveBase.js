@@ -29,7 +29,7 @@ registerNSMethod(self, "elementsToArray",function(els){
   // } return [];
 
   var elarr = [];
-  for(var i = 0; i < els.length - 1; i++) {
+  for(var i = 0; i < els.length; i++) {
     if(els[i].getAttribute("data-adaptive") != "ignore") elarr.push(els[i]);
   }
   return elarr;
@@ -95,6 +95,10 @@ registerNSMethod(self, "simpleTagParseComponents", function(el){
   output.outer = [output.tags[0], output.tags[output.tags.length-1]];
   return output;
 });
+
+
+
+
 
 registerNSMethod(self, "closestMinAndNotNeg", function(v1,v2){
   const u = (v1>0)?((v2>0)?Math.min(v1,v2):v1):((v2>0)?v2:-1);
