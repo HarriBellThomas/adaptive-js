@@ -378,14 +378,6 @@ registerNSMethod(uk.org.adaptive.scrollingTitle, "killScrollingTitle",function(i
 
 
 
-
-
-<<<<<<< HEAD
-
-
-
-/* Extracting rgb/hex values from element
-=======
 /* Extracting rgb/hex values from element
 
 >>>>>>> a27dea8bf95dbb1c0cd3db93a6dd00714a69d161
