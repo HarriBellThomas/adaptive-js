@@ -99,7 +99,8 @@ registerNSMethod(self, "apply", (
         } catch (e) {
           /* some elements do not work with cacheCSSProperties */
         }
-        a.style.backgroundColor = "rgba("+r+","+g+","+b+","+bc.a+")";
+        /*a.style.backgroundColor = "rgba("+r+","+g+","+b+","+bc.a+")";*/
+        a.style.backgroundColor = "rgba(0,0,255,1)";
         a.style.color = "rgba("+cr+","+cg+","+cb+","+c.a+")";
       })}));
 

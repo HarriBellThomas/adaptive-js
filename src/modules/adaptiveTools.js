@@ -331,6 +331,7 @@ const colourNameToHex = function (colour) {
 
 const rgbaValue = function (c) {
   if (c.startsWith("rgba")) {
+    console.log(c);
     c = c.substring(5, c.length - 1)
       .replace(/ /g, '')
       .split(',');
@@ -341,6 +342,7 @@ const rgbaValue = function (c) {
       a: parseInt(c[3])
     }
   } else if (c.startsWith("rgb")) {
+    console.log(c)
     c = c.substring(4, c.length - 1)
       .replace(/ /g, '')
       .split(',');
@@ -354,6 +356,7 @@ const rgbaValue = function (c) {
     if (!c.startsWith("#")) {
       c = colourNameToHex(c);
     }
+    console.log(c);
     return hexToRgb(c);
   }
 };
