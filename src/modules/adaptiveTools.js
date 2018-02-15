@@ -330,13 +330,14 @@ const colourNameToHex = function (colour) {
 
 const rgbValue = function (c) {
   if (c.startsWith("rgba")) {
-    c = c.substring(5, c.length - 3)
+    c = c.substring(5, c.length - 1)
       .replace(/ /g, '')
       .split(',');
     return {
       r: parseInt(c[0]),
       g: parseInt(c[1]),
-      b: parseInt(c[2])
+      b: parseInt(c[2]),
+      a: parseInt(c[3])
     }
   } else if (c.startsWith("rgb")) {
     c = c.substring(4, c.length - 1)
@@ -345,7 +346,8 @@ const rgbValue = function (c) {
     return {
       r: parseInt(c[0]),
       g: parseInt(c[1]),
-      b: parseInt(c[2])
+      b: parseInt(c[2]),
+      a: 255
     }
   } else {
     if (!c.startsWith("#")) {
