@@ -212,7 +212,7 @@ registerNSMethod(self, "applyRGBAFunctionToImageData", function(canvasDataOld, f
   for(var x=0; x<width; x++){
     for(var y=0; y<height; y++){
       self.setPixelWithData(x, y,
-        f({"x":x, "y":y}, self.getPixelWithData(x,y,canvasDataOld,width)),
+        f({x:x, y:y}, self.getPixelWithData(x,y,canvasDataOld,width)),
         canvasDataOld, width);
     }
   }
