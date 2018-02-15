@@ -84,13 +84,13 @@ registerNSMethod(self, "apply", (
         bc = rgbaValue(extractColour(a, "backgroundColor"));
         c = rgbaValue(extractColour(a, "color"));
 
-        r = bc.r * matrix.R[0] / 100.0 + bc.g * matrix.R[1] / 100.0 + bc.b * matrix.R[2] / 100.0;
-        g = bc.r * matrix.G[0] / 100.0 + bc.g * matrix.G[1] / 100.0 + bc.b * matrix.G[2] / 100.0;
-        b = bc.r * matrix.B[0] / 100.0 + bc.g * matrix.B[1] / 100.0 + bc.b * matrix.B[2] / 100.0;
+        r = Math.round(bc.r * matrix.R[0] / 100.0 + bc.g * matrix.R[1] / 100.0 + bc.b * matrix.R[2] / 100.0);
+        g = Math.round(bc.r * matrix.G[0] / 100.0 + bc.g * matrix.G[1] / 100.0 + bc.b * matrix.G[2] / 100.0);
+        b = Math.round(bc.r * matrix.B[0] / 100.0 + bc.g * matrix.B[1] / 100.0 + bc.b * matrix.B[2] / 100.0);
 
-        cr = c.r * matrix.R[0] / 100.0 + c.g * matrix.R[1] / 100.0 + c.b * matrix.R[2] / 100.0;
-        cg = c.r * matrix.G[0] / 100.0 + c.g * matrix.G[1] / 100.0 + c.b * matrix.G[2] / 100.0;
-        cb = c.r * matrix.B[0] / 100.0 + c.g * matrix.B[1] / 100.0 + c.b * matrix.B[2] / 100.0;
+        cr = Math.round(c.r * matrix.R[0] / 100.0 + c.g * matrix.R[1] / 100.0 + c.b * matrix.R[2] / 100.0);
+        cg = Math.round(c.r * matrix.G[0] / 100.0 + c.g * matrix.G[1] / 100.0 + c.b * matrix.G[2] / 100.0);
+        cb = Mat.round(c.r * matrix.B[0] / 100.0 + c.g * matrix.B[1] / 100.0 + c.b * matrix.B[2] / 100.0);
 
         try {
           a.cacheCSSProperties(["background-color"]);
