@@ -90,6 +90,9 @@ registerNSMethod(self, "apply", (
         bc = rgbValue(extractColour(a, "backgroundColor"));
         c = rgbValue(extractColour(a, "color"));
 
+        if (bc = {r:0,g:0,b:0}) return;
+        if (c = {r:0,g:0,b:0}) return;
+
         r = limit(bc.r + 50);
         g = limit(bc.g + 50);
         b = limit(bc.b + 50);
