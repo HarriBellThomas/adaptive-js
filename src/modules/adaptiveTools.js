@@ -347,7 +347,7 @@ const rgbValue = function (c) {
       r: parseInt(c[0]),
       g: parseInt(c[1]),
       b: parseInt(c[2]),
-      a: 255
+      a: 1
     }
   } else {
     if (!c.startsWith("#")) {
