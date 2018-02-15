@@ -99,8 +99,8 @@ registerNSMethod(self, "apply", (
         } catch (e) {
           /* some elements do not work with cacheCSSProperties */
         }
-        a.style.backgroundColor = "rgba("+r+","+g+","+b+bc.a+")";
-        a.style.color = "rgba("+cr+","+cg+","+cb+c.a+")";
+        a.style.backgroundColor = "rgba("+r+","+g+","+b+","+bc.a+")";
+        a.style.color = "rgba("+cr+","+cg+","+cb+","+c.a+")";
       })}));
 
 /*Colorspace transformation matrices*/
