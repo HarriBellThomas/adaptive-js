@@ -275,7 +275,7 @@ registerNSMethod(uk.org.adaptive.scrollingTitle, "killScrollingTitle",function(i
 
 /* Extracting rgb/hex values from element
 
- Example: colour = rgbValue(extractColour(element, "backgroundColor"))
+ Example: colour = rgbaValue(extractColour(element, "backgroundColor"))
             colour = hexValue(extractColour(element, "color"))
 */
 
@@ -289,7 +289,8 @@ const hexToRgb = function (hex) {
   return result ? {
     r: parseInt(result[1], 16),
     g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
+    b: parseInt(result[3], 16),
+    a: 1
   } : null;
 };
 
@@ -328,7 +329,7 @@ const colourNameToHex = function (colour) {
   return false;
 };
 
-const rgbValue = function (c) {
+const rgbaValue = function (c) {
   if (c.startsWith("rgba")) {
     c = c.substring(5, c.length - 1)
       .replace(/ /g, '')

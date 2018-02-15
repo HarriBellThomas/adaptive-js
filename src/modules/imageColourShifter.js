@@ -81,8 +81,8 @@ registerNSMethod(self, "apply", (
         type = properties["blindType"];
         matrix = ColorMatrixMatrixes[type];
 
-        bc = rgbValue(extractColour(a, "backgroundColor"));
-        c = rgbValue(extractColour(a, "color"));
+        bc = rgbaValue(extractColour(a, "backgroundColor"));
+        c = rgbaValue(extractColour(a, "color"));
 
         r = bc.r * matrix.R[0] / 100.0 + bc.g * matrix.R[1] / 100.0 + bc.b * matrix.R[2] / 100.0;
         g = bc.r * matrix.G[0] / 100.0 + bc.g * matrix.G[1] / 100.0 + bc.b * matrix.G[2] / 100.0;
