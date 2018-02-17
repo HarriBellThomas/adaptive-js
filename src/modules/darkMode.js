@@ -72,7 +72,7 @@ const relevantTargets = function(){
     }
     for (var i = 0; i< n.children.length; i++) {
       img = window.getComputedStyle(n.children[i], null).backgroundImage;
-      if(img == null) {
+      if(img.valueOf() == "none") {
         queue.push(n.children[i]);
         output.push(n.children[i]);
       }
