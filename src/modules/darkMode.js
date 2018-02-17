@@ -21,7 +21,7 @@ registerNSMethod(self, "apply",(
 
     self.isActive = true;
 
-    forall().do(
+    relevantTargets().do(
       a => {
           if (!self.isActive) return;
           /* Ensure non-destructiveness by caching CSS */
@@ -60,3 +60,23 @@ registerNSMethod(self, "remove",(
   }
 ));
 
+const relevantTargets = function(){
+  var output = [];
+  var queue=[document.body];
+  var n;
+
+  while(queue.length>0) {
+    n = queue.shift();
+    if (!n.children) {
+      continue;
+    }
+    for (var i = 0; i< n.children.length; i++) {
+      img = window.getComputedStyle(n.children[i], null).backgroundImage;
+      if(img == null) {
+        queue.push(n.children[i]);
+        output.push(n.children[i]);
+      }
+    }
+  }
+  return new Operable(output);
+};
