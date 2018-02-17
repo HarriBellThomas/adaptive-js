@@ -30,7 +30,8 @@ registerNSMethod(self, "apply",(
           } catch (e) {
             /* some elements do not work with cacheCSSProperties */
           }
-          a.style.color = "white";
+          if(!a.children)
+            a.style.color = "white";
           a.style.backgroundColor = "rgb(25,25,25)";
         }
       );
@@ -60,7 +61,7 @@ registerNSMethod(self, "remove",(
   }
 ));
 
-const relevantTargets = function(){
+const relevantTargets = function(typ){
   var output = [];
   var queue=[document.body];
   var n;
@@ -74,7 +75,7 @@ const relevantTargets = function(){
       img = window.getComputedStyle(n.children[i], null).backgroundImage;
       if(img.valueOf() == "none") {
         queue.push(n.children[i]);
-        output.push(n.children[i]);
+        if (typ==undefined || n.children[i].nodeName == typ.toString()) output.push(n.children[i]);
       }
     }
   }
