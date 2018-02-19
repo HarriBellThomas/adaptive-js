@@ -30,7 +30,7 @@ registerNSMethod(self, "changeSaturation", (
           hsl = rgbToHsl(rgba.r,rgba.g,rgba.b);
           hsl[1] = limit(hsl[1]*value);
 
-          rgb = hslToRgb(hsl);
+          rgb = hslToRgb(hsl[0],hsl[1],hsl[2]);
           return {
             r: Math.round(rgb[0]),
             g: Math.round(rgb[1]),
