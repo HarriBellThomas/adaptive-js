@@ -32,9 +32,9 @@ registerNSMethod(self, "changeSaturation", (
 
           rgb = hslToRgb(hsl);
           return {
-            r: rgb[0],
-            g: rgb[1],
-            b: rgb[2],
+            r: Math.round(rgb[0]),
+            g: Math.round(rgb[1]),
+            b: Math.round(rgb[2]),
             a: rgba.a
           }
         })
@@ -56,9 +56,9 @@ registerNSMethod(self, "changeSaturation", (
         chsl[1] = limit(chsl[1]*value);
         bochsl[1] = limit(bochsl[1]*value);
 
-        rgb1 = hslToRgb(bchsl);
-        rgb2 = hslToRgb(chsl);
-        rgb3 = hslToRgb(bochsl);
+        rgb1 = hslToRgb(bchsl[0],bchsl[1],bchsl[2]);
+        rgb2 = hslToRgb(chsl[0],chsl[1],chsl[2]);
+        rgb3 = hslToRgb(bochsl[0],bochsl[1],bochsl[2]);
 
         try {
           a.cacheCSSProperties(["background-color"]);
@@ -68,9 +68,9 @@ registerNSMethod(self, "changeSaturation", (
         } catch (e) {
           /* some elements do not work with cacheCSSProperties */
         }
-        a.style.backgroundColor = "rgba("+rgb1[0]+","+rgb1[1]+","+rgb1[2]+","+bc.a+")";
-        a.style.color = "rgba("+rgb2[0]+","+rgb2[1]+","+rgb2[2]+","+c.a+")";
-        a.style.borderColor = "rgba("+rgb3[0]+","+rgb3[1]+","+rgb3[2]+","+boc.a+")";
+        a.style.backgroundColor = "rgba("+Math.round(rgb1[0])+","+Math.round(rgb1[1])+","+Math.round(rgb1[2])+","+bc.a+")";
+        a.style.color = "rgba("+Math.round(rgb2[0])+","+Math.round(rgb2[1])+","+Math.round(rgb2[2])+","+c.a+")";
+        a.style.borderColor = "rgba("+Math.round(rgb3[0])+","+Math.round(rgb3[1])+","+Math.round(rgb3[2])+","+boc.a+")";
       }
     )
   }
