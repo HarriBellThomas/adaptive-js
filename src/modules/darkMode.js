@@ -30,8 +30,8 @@ registerNSMethod(self, "apply",(
           } catch (e) {
             /* some elements do not work with cacheCSSProperties */
           }
-          if(a.children.length===0)
-            a.style.color = "white";
+
+          a.style.color = "white";
           a.style.backgroundColor = "rgb(25,25,25)";
         }
       );
@@ -61,6 +61,8 @@ registerNSMethod(self, "remove",(
   }
 ));
 
+
+/* This discards elements children to elements with background images */
 const relevantTargets = function(typ){
   var output = [];
   var queue=[document.body];
