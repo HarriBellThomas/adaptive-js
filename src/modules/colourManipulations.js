@@ -157,6 +157,8 @@ registerNSMethod(self, "changeBrightness", (
     if (self.isActive)
       self.remove();
 
+    self.isActive = true;
+
     limit = function(v) {
       if (v<0) return 0;
       if (v>1) return 1;
@@ -217,5 +219,23 @@ registerNSMethod(self, "changeBrightness", (
         a.style.borderColor = "rgba("+Math.round(rgb3[0])+","+Math.round(rgb3[1])+","+Math.round(rgb3[2])+","+boc.a+")";
       }
     )
+  }
+));
+
+registerNSMethod(self, "remove", (
+  function () {
+    self.isActive = false;
+    forall(VISUALS).do(function(a){applyToImage(a, function (xy,rgba) {
+      return {r: rgba.r, g:rgba.g, b: rgba.b, a:rgba.a}
+    })});
+    forall().do(a=> {
+        try {
+          a.resetCSS();
+        } catch (e) {
+          /* some elements do not work with cacheCSSProperties */
+        }
+      }
+    );
+    return true;
   }
 ));
