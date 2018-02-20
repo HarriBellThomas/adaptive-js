@@ -172,7 +172,7 @@ registerNSMethod(self, "changeBrightness", (
           if (!self.isActive) return;
 
           hsl = rgbToHsl(rgba.r,rgba.g,rgba.b);
-          hsl[1] = limit(hsl[2]*value);
+          hsl[2] = limit(hsl[2]*value);
 
           rgb = hslToRgb(hsl[0],hsl[1],hsl[2]);
           return {
@@ -196,9 +196,9 @@ registerNSMethod(self, "changeBrightness", (
         chsl = rgbToHsl(c.r,c.g,c.b);
         bochsl = rgbToHsl(boc.r,boc.g,boc.b);
 
-        bchsl[1] = limit(bchsl[2]*value);
-        chsl[1] = limit(chsl[2]*value);
-        bochsl[1] = limit(bochsl[2]*value);
+        bchsl[2] = limit(bchsl[2]*value);
+        chsl[2] = limit(chsl[2]*value);
+        bochsl[2] = limit(bochsl[2]*value);
 
         rgb1 = hslToRgb(bchsl[0],bchsl[1],bchsl[2]);
         rgb2 = hslToRgb(chsl[0],chsl[1],chsl[2]);
