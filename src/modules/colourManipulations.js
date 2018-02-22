@@ -94,6 +94,7 @@ registerNSMethod(self, "changeContrast", (
     };
 
     value = properties["factor"];
+    factor = (259*(value+255))/(255*(259-value));
 
     forall(VISUALS).do(
       function (a) {
@@ -101,7 +102,6 @@ registerNSMethod(self, "changeContrast", (
 
           if (!self.isActive) return;
 
-          factor = (259*(c+255))/(255*(259-c));
           return {
             r: Math.round(limit(factor*(rgba.r-128)+128)),
             g: Math.round(limit(factor*(rgba.g-128)+128)),
@@ -118,7 +118,7 @@ registerNSMethod(self, "changeContrast", (
         bc = rgbaValue(extractColour(a, "backgroundColor"));
         c = rgbaValue(extractColour(a, "color"));
         boc = rgbaValue(extractColour(a, "border-color"));
-
+        
         bc = {r: Math.round(limit(factor*(bc.r-128)+128)), g: Math.round(limit(factor*(bc.g-128)+128)), b: Math.round(limit(factor*(bc.b-128)+128)), a: bc.a};
         c = {r: Math.round(limit(factor*(bc.r-128)+128)), g: Math.round(limit(factor*(bc.g-128)+128)), b: Math.round(limit(factor*(bc.b-128)+128)), a: c.a};
         boc = {r: Math.round(limit(factor*(bc.r-128)+128)), g: Math.round(limit(factor*(bc.g-128)+128)), b: Math.round(limit(factor*(bc.b-128)+128)), a: boc.a};
