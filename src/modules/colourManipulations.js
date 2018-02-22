@@ -118,10 +118,10 @@ registerNSMethod(self, "changeContrast", (
         bc = rgbaValue(extractColour(a, "backgroundColor"));
         c = rgbaValue(extractColour(a, "color"));
         boc = rgbaValue(extractColour(a, "border-color"));
-        
+
         bc = {r: Math.round(limit(factor*(bc.r-128)+128)), g: Math.round(limit(factor*(bc.g-128)+128)), b: Math.round(limit(factor*(bc.b-128)+128)), a: bc.a};
-        c = {r: Math.round(limit(factor*(bc.r-128)+128)), g: Math.round(limit(factor*(bc.g-128)+128)), b: Math.round(limit(factor*(bc.b-128)+128)), a: c.a};
-        boc = {r: Math.round(limit(factor*(bc.r-128)+128)), g: Math.round(limit(factor*(bc.g-128)+128)), b: Math.round(limit(factor*(bc.b-128)+128)), a: boc.a};
+        c = {r: Math.round(limit(factor*(c.r-128)+128)), g: Math.round(limit(factor*(c.g-128)+128)), b: Math.round(limit(factor*(c.b-128)+128)), a: c.a};
+        boc = {r: Math.round(limit(factor*(boc.r-128)+128)), g: Math.round(limit(factor*(boc.g-128)+128)), b: Math.round(limit(factor*(boc.b-128)+128)), a: boc.a};
 
         try {
           a.cacheCSSProperties(["background-color"]);
