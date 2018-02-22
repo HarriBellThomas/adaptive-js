@@ -89,7 +89,7 @@ registerNSMethod(self, "changeContrast", (
 
     limit = function(v) {
       if (v<0) return 0;
-      if (v>1) return 1;
+      if (v>255) return 255;
       return v;
     };
 
@@ -101,14 +101,11 @@ registerNSMethod(self, "changeContrast", (
 
           if (!self.isActive) return;
 
-          hsl = rgbToHsl(rgba.r,rgba.g,rgba.b);
-          hsl[2] = limit(hsl[2]*value);
-
-          rgb = hslToRgb(hsl[0],hsl[1],hsl[2]);
+          factor = (259*(c+255))/(255*(259-c));
           return {
-            r: Math.round(rgb[0]),
-            g: Math.round(rgb[1]),
-            b: Math.round(rgb[2]),
+            r: Math.round(limit(factor*(rgba.r-128)+128)),
+            g: Math.round(limit(factor*(rgba.g-128)+128)),
+            b: Math.round(limit(factor*(rgba.b-128)+128)),
             a: rgba.a
           }
         })
@@ -122,17 +119,9 @@ registerNSMethod(self, "changeContrast", (
         c = rgbaValue(extractColour(a, "color"));
         boc = rgbaValue(extractColour(a, "border-color"));
 
-        bchsl = rgbToHsl(bc.r,bc.g,bc.b);
-        chsl = rgbToHsl(c.r,c.g,c.b);
-        bochsl = rgbToHsl(boc.r,boc.g,boc.b);
-
-        bchsl[2] = limit(bchsl[2]*value);
-        chsl[2] = limit(chsl[2]*value);
-        bochsl[2] = limit(bochsl[2]*value);
-
-        rgb1 = hslToRgb(bchsl[0],bchsl[1],bchsl[2]);
-        rgb2 = hslToRgb(chsl[0],chsl[1],chsl[2]);
-        rgb3 = hslToRgb(bochsl[0],bochsl[1],bochsl[2]);
+        bc = {r: Math.round(limit(factor*(bc.r-128)+128)), g: Math.round(limit(factor*(bc.g-128)+128)), b: Math.round(limit(factor*(bc.b-128)+128)), a: bc.a};
+        c = {r: Math.round(limit(factor*(bc.r-128)+128)), g: Math.round(limit(factor*(bc.g-128)+128)), b: Math.round(limit(factor*(bc.b-128)+128)), a: c.a};
+        boc = {r: Math.round(limit(factor*(bc.r-128)+128)), g: Math.round(limit(factor*(bc.g-128)+128)), b: Math.round(limit(factor*(bc.b-128)+128)), a: boc.a};
 
         try {
           a.cacheCSSProperties(["background-color"]);
@@ -142,9 +131,9 @@ registerNSMethod(self, "changeContrast", (
         } catch (e) {
           /* some elements do not work with cacheCSSProperties */
         }
-        a.style.backgroundColor = "rgba("+Math.round(rgb1[0])+","+Math.round(rgb1[1])+","+Math.round(rgb1[2])+","+bc.a+")";
-        a.style.color = "rgba("+Math.round(rgb2[0])+","+Math.round(rgb2[1])+","+Math.round(rgb2[2])+","+c.a+")";
-        a.style.borderColor = "rgba("+Math.round(rgb3[0])+","+Math.round(rgb3[1])+","+Math.round(rgb3[2])+","+boc.a+")";
+        a.style.backgroundColor = "rgba("+bc.r+","+bc.g+","+bc.b+","+bc.a+")";
+        a.style.color = "rgba("+c.r+","+c.g+","+c.b+","+c.a+")";
+        a.style.borderColor = "rgba("+boc.r+","+boc.g+","+boc.b+","+boc.a+")";
       }
     )
   }
