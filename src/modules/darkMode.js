@@ -88,7 +88,7 @@ const relevantTargets = function(typ){
     }
     for (var i = 0; i< n.children.length; i++) {
       img = window.getComputedStyle(n.children[i], null).backgroundImage;
-      var className = n.children[i].className;
+      var className = n.children[i].className.toString();
       if (className.indexOf("overlay") > -1) {
         queue.push(n.children[i]);
       }
