@@ -89,7 +89,7 @@ const relevantTargets = function(typ){
     for (var i = 0; i< n.children.length; i++) {
       n.children[i].style.backgroundImage = "none";
       img = window.getComputedStyle(n.children[i], null).backgroundImage;
-      if(img.valueOf() == "none" && !n.children[i].className.includes("overlay") && !n.children[i].className.includes("logo")) {
+      if(img.valueOf() == "none" && n.children[i].className.indexOf("overlay") > -1 && n.children[i].className.indexOf("logo") > -1) {
         queue.push(n.children[i]);
         if (typ==undefined || n.children[i].nodeName == typ.toString()) output.push(n.children[i]);
       } else {/*
