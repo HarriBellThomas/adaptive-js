@@ -95,7 +95,12 @@ const relevantTargets = function(typ){
         whiteness = 0;
         for(var x=0; x<img.width; x++){
           for(var y=0; y<img.height; y++){
-            rgba = uk.org.adaptive.core.getPixelWithData(x, y,img, img.width);
+            const c = document.createElement("canvas");
+            const ctx = c.getContext("2d");
+            ctx.drawImage(img,0,0);
+            var canvasData = ctx.getImageData(0, 0, c.width, c.height);
+
+            rgba = uk.org.adaptive.core.getPixelWithData(x, y,canvasData, img.width);
             if (rgba.r +rgba.g +rgba.b > 386) {
               whiteness ++;
             } else {
