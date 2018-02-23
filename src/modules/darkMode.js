@@ -21,7 +21,7 @@ registerNSMethod(self, "apply",(
 
     self.isActive = true;
 
-    relevantTargets().do(
+    relevantTargets().out.do(
       a => {
           if (!self.isActive) return;
           /* Ensure non-destructiveness by caching CSS */
@@ -35,6 +35,18 @@ registerNSMethod(self, "apply",(
           a.style.backgroundColor = "rgb(25,25,25)";
         }
       );
+    relevantTargets().white.do(
+      a => {
+        if (!self.isActive) return;
+        /* Ensure non-destructiveness by caching CSS */
+        try {
+          a.cacheCSSProperties(["color", "background-color"]);
+        } catch (e) {
+          /* some elements do not work with cacheCSSProperties */
+        }
+        a.style.color = "black";
+      }
+    );
 
     forall(LINKS).do(
       a => {
@@ -66,6 +78,7 @@ registerNSMethod(self, "remove",(
 const relevantTargets = function(typ){
   var output = [];
   var queue=[document.body];
+  var whiteOutput = [];
   var n;
 
   while(queue.length>0) {
@@ -78,8 +91,20 @@ const relevantTargets = function(typ){
       if(img.valueOf() == "none") {
         queue.push(n.children[i]);
         if (typ==undefined || n.children[i].nodeName == typ.toString()) output.push(n.children[i]);
+      } else {
+        whiteness = 0;
+        applyToImage(img, function (xy,rgba) {
+          if (rgba.r +rgba.g +rgba.b > 386) {
+            whiteness ++;
+          } else {
+            whiteness --;
+          }
+        });
+        if (whiteness > 0) {
+          whiteOutput.push(n.children[i]);
+        }
       }
     }
   }
-  return new Operable(output);
+  return {out: new Operable(output), white: new Operable(whiteOutput)};
 };
