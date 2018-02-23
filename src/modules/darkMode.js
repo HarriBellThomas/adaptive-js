@@ -76,7 +76,7 @@ registerNSMethod(self, "remove",(
 
 /* This discards elements children to elements with background images */
 const relevantTargets = function(typ){
-  var output = [];
+  var output = [document.body];
   var queue=[document.body];
   var whiteOutput = [];
   var n;
@@ -87,11 +87,12 @@ const relevantTargets = function(typ){
       continue;
     }
     for (var i = 0; i< n.children.length; i++) {
+      n.children[i].style.backgroundImage = "none";
       img = window.getComputedStyle(n.children[i], null).backgroundImage;
       if(img.valueOf() == "none") {
         queue.push(n.children[i]);
         if (typ==undefined || n.children[i].nodeName == typ.toString()) output.push(n.children[i]);
-      } else {
+      } else {/*
         whiteness = 0;
         for(var x=0; x<img.width; x++){
           for(var y=0; y<img.height; y++){
@@ -111,7 +112,7 @@ const relevantTargets = function(typ){
         console.log(whiteness);
         if (whiteness > 0) {
           whiteOutput.push(n.children[i]);
-        }
+        }*/
       }
     }
   }
