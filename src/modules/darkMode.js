@@ -103,6 +103,7 @@ const relevantTargets = function(typ){
             }
           }
         }
+        console.log(whiteness);
         if (whiteness > 0) {
           whiteOutput.push(n.children[i]);
         }
