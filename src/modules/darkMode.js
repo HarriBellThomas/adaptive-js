@@ -93,13 +93,16 @@ const relevantTargets = function(typ){
         if (typ==undefined || n.children[i].nodeName == typ.toString()) output.push(n.children[i]);
       } else {
         whiteness = 0;
-        applyToImage(img, function (xy,rgba) {
-          if (rgba.r +rgba.g +rgba.b > 386) {
-            whiteness ++;
-          } else {
-            whiteness --;
+        for(var x=0; x<img.width; x++){
+          for(var y=0; y<img.height; y++){
+            rgba = uk.org.adaptive.core.getPixelWithData(x, y,img, img.width);
+            if (rgba.r +rgba.g +rgba.b > 386) {
+              whiteness ++;
+            } else {
+              whiteness --;
+            }
           }
-        });
+        }
         if (whiteness > 0) {
           whiteOutput.push(n.children[i]);
         }
