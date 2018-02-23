@@ -88,10 +88,11 @@ const relevantTargets = function(typ){
     }
     for (var i = 0; i< n.children.length; i++) {
       img = window.getComputedStyle(n.children[i], null).backgroundImage;
-      if (n.children[i].className.indexOf("overlay") > -1) {
+      var className = n.children[i].className;
+      if (className.indexOf("overlay") > -1) {
         queue.push(n.children[i]);
       }
-      else if (img.valueOf() == "none" || n.children[i].className.indexOf("logo") > -1) {
+      else if (img.valueOf() == "none" || className.indexOf("logo") > -1) {
         queue.push(n.children[i]);
         if (typ == undefined || n.children[i].nodeName == typ.toString()) output.push(n.children[i]);
       } else {
