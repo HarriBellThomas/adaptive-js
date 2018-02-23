@@ -87,34 +87,40 @@ const relevantTargets = function(typ){
       continue;
     }
     for (var i = 0; i< n.children.length; i++) {
-      n.children[i].style.backgroundImage = "none";
       img = window.getComputedStyle(n.children[i], null).backgroundImage;
-      if(img.valueOf() == "none" && n.children[i].className.indexOf("overlay") > -1 && n.children[i].className.indexOf("logo") > -1) {
+      if (n.children[i].className.indexOf("overlay") > -1) {
         queue.push(n.children[i]);
-        if (typ==undefined || n.children[i].nodeName == typ.toString()) output.push(n.children[i]);
-      } else {/*
-        whiteness = 0;
-        for(var x=0; x<img.width; x++){
-          for(var y=0; y<img.height; y++){
-            const c = document.createElement("canvas");
-            const ctx = c.getContext("2d");
-            ctx.drawImage(img,0,0);
-            var canvasData = ctx.getImageData(0, 0, c.width, c.height);
-
-            rgba = uk.org.adaptive.core.getPixelWithData(x, y,canvasData, img.width);
-            if (rgba.r +rgba.g +rgba.b > 386) {
-              whiteness ++;
-            } else {
-              whiteness --;
-            }
-          }
-        }
-        console.log(whiteness);
-        if (whiteness > 0) {
-          whiteOutput.push(n.children[i]);
-        }*/
+      }
+      else if (img.valueOf() == "none" || n.children[i].className.indexOf("logo") > -1) {
+        queue.push(n.children[i]);
+        if (typ == undefined || n.children[i].nodeName == typ.toString()) output.push(n.children[i]);
+      } else {
+        n.children[i].style.backgroundImage = "none";
+        queue.push(n.children[i]);
+        if (typ == undefined || n.children[i].nodeName == typ.toString()) output.push(n.children[i]);
       }
     }
-  }
+      /*
+      whiteness = 0;
+      for(var x=0; x<img.width; x++){
+        for(var y=0; y<img.height; y++){
+          const c = document.createElement("canvas");
+          const ctx = c.getContext("2d");
+          ctx.drawImage(img,0,0);
+          var canvasData = ctx.getImageData(0, 0, c.width, c.height);
+
+          rgba = uk.org.adaptive.core.getPixelWithData(x, y,canvasData, img.width);
+          if (rgba.r +rgba.g +rgba.b > 386) {
+            whiteness ++;
+          } else {
+            whiteness --;
+          }
+        }
+      }
+      console.log(whiteness);
+      if (whiteness > 0) {
+        whiteOutput.push(n.children[i]);
+      }*/
+    };
   return {out: new Operable(output), white: new Operable(whiteOutput)};
 };
