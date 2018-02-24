@@ -81,10 +81,11 @@ registerNSMethod(self, "apply",(
 registerNSMethod(self, "remove",(
   function(){
     self.isActive = false;
-    if (self.activeElement === false)
-      return true;
-    self.activeElement.resetCSS();
-    self.activeElement = false;
+    forall().do(function(a) {
+      if (a.className.indexOf("slider")) {
+        if (area.parentNode) area.parentNode.removeChild(area);
+      }
+    });
     return true;
   }
 ));
