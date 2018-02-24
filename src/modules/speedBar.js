@@ -37,31 +37,29 @@ registerNSMethod(self, "apply",(
 
     forall(VIDEOS).do(
       function (a) {
-        vid = a.getBoundingClientRect();
         area = document.createElement("DIV");
         slider = document.createElement("INPUT");
-        area.appendChild(slider);
-        area.style.width = vid.width.toString();
-        area.style.height = "30px";
-        area.style.position = "absolute";
-        area.style.left = vid.left.toString();
-        area.style.top = vid.bottom.toString();
-        area.style.backgroundColor = "rgb(255,255,255)";
+        output = document.createElement("DIV");
 
         slider.type = "range";
-        slider.min = "0.25";
-        slider.max = "2.5";
-        slider.value = properties["factor"];
-        slider.style.width = "100%";
+        slider.min = "0.2";
+        slider.max = "2";
+        slider.step = "0.1";
+        slider.value = "0.5";
 
-        area.innerHTML = slider.value; // Display the default slider value
+        output.innerHTML = 0.5;
+        a.playbackRate = 0.5;
+        output.style.display="inline";
+        output.style.color = "black";
 
-        // Update the current slider value (each time you drag the slider handle)
+        area.appendChild(slider);
+        area.appendChild(output);
+        a.parentNode.insertBefore(area, a.nextSibling);
+// Update the current slider value (each time you drag the slider handle)
         slider.oninput = function() {
-          area.innerHTML = this.value;
+          output.innerHTML = Math.round(10*this.value)/10;
           a.playbackRate = this.value;
-        }
-
+        };
       })
   }
 ));
