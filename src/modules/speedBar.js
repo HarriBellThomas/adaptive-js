@@ -68,7 +68,7 @@ registerNSMethod(self, "apply",(
         slider.oninput = function() {
           area.style.opacity = "1";
           output.innerHTML = Math.round(10*this.value)/10;
-          video.playbackRate = this.value;
+          a.playbackRate = this.value;
           window.setTimeout(function(){area.style.opacity="0.5"}, 2000);
         };
       })
