@@ -42,6 +42,8 @@ registerNSMethod(self, "apply",(
         slider = document.createElement("INPUT");
         output = document.createElement("DIV");
 
+        area.className = "slider";
+
         slider.type = "range";
         slider.min = "0.2";
         slider.max = "2";
