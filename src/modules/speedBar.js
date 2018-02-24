@@ -46,9 +46,9 @@ registerNSMethod(self, "apply",(
         slider.min = "0.2";
         slider.max = "2";
         slider.step = "0.1";
-        slider.value = "0.5";
+        slider.value = initVal;
 
-        output.innerHTML =initVal;
+        output.innerHTML = initVal;
         a.playbackRate = initVal;
         output.style.display="inline";
         output.style.color = "black";
