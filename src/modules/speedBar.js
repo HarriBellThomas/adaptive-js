@@ -27,6 +27,7 @@ registerNSMethod(self, "apply",(
     if (!verifyArgs(properties, [["default", NUMTYPE]]))
       return false;
 
+    initVal = properties["default"];
     /* Ensure idempotence by first removing the
         effect if it is present                   */
 
@@ -47,8 +48,8 @@ registerNSMethod(self, "apply",(
         slider.step = "0.1";
         slider.value = "0.5";
 
-        output.innerHTML = 0.5;
-        a.playbackRate = 0.5;
+        output.innerHTML =initVal;
+        a.playbackRate = initVal;
         output.style.display="inline";
         output.style.color = "black";
 
