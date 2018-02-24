@@ -54,12 +54,12 @@ registerNSMethod(self, "apply",(
         slider.max = "2";
         slider.step = "0.1";
         slider.value = initVal;
-        slider.style.opacity = "0.5";
+        area.style.opacity = "0.5";
 
         output.innerHTML = initVal;
         a.playbackRate = initVal;
         output.style.display="inline";
-        output.style.color = "black";
+        output.style.color = "white";
 
         area.appendChild(slider);
         area.appendChild(output);
