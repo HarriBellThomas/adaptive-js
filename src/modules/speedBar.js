@@ -54,6 +54,7 @@ registerNSMethod(self, "apply",(
         slider.max = "2";
         slider.step = "0.1";
         slider.value = initVal;
+        slider.style.opacity = "0.5";
 
         output.innerHTML = initVal;
         a.playbackRate = initVal;
@@ -65,8 +66,10 @@ registerNSMethod(self, "apply",(
         a.parentNode.insertBefore(area, a.nextSibling);
 // Update the current slider value (each time you drag the slider handle)
         slider.oninput = function() {
+          area.style.opacity = "1";
           output.innerHTML = Math.round(10*this.value)/10;
-          a.playbackRate = this.value;
+          video.playbackRate = this.value;
+          window.setTimeout(function(){area.style.opacity="0.5"}, 2000);
         };
       })
   }
