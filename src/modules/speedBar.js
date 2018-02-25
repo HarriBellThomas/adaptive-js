@@ -59,7 +59,7 @@ registerNSMethod(self, "apply",(
         output.innerHTML = initVal;
         a.playbackRate = initVal;
         output.style.display="inline";
-        output.style.color = "white";
+        output.style.color = "rgb(127,127,127)";
 
         area.appendChild(slider);
         area.appendChild(output);
@@ -83,8 +83,10 @@ registerNSMethod(self, "apply",(
 
 registerNSMethod(self, "remove",(
   function(){
+    if(self.isActive = false) return true;
     self.isActive = false;
-    forall().where(function(a){a.className.toString().indexOf("slider")>-1}).do(function(b) {
+    forall(VIDEOS).do(function(a) {
+      b = a.nextSibling;
       b.parentNode.removeChild(b);
     });
     return true;
