@@ -64,12 +64,15 @@ registerNSMethod(self, "apply",(
         area.appendChild(slider);
         area.appendChild(output);
         a.parentNode.insertBefore(area, a.nextSibling);
+        fadeTimer = window.setTimeout(function(){},0);
 // Update the current slider value (each time you drag the slider handle)
+
         slider.oninput = function() {
+          window.clearTimeout(fadeTimer);
           a.nextSibling.style.opacity = "1";
           a.nextSibling.children[1].innerHTML = Math.round(10*this.value)/10;
           a.playbackRate = this.value;
-          window.setTimeout(function(){a.nextSibling.children[1].style.opacity="0.5"}, 2000);
+          fadeTimer = window.setTimeout(function(){a.nextSibling.style.opacity="0.5"}, 2000);
         };
       })
   }
