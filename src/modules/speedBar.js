@@ -66,10 +66,10 @@ registerNSMethod(self, "apply",(
         a.parentNode.insertBefore(area, a.nextSibling);
 // Update the current slider value (each time you drag the slider handle)
         slider.oninput = function() {
-          area.style.opacity = "1";
-          output.innerHTML = Math.round(10*this.value)/10;
+          a.nextSibling.style.opacity = "1";
+          a.nextSibling.children[1].innerHTML = Math.round(10*this.value)/10;
           a.playbackRate = this.value;
-          window.setTimeout(function(){area.style.opacity="0.5"}, 2000);
+          window.setTimeout(function(){a.nextSibling.children[1].style.opacity="0.5"}, 2000);
         };
       })
   }
