@@ -81,8 +81,8 @@ registerNSMethod(self, "apply",(
 registerNSMethod(self, "remove",(
   function(){
     self.isActive = false;
-    forall().where(function(a){a.className.toString().indexOf("slider")>-1}).do(function(a) {
-      if (a.parentNode) a.parentNode.removeChild(a);
+    forall().where(function(a){a.className.toString().indexOf("slider")>-1}).do(function() {
+      if (area.parentNode) area.parentNode.removeChild(area);
     });
     return true;
   }
