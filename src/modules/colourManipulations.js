@@ -161,7 +161,9 @@ registerNSMethod(self, "changeBrightness", (
     targets().do(
       function (a) {
         if (!self.isActive) return;
-
+        if (a.hasOwnProperty("style.backgroundImage") && a.style.backgroundImage.startsWith("linear-gradient")) {
+          a.style.backgroundImage = "none";
+        }
         bc = rgbaValue(extractColour(a, "backgroundColor"));
         c = rgbaValue(extractColour(a, "color"));
         boc = rgbaValue(extractColour(a, "border-color"));
