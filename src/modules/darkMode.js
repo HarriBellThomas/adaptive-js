@@ -33,7 +33,7 @@ registerNSMethod(self, "apply",(
           } catch (e) {
             /* some elements do not work with cacheCSSProperties */
           }
-          alpha = rgbaValue(extractColour(a, backgroundColor)).a;
+          alpha = rgbaValue(extractColour(a, "backgroundColor")).a;
           a.style.color = "white";
           a.style.backgroundColor = "rgba(25,25,25,"+alpha+")";
         }
