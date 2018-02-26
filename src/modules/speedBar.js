@@ -60,6 +60,7 @@ registerNSMethod(self, "apply",(
         a.playbackRate = initVal;
         output.style.display="inline";
         output.style.color = "rgb(127,127,127)";
+        output.style.height = area.height;
 
         area.appendChild(slider);
         area.appendChild(output);
@@ -71,8 +72,10 @@ registerNSMethod(self, "apply",(
           window.clearTimeout(fadeTimer);
           a.nextSibling.style.opacity = "1";
           a.nextSibling.children[1].innerHTML = Math.round(10*this.value)/10;
+          a.nextSibling.children[1].style.color = "yellow";
           a.playbackRate = this.value;
-          fadeTimer = window.setTimeout(function(){a.nextSibling.style.opacity="0.5"}, 2000);
+          fadeTimer = window.setTimeout(function(){a.nextSibling.style.opacity="0.5";a.nextSibling.children[1].style.color = "rgb(127,127,127)"
+          }, 2000);
         };
       })
   }
