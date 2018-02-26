@@ -21,6 +21,9 @@ registerNSMethod(self, "apply",(
 
     self.isActive = true;
 
+    document.body.style.backgroundColor = "rgb(25,25,25)";
+    document.body.style.color = "white";
+
     relevantTargets().out.do(
       a => {
           if (!self.isActive) return;
@@ -76,7 +79,7 @@ registerNSMethod(self, "remove",(
 
 /* This discards elements children to elements with background images */
 const relevantTargets = function(typ){
-  var output = [document.body];
+  var output = [];
   var queue=[document.body];
   var whiteOutput = [];
   var n;
