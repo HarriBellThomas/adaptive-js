@@ -163,7 +163,7 @@ registerNSMethod(self, "changeBrightness", (
         if (!self.isActive) return;
 
         img = window.getComputedStyle(a, null).backgroundImage;
-        if (img.valueOf() != "none" && a.style.backgroundImage.startsWith("linear-gradient")) {
+        if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
           a.style.backgroundImage = "none";
         }
         bc = rgbaValue(extractColour(a, "backgroundColor"));
@@ -219,7 +219,7 @@ registerNSMethod(self, "remove", (
     forall(VISUALS).do(function(a){applyToImage(a, function (xy,rgba) {
       return {r: rgba.r, g:rgba.g, b: rgba.b, a:rgba.a}
     })});
-    forall().do(a=> {
+    forall().do(function(a){
         try {
           a.resetCSS();
         } catch (e) {
