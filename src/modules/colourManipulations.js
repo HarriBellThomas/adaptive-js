@@ -21,26 +21,7 @@ registerNSMethod(self, "changeSaturation", (
 
     value = properties["factor"];
 
-    forall(VISUALS).do(
-      function (a) {
-        applyToImage(a, function (xy,rgba) {
-
-          if (!self.isActive) return;
-
-          hsl = rgbToHsl(rgba.r,rgba.g,rgba.b);
-          hsl[1] = limit(hsl[1]*value);
-
-          rgb = hslToRgb(hsl[0],hsl[1],hsl[2]);
-          return {
-            r: Math.round(rgb[0]),
-            g: Math.round(rgb[1]),
-            b: Math.round(rgb[2]),
-            a: rgba.a
-          }
-        })
-      });
-
-    forall().do(
+    targets().do(
       function (a) {
         if (!self.isActive) return;
 
@@ -73,6 +54,25 @@ registerNSMethod(self, "changeSaturation", (
         a.style.borderColor = "rgba("+Math.round(rgb3[0])+","+Math.round(rgb3[1])+","+Math.round(rgb3[2])+","+boc.a+")";
       }
     )
+
+    forall(VISUALS).do(
+      function (a) {
+        applyToImage(a, function (xy,rgba) {
+
+          if (!self.isActive) return;
+
+          hsl = rgbToHsl(rgba.r,rgba.g,rgba.b);
+          hsl[1] = limit(hsl[1]*value);
+
+          rgb = hslToRgb(hsl[0],hsl[1],hsl[2]);
+          return {
+            r: Math.round(rgb[0]),
+            g: Math.round(rgb[1]),
+            b: Math.round(rgb[2]),
+            a: rgba.a
+          }
+        })
+      });
   }
 ));
 
@@ -96,22 +96,7 @@ registerNSMethod(self, "changeContrast", (
     value = properties["factor"];
     factor = (259*(value+255))/(255*(259-value));
 
-    forall(VISUALS).do(
-      function (a) {
-        applyToImage(a, function (xy,rgba) {
-
-          if (!self.isActive) return;
-
-          return {
-            r: Math.round(limit(factor*(rgba.r-128)+128)),
-            g: Math.round(limit(factor*(rgba.g-128)+128)),
-            b: Math.round(limit(factor*(rgba.b-128)+128)),
-            a: rgba.a
-          }
-        })
-      });
-
-    forall().do(
+    targets().do(
       function (a) {
         if (!self.isActive) return;
 
@@ -136,6 +121,21 @@ registerNSMethod(self, "changeContrast", (
         a.style.borderColor = "rgba("+boc.r+","+boc.g+","+boc.b+","+boc.a+")";
       }
     )
+
+    forall(VISUALS).do(
+      function (a) {
+        applyToImage(a, function (xy,rgba) {
+
+          if (!self.isActive) return;
+
+          return {
+            r: Math.round(limit(factor*(rgba.r-128)+128)),
+            g: Math.round(limit(factor*(rgba.g-128)+128)),
+            b: Math.round(limit(factor*(rgba.b-128)+128)),
+            a: rgba.a
+          }
+        })
+      });
   }
 ));
 
@@ -239,7 +239,7 @@ const targets = function(typ){
 
   while(queue.length>0) {
     n = queue.shift();
-    if (!n.children) {;
+    if (!n.children) {
       continue;
     }
     for (var i = 0; i< n.children.length; i++) {
