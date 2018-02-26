@@ -161,7 +161,9 @@ registerNSMethod(self, "changeBrightness", (
     targets().do(
       function (a) {
         if (!self.isActive) return;
-        if (a.hasOwnProperty("style.backgroundImage") && a.style.backgroundImage.startsWith("linear-gradient")) {
+
+        img = window.getComputedStyle(a, null).backgroundImage;
+        if (img.valueOf() != "none" && a.style.backgroundImage.startsWith("linear-gradient")) {
           a.style.backgroundImage = "none";
         }
         bc = rgbaValue(extractColour(a, "backgroundColor"));
