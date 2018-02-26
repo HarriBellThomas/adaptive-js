@@ -158,22 +158,7 @@ registerNSMethod(self, "changeBrightness", (
 
     value = properties["factor"];
 
-    forall(VISUALS).do(
-      function (a) {
-        applyToImage(a, function (xy,rgba) {
-
-          if (!self.isActive) return;
-
-          return {
-            r: rgba.r + Math.round(value),
-            g: rgba.g + Math.round(value),
-            b: rgba.b + Math.round(value),
-            a: rgba.a
-          }
-        })
-      });
-
-    forall().do(
+    targets().do(
       function (a) {
         if (!self.isActive) return;
 
@@ -206,6 +191,21 @@ registerNSMethod(self, "changeBrightness", (
         a.style.borderColor = "rgba("+boc.r+","+boc.g+","+boc.b+","+boc.a+")";
       }
     )
+
+    forall(VISUALS).do(
+      function (a) {
+        applyToImage(a, function (xy,rgba) {
+
+          if (!self.isActive) return;
+
+          return {
+            r: rgba.r + Math.round(value),
+            g: rgba.g + Math.round(value),
+            b: rgba.b + Math.round(value),
+            a: rgba.a
+          }
+        })
+      });
   }
 ));
 
@@ -226,3 +226,22 @@ registerNSMethod(self, "remove", (
     return true;
   }
 ));
+
+
+const targets = function(typ){
+  var output = [document.body];
+  var queue=[document.body];
+  var n;
+
+  while(queue.length>0) {
+    n = queue.shift();
+    if (!n.children) {;
+      continue;
+    }
+    for (var i = 0; i< n.children.length; i++) {
+      queue.push(n.children[i]);
+      if (typ == undefined || n.children[i].nodeName == typ.toString()) output.push(n.children[i]);
+    }
+  }
+  return new Operable(output.reverse());
+};
