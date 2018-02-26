@@ -25,6 +25,10 @@ registerNSMethod(self, "changeSaturation", (
       function (a) {
         if (!self.isActive) return;
 
+        img = window.getComputedStyle(a, null).backgroundImage;
+        if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
+          a.style.backgroundImage = "none";
+        }
         bc = rgbaValue(extractColour(a, "backgroundColor"));
         c = rgbaValue(extractColour(a, "color"));
         boc = rgbaValue(extractColour(a, "border-color"));
@@ -100,6 +104,10 @@ registerNSMethod(self, "changeContrast", (
       function (a) {
         if (!self.isActive) return;
 
+        img = window.getComputedStyle(a, null).backgroundImage;
+        if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
+          a.style.backgroundImage = "none";
+        }
         bc = rgbaValue(extractColour(a, "backgroundColor"));
         c = rgbaValue(extractColour(a, "color"));
         boc = rgbaValue(extractColour(a, "border-color"));
