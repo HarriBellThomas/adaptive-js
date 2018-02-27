@@ -13,6 +13,9 @@ registerNamespace("uk.org.adaptive.darkMode");
 
 self.isActive = false;
 
+
+/* This will apply the dark mode function */
+
 registerNSMethod(self, "apply",(
   function(){
 
