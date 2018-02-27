@@ -205,7 +205,7 @@ registerNSMethod(self, "changeBrightness", (
         a.style.color = "rgba("+c.r+","+c.g+","+c.b+","+c.a+")";
         a.style.borderColor = "rgba("+boc.r+","+boc.g+","+boc.b+","+boc.a+")";
       }
-    )
+    );
 
     forall(VISUALS).do(
       function (a) {
@@ -225,73 +225,94 @@ registerNSMethod(self, "changeBrightness", (
 ));
 
 registerNSMethod(self, "nightShifter", (
-  function (properties) {
-
-    if (!verifyArgs(properties, [["factor", NUMTYPE]]))
-      return false;
+  function () {
 
     if (self.isActive)
       self.remove();
 
     self.isActive = true;
 
-    limit = function(v) {
-      if (v<0) return 0;
-      if (v>1) return 1;
+    limit = function (v) {
+      if (v < 0) return 0;
+      if (v > 1) return 1;
       return v;
     };
 
-    value = properties["factor"];
+    date = new Date();
+    startOfDay = new Date().setHours(0, 0, 0, 0);
+    sevenPM = new Date().setHours(19, 0, 0, 0);
+    sevenAM = new Date().setHours(7,0,0,0);
+    milliSecondsToday = date.getTime() - startOfDay.getTime();
+    timeUntilPM = sevenPM.getTime() - milliSecondsToday;
+    timeUntilAM = sevenAM.getTime() - milliSecondsToday;
 
-    time = new Date().getHours();
-
-    targets().do(
-      function (a) {
-        if (!self.isActive) return;
-
-        img = window.getComputedStyle(a, null).backgroundImage;
-        if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
-          a.cacheCSSProperties(["style.backgroundImage"]);
-          a.style.backgroundImage = "none";
-        }
-        bc = rgbaValue(extractColour(a, "backgroundColor"));
-        c = rgbaValue(extractColour(a, "color"));
-        boc = rgbaValue(extractColour(a, "border-color"));
-
-        bc.b = bc.b + Math.round(value);
-
-        c.b = c.b + Math.round(value);
-
-        boc.b = boc.b + Math.round(value);
-
-        try {
-          a.cacheCSSProperties(["background-color"]);
-          a.cacheCSSProperties(["color"]);
-          a.cacheCSSProperties(["border-color"]);
-
-        } catch (e) {
-          /* some elements do not work with cacheCSSProperties */
-        }
-        a.style.backgroundColor = "rgba("+bc.r+","+bc.g+","+bc.b+","+bc.a+")";
-        a.style.color = "rgba("+c.r+","+c.g+","+c.b+","+c.a+")";
-        a.style.borderColor = "rgba("+boc.r+","+boc.g+","+boc.b+","+boc.a+")";
-      }
-    )
-
-    forall(VISUALS).do(
-      function (a) {
-        applyToImage(a, function (xy,rgba) {
-
+    const apply = function(value) {
+      targets().do(
+        function (a) {
           if (!self.isActive) return;
 
-          return {
-            r: rgba.r,
-            g: rgba.g,
-            b: rgba.b + Math.round(value),
-            a: rgba.a
+          img = window.getComputedStyle(a, null).backgroundImage;
+          if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
+            a.cacheCSSProperties(["style.backgroundImage"]);
+            a.style.backgroundImage = "none";
           }
-        })
-      });
+          bc = rgbaValue(extractColour(a, "backgroundColor"));
+          c = rgbaValue(extractColour(a, "color"));
+          boc = rgbaValue(extractColour(a, "border-color"));
+
+          bc.b = bc.b + Math.round(value);
+
+          c.b = c.b + Math.round(value);
+
+          boc.b = boc.b + Math.round(value);
+
+          try {
+            a.cacheCSSProperties(["background-color"]);
+            a.cacheCSSProperties(["color"]);
+            a.cacheCSSProperties(["border-color"]);
+
+          } catch (e) {
+            /* some elements do not work with cacheCSSProperties */
+          }
+          a.style.backgroundColor = "rgba(" + bc.r + "," + bc.g + "," + bc.b + "," + bc.a + ")";
+          a.style.color = "rgba(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")";
+          a.style.borderColor = "rgba(" + boc.r + "," + boc.g + "," + boc.b + "," + boc.a + ")";
+        }
+      );
+
+      forall(VISUALS).do(
+        function (a) {
+          applyToImage(a, function (xy, rgba) {
+
+            if (!self.isActive) return;
+
+            return {
+              r: rgba.r,
+              g: rgba.g,
+              b: rgba.b + Math.round(value),
+              a: rgba.a
+            }
+          })
+        });
+    }
+
+    /* Applies the nightShift function depending on the current time of Day */
+
+    if (timeUntilAM < 0 && timeUntilPM > 0) {
+      window.setTimeout(function () {
+        for(i=0; i>-25; i--) {
+          apply(i);
+        }
+      }, timeUntilPM);
+    } else if (timeUntilAM < 0 && timeUntilPM < 0){
+      apply(-25);
+    } else {
+      window.setTimeout(function () {
+        for(i=-25; i<=0; i++) {
+          apply(i);
+        }
+      }, timeUntilAM);
+    }
   }
 ));
 
