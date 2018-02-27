@@ -239,7 +239,7 @@ registerNSMethod(self, "nightShifter", (
     };
 
     date = new Date();
-    sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 19, 0, 0);
+    sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 22, 0, 0);
     sevenAM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0);
     timeUntilPM = sevenPM.getTime() - date.getTime();
     timeUntilAM = sevenAM.getTime() - date.getTime();
@@ -300,7 +300,7 @@ registerNSMethod(self, "nightShifter", (
       window.setTimeout(function () {
         for(i=0; i>-25; i--) {
           apply(i);
-          setTimeout(function(){}, 400);
+          window.setTimeout(function(){}, 400);
         }
       }, timeUntilPM);
     } else if (timeUntilAM < 0 && timeUntilPM < 0){
@@ -309,7 +309,7 @@ registerNSMethod(self, "nightShifter", (
       window.setTimeout(function () {
         for(i=-25; i<=0; i++) {
           apply(i);
-          setTimeout(function(){}, 400);
+          window.setTimeout(function(){}, 400);
         }
       }, timeUntilAM);
     }
