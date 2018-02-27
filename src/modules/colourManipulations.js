@@ -27,6 +27,7 @@ registerNSMethod(self, "changeSaturation", (
 
         img = window.getComputedStyle(a, null).backgroundImage;
         if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
+          a.cacheCSSProperties(["style.backgroundImage"]);
           a.style.backgroundImage = "none";
         }
         bc = rgbaValue(extractColour(a, "backgroundColor"));
@@ -106,6 +107,7 @@ registerNSMethod(self, "changeContrast", (
 
         img = window.getComputedStyle(a, null).backgroundImage;
         if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
+          a.cacheCSSProperties(["style.backgroundImage"]);
           a.style.backgroundImage = "none";
         }
         bc = rgbaValue(extractColour(a, "backgroundColor"));
@@ -172,6 +174,7 @@ registerNSMethod(self, "changeBrightness", (
 
         img = window.getComputedStyle(a, null).backgroundImage;
         if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
+          a.cacheCSSProperties(["style.backgroundImage"]);
           a.style.backgroundImage = "none";
         }
         bc = rgbaValue(extractColour(a, "backgroundColor"));
@@ -223,10 +226,15 @@ registerNSMethod(self, "changeBrightness", (
 
 registerNSMethod(self, "remove", (
   function () {
+    if (!self.isActive) return true;
     self.isActive = false;
-    forall(VISUALS).do(function(a){applyToImage(a, function (xy,rgba) {
-      return {r: rgba.r, g:rgba.g, b: rgba.b, a:rgba.a}
-    })});
+    try {
+      forall(VISUALS).do(function (a) {
+        applyToImage(a, function (xy, rgba) {
+          return {r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a}
+        })
+      });
+    } catch (e) {}
     forall().do(function(a){
         try {
           a.resetCSS();
