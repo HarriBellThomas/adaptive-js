@@ -297,16 +297,15 @@ registerNSMethod(self, "nightShifter", (
 
     /* Applies the nightShift function depending on the current time of Day */
 
+    const fadeIn = function(number){window.setTimeout(function(){if(number>0){apply(-1); fadeIn(number-1)}}, 4000)};
+    const fadeOut = function(number){window.setTimeout(function(){if(number>0){apply(1); fadeOut(number-1)}}, 4000)};
+
     if (timeUntilAM < 0 && timeUntilPM > 0) {
-      window.setTimeout(fade = function (number) {
-          window.setTimeout(function(){if (number > 0) {apply(-1); fade(number-1)}}, 4000);
-      }(25), timeUntilPM);
+      window.setTimeout(fadeIn(25), timeUntilPM);
     } else if (timeUntilAM < 0 && timeUntilPM < 0){
       apply(-25);
     } else {
-      window.setTimeout(fade = function (number) {
-          window.setTimeout(function(){if (number > 0) {apply(1); fade(number-1)}}, 4000);
-      }(25), timeUntilAM);
+      window.setTimeout(fadeOut(25), timeUntilAM);
     }
   }
 ));
