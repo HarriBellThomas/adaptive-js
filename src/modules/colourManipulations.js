@@ -300,6 +300,7 @@ registerNSMethod(self, "nightShifter", (
       window.setTimeout(function () {
         for(i=0; i>-25; i--) {
           apply(i);
+          setTimeout(function(){}, 400);
         }
       }, timeUntilPM);
     } else if (timeUntilAM < 0 && timeUntilPM < 0){
@@ -308,6 +309,7 @@ registerNSMethod(self, "nightShifter", (
       window.setTimeout(function () {
         for(i=-25; i<=0; i++) {
           apply(i);
+          setTimeout(function(){}, 400);
         }
       }, timeUntilAM);
     }
