@@ -239,7 +239,7 @@ registerNSMethod(self, "nightShifter", (
     };
 
     date = new Date();
-    sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 22, 54, 0);
+    sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 32, 0);
     sevenAM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0);
     timeUntilPM = sevenPM.getTime() - date.getTime();
     timeUntilAM = sevenAM.getTime() - date.getTime();
@@ -293,12 +293,13 @@ registerNSMethod(self, "nightShifter", (
             }
           })
         });
+      return true;
     };
 
     /* Applies the nightShift function depending on the current time of Day */
 
-    const fadeIn = function(number){window.setTimeout(function(){if(number>0){apply(-1); fadeIn(number-1)}}, 4000)};
-    const fadeOut = function(number){window.setTimeout(function(){if(number>0){apply(1); fadeOut(number-1)}}, 4000)};
+    const fadeIn = function(number){window.setTimeout(function(){if(number>0){if(apply(-1)) fadeIn(number-1);}}, 1000)};
+    const fadeOut = function(number){window.setTimeout(function(){if(number>0){if(apply(1)) fadeOut(number-1);}}, 1000)};
 
     if (timeUntilAM < 0 && timeUntilPM > 0) {
       window.setTimeout(fadeIn(25), timeUntilPM);
