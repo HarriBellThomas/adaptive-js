@@ -239,7 +239,7 @@ registerNSMethod(self, "nightShifter", (
     };
 
     date = new Date();
-    sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 32, 0);
+    sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 39, 0);
     sevenAM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0);
     timeUntilPM = sevenPM.getTime() - date.getTime();
     timeUntilAM = sevenAM.getTime() - date.getTime();
@@ -302,11 +302,11 @@ registerNSMethod(self, "nightShifter", (
     const fadeOut = function(number){window.setTimeout(function(){if(number>0){if(apply(1)) fadeOut(number-1);}}, 1000)};
 
     if (timeUntilAM < 0 && timeUntilPM > 0) {
-      window.setTimeout(fadeIn(25), timeUntilPM);
+      window.setTimeout(function(){fadeIn(25)}, timeUntilPM);
     } else if (timeUntilAM < 0 && timeUntilPM < 0){
       apply(-25);
     } else {
-      window.setTimeout(fadeOut(25), timeUntilAM);
+      window.setTimeout(function(){fadeOut(25)}, timeUntilAM);
     }
   }
 ));
