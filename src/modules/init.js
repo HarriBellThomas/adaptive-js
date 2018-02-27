@@ -192,20 +192,20 @@ registerNSMethod(uk.org.adaptive, "init", (
         } else {
             status.className = "enabled";
             status.innerHTML = "Enabled";
-        }
 
-        if(userMode) {
-            // get style from user default style url
-            retrieveJSON(userJSONRoute + userID);
-        }
+            if(userMode) {
+                // get style from user default style url
+                retrieveJSON(userJSONRoute + userID);
+            }
 
-        else {
-            // get style from style route
-            retrieveJSON(userJSONRoute + styleID);
-        }
+            else {
+                // get style from style route
+                retrieveJSON(userJSONRoute + styleID);
+            }
 
-        /* Initialise from Style JSON */
-        applyStyles();
+            /* Initialise from Style JSON */
+            applyStyles();
+        }
 
     }
 ));
