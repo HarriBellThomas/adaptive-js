@@ -293,7 +293,7 @@ registerNSMethod(self, "nightShifter", (
             }
           })
         });
-    }
+    };
 
     /* Applies the nightShift function depending on the current time of Day */
 
@@ -301,7 +301,7 @@ registerNSMethod(self, "nightShifter", (
       window.setTimeout(function () {
         for(i=0; i>-25; i--) {
           apply(-1);
-          window.setTimeout(function(){}, 400);
+          window.setTimeout(function(){}, 4000);
         }
       }, timeUntilPM);
     } else if (timeUntilAM < 0 && timeUntilPM < 0){
@@ -310,7 +310,7 @@ registerNSMethod(self, "nightShifter", (
       window.setTimeout(function () {
         for(i=-25; i<=0; i++) {
           apply(1);
-          window.setTimeout(function(){}, 400);
+          window.setTimeout(function(){}, 4000);
         }
       }, timeUntilAM);
     }
