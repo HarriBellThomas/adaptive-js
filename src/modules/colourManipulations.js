@@ -239,12 +239,10 @@ registerNSMethod(self, "nightShifter", (
     };
 
     date = new Date();
-    startOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
     sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 19, 0, 0);
     sevenAM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0);
-    milliSecondsToday = date.getTime() - startOfDay.getTime();
-    timeUntilPM = sevenPM.getTime() - milliSecondsToday;
-    timeUntilAM = sevenAM.getTime() - milliSecondsToday;
+    timeUntilPM = sevenPM.getTime() - date.getTime();
+    timeUntilAM = sevenAM.getTime() - date.getTime();
 
     const apply = function(value) {
       targets().do(
