@@ -239,7 +239,7 @@ registerNSMethod(self, "nightShifter", (
     };
 
     date = new Date();
-    sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 22, 0, 0);
+    sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 22, 12, 0);
     sevenAM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0);
     timeUntilPM = sevenPM.getTime() - date.getTime();
     timeUntilAM = sevenAM.getTime() - date.getTime();
@@ -247,7 +247,8 @@ registerNSMethod(self, "nightShifter", (
     const apply = function(value) {
       targets().do(
         function (a) {
-          if (!self.isActive) return;
+          if (!self.isActive) self.remove();
+          self.isActive = true;
 
           img = window.getComputedStyle(a, null).backgroundImage;
           if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
