@@ -59,22 +59,7 @@ registerNSMethod(self, "apply", (
       self.remove();
     self.isActive = true;
 
-    forall(VISUALS).do(
-      function (a) {
-        applyToImage(a, function (xy, rgba) {
-          if (!self.isActive) return;
-          type = properties["blindType"];
-          matrix = ColorMatrixMatrixes[type];
-          return {
-            r: rgba.r * matrix.R[0] / 100.0 + rgba.g * matrix.R[1] / 100.0 + rgba.b * matrix.R[2] / 100.0,
-            g: rgba.r * matrix.G[0] / 100.0 + rgba.g * matrix.G[1] / 100.0 + rgba.b * matrix.G[2] / 100.0,
-            b: rgba.r * matrix.B[0] / 100.0 + rgba.g * matrix.B[1] / 100.0 + rgba.b * matrix.B[2] / 100.0,
-            a: rgba.a
-          }
-        })
-      });
-
-    forall().do(
+    targets().do(
       function (a) {
         if (!self.isActive) return;
 
@@ -108,7 +93,23 @@ registerNSMethod(self, "apply", (
         a.style.backgroundColor = "rgba("+r+","+g+","+b+","+bc.a+")";
         a.style.color = "rgba("+cr+","+cg+","+cb+","+c.a+")";
         a.style.borderColor = "rgba("+bocr+","+bocg+","+bocb+","+boc.a+")";
-      })}));
+      });
+
+    forall(VISUALS).do(
+      function (a) {
+        applyToImage(a, function (xy, rgba) {
+          if (!self.isActive) return;
+          type = properties["blindType"];
+          matrix = ColorMatrixMatrixes[type];
+          return {
+            r: rgba.r * matrix.R[0] / 100.0 + rgba.g * matrix.R[1] / 100.0 + rgba.b * matrix.R[2] / 100.0,
+            g: rgba.r * matrix.G[0] / 100.0 + rgba.g * matrix.G[1] / 100.0 + rgba.b * matrix.G[2] / 100.0,
+            b: rgba.r * matrix.B[0] / 100.0 + rgba.g * matrix.B[1] / 100.0 + rgba.b * matrix.B[2] / 100.0,
+            a: rgba.a
+          }
+        })
+      });
+  }));
 
 /*Colorspace transformation matrices*/
 const cb_matrices = {
@@ -150,33 +151,8 @@ registerNSMethod(self, "daltonize", (
       }
       return m;
     };
-    forall(VISUALS).do(
-      function (a) {
-        applyToImage(a, function (xy, rgba) {
-          if (!self.isActive) return;
-          let type = properties["blindType"];
-          let LMSMatrix = multiply(rgb2lms, [[rgba.r], [rgba.g], [rgba.b]]);
-          let colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
-          let simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
-          let errorMatrix = [[Math.abs(rgba.r - simulatedMatrix[0][0])], [Math.abs(rgba.g - simulatedMatrix[1][0])], [Math.abs(rgba.b - simulatedMatrix[2][0])]];
-          let modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
-          let fixedMatrix = multiply(modMatrix, errorMatrix);
 
-          let limit = function (a) {
-            if (a > 255) return 255;
-            else if (a < 0) return 0;
-            else return a;
-          };
-          return {
-            r: limit(rgba.r + fixedMatrix[0][0]),
-            g: limit(rgba.g + fixedMatrix[1][0]),
-            b: limit(rgba.b + fixedMatrix[2][0]),
-            a: rgba.a
-          }
-        })
-      });
-
-    forall().do(
+    targets().do(
       function (a) {
 
         if (!self.isActive) return;
@@ -240,7 +216,34 @@ registerNSMethod(self, "daltonize", (
 
         a.style.borderColor = "rgba("+r+","+g+","+b+","+boc.a+")";
 
-      })}));
+      });
+
+    forall(VISUALS).do(
+      function (a) {
+        applyToImage(a, function (xy, rgba) {
+          if (!self.isActive) return;
+          let type = properties["blindType"];
+          let LMSMatrix = multiply(rgb2lms, [[rgba.r], [rgba.g], [rgba.b]]);
+          let colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
+          let simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
+          let errorMatrix = [[Math.abs(rgba.r - simulatedMatrix[0][0])], [Math.abs(rgba.g - simulatedMatrix[1][0])], [Math.abs(rgba.b - simulatedMatrix[2][0])]];
+          let modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
+          let fixedMatrix = multiply(modMatrix, errorMatrix);
+
+          let limit = function (a) {
+            if (a > 255) return 255;
+            else if (a < 0) return 0;
+            else return a;
+          };
+          return {
+            r: limit(rgba.r + fixedMatrix[0][0]),
+            g: limit(rgba.g + fixedMatrix[1][0]),
+            b: limit(rgba.b + fixedMatrix[2][0]),
+            a: rgba.a
+          }
+        })
+      });
+  }));
 
 
 registerNSMethod(self, "remove", (
@@ -260,3 +263,22 @@ registerNSMethod(self, "remove", (
     return true;
   }
 ));
+
+
+const targets = function(typ){
+  var output = [document.body];
+  var queue=[document.body];
+  var n;
+
+  while(queue.length>0) {
+    n = queue.shift();
+    if (!n.children) {
+      continue;
+    }
+    for (var i = 0; i< n.children.length; i++) {
+      queue.push(n.children[i]);
+      if (typ == undefined || n.children[i].nodeName == typ.toString()) output.push(n.children[i]);
+    }
+  }
+  return new Operable(output.reverse());
+};
