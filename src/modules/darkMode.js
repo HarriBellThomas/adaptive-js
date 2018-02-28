@@ -24,10 +24,11 @@ registerNSMethod(self, "apply",(
 
     self.isActive = true;
 
+    document.body.cacheCSSProperties(["color", "background-color"]);
     document.body.style.backgroundColor = "rgb(25,25,25)";
     document.body.style.color = "white";
 
-    relevantTargets().out.do(
+    relevantTargets().do(
       a => {
           if (!self.isActive) return;
           /* Ensure non-destructiveness by caching CSS */
@@ -41,18 +42,6 @@ registerNSMethod(self, "apply",(
           a.style.backgroundColor = "rgba(25,25,25,"+alpha+")";
         }
       );
-    relevantTargets().white.do(
-      a => {
-        if (!self.isActive) return;
-        /* Ensure non-destructiveness by caching CSS */
-        try {
-          a.cacheCSSProperties(["color", "background-color"]);
-        } catch (e) {
-          /* some elements do not work with cacheCSSProperties */
-        }
-        a.style.color = "black";
-      }
-    );
 
     forall(LINKS).do(
       a => {
@@ -84,7 +73,6 @@ registerNSMethod(self, "remove",(
 const relevantTargets = function(typ){
   var output = [];
   var queue=[document.body];
-  var whiteOutput = [];
   var n;
 
   while(queue.length>0) {
@@ -113,5 +101,5 @@ const relevantTargets = function(typ){
       }
     }
   }
-  return {out: new Operable(output), white: new Operable(whiteOutput)};
+  return new Operable(output);
 };
