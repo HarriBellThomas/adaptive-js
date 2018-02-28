@@ -32,11 +32,8 @@ registerNSMethod(self, "apply",(
       a => {
           if (!self.isActive) return;
           /* Ensure non-destructiveness by caching CSS */
-          try {
-            a.cacheCSSProperties(["color", "background-color"]);
-          } catch (e) {
-            /* some elements do not work with cacheCSSProperties */
-          }
+          a.cacheCSSProperties(["color", "background-color"]);
+
           alpha = rgbaValue(extractColour(a, "backgroundColor")).a;
           a.style.color = "white";
           a.style.backgroundColor = "rgba(25,25,25,"+alpha+")";
@@ -57,7 +54,7 @@ registerNSMethod(self, "apply",(
 registerNSMethod(self, "remove",(
   function(){
     self.isActive = false;
-    relevantTargets().do(a=> {
+    forall().do(a=> {
       try {
         a.resetCSS();
       } catch(e){
