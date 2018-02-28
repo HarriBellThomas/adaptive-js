@@ -57,7 +57,7 @@ registerNSMethod(self, "apply",(
 registerNSMethod(self, "remove",(
   function(){
     self.isActive = false;
-    forall().do(a=> {
+    relevantTargets().do(a=> {
       try {
         a.resetCSS();
       } catch(e){
