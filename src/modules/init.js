@@ -53,7 +53,7 @@ registerNSMethod(uk.org.adaptive, "init", (
                         try {
                             self.data = JSON.parse(xhr.responseText);
                             console.log(self.data);
-                            self.applyStyles({});
+                            self.applyStyles();
                         } catch (e) {
                             console.log("JSON Parsing failed: " + e);
                         }
@@ -83,7 +83,7 @@ registerNSMethod(uk.org.adaptive, "init", (
         var demoMode = url.searchParams.get("adaptive_demo");
         if(demoMode != null) {
             retrieveJSON(styleJSONRoute + demoMode);
-            self.applyStyles({});
+            self.applyStyles();
         }
         /* End Demo Mode Bypass */
 
@@ -201,7 +201,7 @@ registerNSMethod(uk.org.adaptive, "init", (
                 }
 
                 /* Initialise from Style JSON */
-                self.applyStyles({});
+                self.applyStyles();
             }
         }
     }
