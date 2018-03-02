@@ -88,13 +88,13 @@ registerNSMethod(uk.org.adaptive, "init", (
         var userMode = false;
         var loginRoute = "https://adaptive.org.uk/api/login/#";
         var userJSONRoute = "https://adaptive.org.uk/api/default/";
-        var styleJSONRoute = "https://html.adaptive.org.uk/json/example.json#";
+        var styleJSONRoute = "https://adaptive.org.uk/api/style/";
 
 
         /* Demo Mode Bypass */
         var url = new URL(window.location.href);
         var demoMode = url.searchParams.get("adaptive_demo");
-        if(demoMode != null) retrieveJSON(userJSONRoute + styleID);
+        if(demoMode != null) retrieveJSON(styleJSONRoute + demoMode);
         /* End Demo Mode Bypass */
 
         else {
