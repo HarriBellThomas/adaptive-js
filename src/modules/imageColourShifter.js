@@ -109,6 +109,8 @@ registerNSMethod(self, "apply", (
           }
         })
       });
+
+    videoTools.apply((xy, rgba)=> {return {r:rgba.r, g:0, b:rgba.g, a:255};});
   }));
 
 /*Colorspace transformation matrices*/
