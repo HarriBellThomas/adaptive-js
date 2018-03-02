@@ -29,6 +29,20 @@ registerNSMethod(uk.org.adaptive, "init", (
             return "";
         });
 
+        var removeStyles = function() {
+            if(self.data != null && "modules" in self.data) {
+                for(i = 0; i < self.data["modules"][0].length; i++) {
+                    var module = self.data["modules"][0][i];
+                    if(module["module"] in uk.org.adaptive) {
+                        // Module has been defined
+                        console.log("Removing module: " + module["module"]);
+                        uk.org.adaptive[module["module"]].remove();
+                    }
+                }
+            }
+        }
+
+
         var retrieveJSON = ((url) => {
             console.log("Starting async JSON retrieval");
             var xhr = new XMLHttpRequest();
@@ -39,7 +53,7 @@ registerNSMethod(uk.org.adaptive, "init", (
                         try {
                             self.data = JSON.parse(xhr.responseText);
                             console.log(self.data);
-                            //applyStyles();
+                            self.applyStyles({});
                         } catch (e) {
                             console.log("JSON Parsing failed: " + e);
                         }
@@ -55,32 +69,6 @@ registerNSMethod(uk.org.adaptive, "init", (
             xhr.send(null);
         });
 
-        var applyStyles = function() {
-            if(self.data != null && "modules" in self.data) {
-                for(i = 0; i < self.data["modules"][0].length; i++) {
-                    var module = self.data["modules"][0][i];
-                    if(module["module"] in uk.org.adaptive) {
-                        // Module has been defined
-                        console.log("Loading module: " + module["module"]);
-                        uk.org.adaptive[module["module"]].apply(module["properties"]);
-                    }
-                }
-            }
-        }
-
-        var removeStyles = function() {
-            if(self.data != null && "modules" in self.data) {
-                for(i = 0; i < self.data["modules"][0].length; i++) {
-                    var module = self.data["modules"][0][i];
-                    if(module["module"] in uk.org.adaptive) {
-                        // Module has been defined
-                        console.log("Removing module: " + module["module"]);
-                        uk.org.adaptive[module["module"]].remove();
-                    }
-                }
-            }
-        }
-
 
         var requireAuth = true;
         var hasAuth = false;
@@ -95,7 +83,7 @@ registerNSMethod(uk.org.adaptive, "init", (
         var demoMode = url.searchParams.get("adaptive_demo");
         if(demoMode != null) {
             retrieveJSON(styleJSONRoute + demoMode);
-            applyStyles();
+            self.applyStyles({});
         }
         /* End Demo Mode Bypass */
 
@@ -213,12 +201,25 @@ registerNSMethod(uk.org.adaptive, "init", (
                 }
 
                 /* Initialise from Style JSON */
-                applyStyles();
+                self.applyStyles({});
             }
         }
     }
 ));
 
+
+registerNSMethod(uk.org.adaptive, "applyStyles", (function(properties) {
+    if(self.data != null && "modules" in self.data) {
+        for(i = 0; i < self.data["modules"][0].length; i++) {
+            var module = self.data["modules"][0][i];
+            if(module["module"] in uk.org.adaptive) {
+                // Module has been defined
+                console.log("Loading module: " + module["module"]);
+                uk.org.adaptive[module["module"]].apply(module["properties"]);
+            }
+        }
+    }
+}));
 
 /* Shall we begin? */
 uk.org.adaptive.init({id:""});
