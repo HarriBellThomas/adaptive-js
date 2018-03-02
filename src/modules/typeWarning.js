@@ -12,19 +12,17 @@ registerNSMethod(self, "apply", function() {
    if (self.isActive) self.remove();
    
    self.isActive = true;
-   window.addEventListener("onkeypress", self.onKeyPress);
-   console.log("typeWarning apply");
+   window.addEventListener("keypress", self.onKeyPress);
 });
 
 registerNSMethod(self, "remove", function() {
    self.isActive = false;
-   window.removeEventListener("onkeypress", self.onKeyPress);
+   window.removeEventListener("keypress", self.onKeyPress);
 });
 
 registerNSMethod(self, "flash", function() {
    if (self.currentlyFlashing) return;
    self.currentlyFlashing = true;
-   console.log("Flash");
    
    var cover = document.createElement("div");
    

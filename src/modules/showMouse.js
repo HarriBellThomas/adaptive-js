@@ -12,31 +12,30 @@ self.onMouseMove = function(e) {
 }
 
 self.onKeyDown = function(e) {
-   if (e.keyCode === 17 && !self.ctrlDown) {
+   if (e.keyCode === 16 && !self.ctrlDown) {
       showMouse();
       self.ctrlDown = true;
    }
 }
 
 self.onKeyUp = function(e) {
-   if (e.keyCode === 17) self.ctrlDown = false;
+   if (e.keyCode === 16) self.ctrlDown = false;
 }
 
 registerNSMethod(self, "apply", function() {
    if (self.isActive) self.remove();
    
    self.isActive = true;
-   window.addEventListener("onkeydown", self.onKeyDown);
-   window.addEventListener("onkeyup", self.onKeyUp);
-   window.addEventListener("onmousemove", self.onMouseMove);
-   console.log("showMouse apply");
+   window.addEventListener("keydown", self.onKeyDown);
+   window.addEventListener("keyup", self.onKeyUp);
+   window.addEventListener("mousemove", self.onMouseMove);
 });
 
 registerNSMethod(self, "remove", function() {
    self.isActive = false;
-   window.removeEventListener("onkeydown", self.onKeyDown);
-   window.removeEventListener("onkeyup", self.onKeyUp);
-   window.removeEventListener("onmousemove", self.onMouseMove);
+   window.removeEventListener("keydown", self.onKeyDown);
+   window.removeEventListener("keyup", self.onKeyUp);
+   window.removeEventListener("mousemove", self.onMouseMove);
 });
 
 registerNSMethod(self, "showMouse", function() {
