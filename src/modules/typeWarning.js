@@ -1,4 +1,4 @@
-registerNamepace("uk.org.adaptive.typeWarning");
+registerNamespace("uk.org.adaptive.typeWarning");
 
 self.isActive = false;
 self.flashColour = "#ff0000";
