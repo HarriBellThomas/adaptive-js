@@ -9,7 +9,6 @@
   $noOfStrings = 0;
   $stringsF = "";
   $testsF = "
-    var DEBUGMESSAGES=new Object();
     console.log('Running tests...');
     var no_passed = 0;
     ";
@@ -39,15 +38,15 @@
       if (!failed){
         console.log('✅ $mod');
         no_passed++;
-        DEBUGMESSAGES['$mod'].push('✅');
+        DEBUGMESSAGES['$mod'].push(true);
       }else{
         console.log('❌ $mod');
-        DEBUGMESSAGES['$mod'].push('❌');
+        DEBUGMESSAGES['$mod'].push(false);
       }
     }catch(e){
       console.log('           $mod.js/ERROR: '+e.message);
       DEBUGMESSAGES['$mod'].push(e.message);
-      DEBUGMESSAGES['$mod'].push('❌');
+      DEBUGMESSAGES['$mod'].push(false);
       console.log('❌ $mod');
     }
       })()
@@ -61,16 +60,16 @@
           $debugMode = true;
         }
 
-        $o1 = compileFile("../modules/".$modules[$i].".js", $noOfStrings);
+        $o1 = compileFile("../modules/".$modules[$i].".js", $noOfStrings,$modules[$i]);
         //$compiled .= "\n\n/* File: ".$modules[$i]."*/ \n\n".$o1[0];
 
         //$compiled .= "\n\n/* File: ".$modules[$i]."*/ \n\ntry{\n".$o1[0]."\n}catch(e){if (debug!=undefined) debug(e.message+' in file "+$modules[$i]+"');}";
 
-        $compiled .= "\n\n/* File: ".$modules[$i]."*/ \n\n".$o1[0];
+        $compiled .= "\n\n/* File: ".$modules[$i]." */ \n\n".$o1[0];
         $stringsF .= $o1[1];
         $noOfStrings = $o1[2];
         if ($modules[$i] != "debug"){
-          $testsF .= debugPreamble($modules[$i]).$o1[3].debugPost($modules[$i]);
+          $testsF .= debugPreamble($modules[$i]."-tests").$o1[3].debugPost($modules[$i]."-tests");
         }
     }else{
       $compiled = $compiled."\n\n/* Unknown file: ".$modules[$i]."*/";
@@ -79,10 +78,21 @@
   if ($customScope=="Y"){
     $compiled = "\n\n(function(){".$compiled."})();";
   }
+  $compiled = "var MODULESLOADED=0;
+var DEBUGMESSAGES=new Object();
+\n".$compiled."\n\nMODULESLOADED=1;";
   header('Content-Type:text/plain');
   $countmodules = count($modules)-1;
   $testsF .= "\nconsole.log('Finished tests with '+no_passed+' of $countmodules modules passing.');";
-  $compiled = "/* \nAdaptiveWeb JS compilation at ".time()." \n\n\nTo use:\ndocument.body.appendChild(function(){(k=document.createElement('script')).src='".$selfURL."';return k;}()); \n\n*/\n".$stringsF."\n\n".$compiled;
+  $testsF .= "
+const testSuccess = function(){
+  for (A in DEBUGMESSAGES){
+    if (!DEBUGMESSAGES[A][DEBUGMESSAGES[A].length-1]) return false;
+  }
+  return true;
+}
+MODULESLOADED=2;";
+  $compiled = "/* \nAdaptiveWeb JS compilation at ".time()." \n\n\nTo use:\ndocument.body.appendChild(function(){(k=document.createElement('script')).src='".$selfURL."';return k;}()); \n\n*/\n".$stringsF."\n\n".$compiled."\n";
   print($debugMode?$compiled."\n\n".$testsF:$compiled);
 
   $f = fopen("../tests.js", "wb");

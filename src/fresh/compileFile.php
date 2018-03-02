@@ -42,7 +42,7 @@
     return ($fileIndex < $length);
   }
 
-  function compileFile($fl, $stringsC){
+  function compileFile($fl, $stringsC,$modSimple){
     global $fileIndex, $length, $output, $escaped, $input, $outputFile;
     $input = file_get_contents($fl);
     /* Single line comments removal */
@@ -51,7 +51,7 @@
     $length = strlen($input);
     $fileIndex = 0;
     $vars = $stringsC;
-    $outputFile = "try{ \n";
+    $outputFile = "DEBUGMESSAGES['".$modSimple."']=[];\ntry{ \n";
     $currentString = "";
 
 
@@ -197,9 +197,12 @@
 
     $testsFile = preg_replace("/(?:([^A-Za-z\_\-\.]+)(require\())|(?:(^)(require\())/", "$1require(()=> ", $testsFile);
 
-    $outputFile .= "\n}catch(e){";
-    $outputFile .= "\nthrow ('Module ".$fl." exception: '+e);";
-    $outputFile .= "}";
+    $outputFile .= "\nDEBUGMESSAGES['".$modSimple."'].push(true);
+}catch(e){
+  console.log('Module ".$modSimple." exception: '+e);
+  DEBUGMESSAGES['".$modSimple."'].push(e.message);
+  DEBUGMESSAGES['".$modSimple."'].push(false);
+}";
 
     $fp = fopen($fl."-compiled", "w+");
     fwrite($fp, $outputFile);

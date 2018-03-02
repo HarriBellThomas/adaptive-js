@@ -282,3 +282,7 @@ registerNSMethod(self, "scriptCapturesEnclosingScope", function(tr){
 });
 
 self.scriptCapturesEnclosingScope(false);
+
+(<
+  debug("Existence check: "+window.location.href);
+>)

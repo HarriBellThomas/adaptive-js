@@ -115,8 +115,7 @@ registerNSMethod(self, "disposeDisplayForegroundPanel", function(){
 
 (<
   debug("This is a debug message.");
-  fail("Implementation not finished");
-  require(("Hello").length > 10);
+  require(window.location.href.indexOf("cp.md")<0);
 >)
 
 registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
