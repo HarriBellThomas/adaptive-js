@@ -5,7 +5,7 @@ self.flashColour = "#ff0000";
 self.currentlyFlashing = false;
 
 self.onKeyPress = function(e) {
-   if (!e.ctrlKey && !e.altKey && !e.metaKey && e.target.tagName !== "TEXTAREA" && e.target.tagName !== "INPUT") flash();
+   if (!e.ctrlKey && !e.altKey && !e.metaKey && e.target.tagName !== "TEXTAREA" && e.target.tagName !== "INPUT") self.flash();
 }
 
 registerNSMethod(self, "apply", function() {

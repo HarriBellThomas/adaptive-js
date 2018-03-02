@@ -13,7 +13,7 @@ self.onMouseMove = function(e) {
 
 self.onKeyDown = function(e) {
    if (e.keyCode === 16 && !self.ctrlDown) {
-      showMouse();
+      self.showMouse();
       self.ctrlDown = true;
    }
 }
