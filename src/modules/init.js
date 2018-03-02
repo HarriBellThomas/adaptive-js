@@ -39,11 +39,10 @@ registerNSMethod(uk.org.adaptive, "init", (
                         try {
                             self.data = JSON.parse(xhr.responseText);
                             console.log(self.data);
-                            applyStyles();
+                            //applyStyles();
                         } catch (e) {
                             console.log("JSON Parsing failed: " + e);
                         }
-                        console.log(self.data);
                     } else {
                         console.error(xhr.statusText);
                         // alert("Well that hasn't gone well...");
@@ -94,7 +93,10 @@ registerNSMethod(uk.org.adaptive, "init", (
         /* Demo Mode Bypass */
         var url = new URL(window.location.href);
         var demoMode = url.searchParams.get("adaptive_demo");
-        if(demoMode != null) retrieveJSON(styleJSONRoute + demoMode);
+        if(demoMode != null) {
+            retrieveJSON(styleJSONRoute + demoMode);
+            applyStyles();
+        }
         /* End Demo Mode Bypass */
 
         else {
