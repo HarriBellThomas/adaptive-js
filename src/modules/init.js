@@ -210,8 +210,8 @@ registerNSMethod(uk.org.adaptive, "init", (
 
 registerNSMethod(uk.org.adaptive, "applyStyles", (function(properties) {
     if(self.data != null && "modules" in self.data) {
-        for(i = 0; i < self.data["modules"][0].length; i++) {
-            var module = self.data["modules"][0][i];
+        for(i = 0; i < self.data["modules"].length; i++) {
+            var module = self.data["modules"][i];
             if(module["module"] in uk.org.adaptive) {
                 // Module has been defined
                 console.log("Loading module: " + module["module"]);
