@@ -12,14 +12,14 @@ self.onMouseMove = function(e) {
 }
 
 self.onKeyDown = function(e) {
-   if (e.keyCode === 17 && !ctrlDown) {
+   if (e.keyCode === 17 && !self.ctrlDown) {
       showMouse();
       self.ctrlDown = true;
    }
 }
 
 self.onKeyUp = function(e) {
-   if (e.keyCode === 17) ctrlDown = false;
+   if (e.keyCode === 17) self.ctrlDown = false;
 }
 
 registerNSMethod(self, "apply", function() {
@@ -60,7 +60,7 @@ registerNSMethod(self, "showMouse", function() {
    // Animation
    var size = startSize;
    var id = setInterval(frame, delta);
-   performingAnimation = true;
+   self.performingAnimation = true;
    
    function frame() {
       if (size <= 0) {
