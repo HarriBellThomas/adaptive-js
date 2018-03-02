@@ -32,7 +32,9 @@ registerNSMethod(self, "apply",(
       a => {
           if (!self.isActive) return;
           /* Ensure non-destructiveness by caching CSS */
-          a.cacheCSSProperties(["color", "background-color"]);
+          try {
+              a.cacheCSSProperties(["color", "background-color"]);
+          } catch  (e) {}
 
           alpha = rgbaValue(extractColour(a, "backgroundColor")).a;
           a.style.color = "white";
@@ -44,7 +46,9 @@ registerNSMethod(self, "apply",(
       a => {
         if (!self.isActive) return;
         /* Ensure non-destructiveness by caching CSS */
-        a.cacheCSSProperties(["color"]);
+        try {
+            a.cacheCSSProperties(["color"]);
+        } catch (e){}
         a.style.color = "lightblue";
       }
     );
