@@ -30,17 +30,16 @@ registerNSMethod(self, "apply",(
 
     relevantTargets().do(
       a => {
-          if (!self.isActive) return;
-          /* Ensure non-destructiveness by caching CSS */
-          try {
-              a.cacheCSSProperties(["color", "background-color"]);
-          } catch(e) {}
-
+        if (!self.isActive) return;
+        /* Ensure non-destructiveness by caching CSS */
+        try {
+          a.cacheCSSProperties(["color", "background-color"]);
           alpha = rgbaValue(extractColour(a, "backgroundColor")).a;
           a.style.color = "white";
           a.style.backgroundColor = "rgba(25,25,25,"+alpha+")";
-        }
-      );
+        } catch(e) {}
+      }
+    );
 
     forall(LINKS).do(
       a => {
@@ -59,7 +58,9 @@ registerNSMethod(self, "remove",(
   function(){
     self.isActive = false;
     forall().do(a=> {
-        a.resetCSS();
+        try {
+            a.resetCSS();
+        } catch(e){}
     });
     return true;
   }
