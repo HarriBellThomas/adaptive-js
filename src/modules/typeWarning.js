@@ -9,11 +9,11 @@ self.onKeyPress = function(e) {
 }
 
 registerNSMethod(self, "apply", function() {
-   console.log("typeWarning apply");
    if (self.isActive) self.remove();
    
    self.isActive = true;
    window.addEventListener("onkeypress", self.onKeyPress);
+   console.log("typeWarning apply");
 });
 
 registerNSMethod(self, "remove", function() {

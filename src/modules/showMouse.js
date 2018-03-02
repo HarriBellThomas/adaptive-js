@@ -23,13 +23,13 @@ self.onKeyUp = function(e) {
 }
 
 registerNSMethod(self, "apply", function() {
-   console.log("typeWarning apply");
    if (self.isActive) self.remove();
    
    self.isActive = true;
    window.addEventListener("onkeydown", self.onKeyDown);
    window.addEventListener("onkeyup", self.onKeyUp);
    window.addEventListener("onmousemove", self.onMouseMove);
+   console.log("showMouse apply");
 });
 
 registerNSMethod(self, "remove", function() {
