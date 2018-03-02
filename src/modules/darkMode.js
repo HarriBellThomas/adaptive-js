@@ -26,7 +26,6 @@ registerNSMethod(self, "apply",(
 
     document.body.cacheCSSProperties(["color", "background-color"]);
     document.body.style.backgroundColor = "rgb(25,25,25)";
-    document.body.style.color = "white";
 
     relevantTargets().do(
       a => {
