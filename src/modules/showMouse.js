@@ -23,6 +23,7 @@ self.onKeyUp = function(e) {
 }
 
 registerNSMethod(self, "apply", function() {
+   console.log("typeWarning apply");
    if (self.isActive) self.remove();
    
    self.isActive = true;
