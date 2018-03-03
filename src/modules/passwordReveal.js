@@ -8,7 +8,7 @@ var countdown;
 var countDownIntervalId;
 
 registerNSMethod(self, "apply", function(properties) {
-   if (!verifyArgs(properties, [["timeDelay", STRINGTYPE]])) return false;
+   if (!verifyArgs(properties, [["timeDelay", NUMTYPE]])) return false;
    if (self.isActive) self.remove();
    
    self.isActive = true;
