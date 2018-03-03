@@ -78,7 +78,7 @@ const showMouse = function() {
          circle.style.borderWidth = (borderWidth - scale * borderWidth) + "px";
          circle.style.borderColor = "rgb(" + colour + ", " + colour + ", " + colour + ")";
          
-         size -= speed === "fast" ? 5 : 3;
+         size -= speed === "fast" ? 7 : 3;
       }
    }
 };
