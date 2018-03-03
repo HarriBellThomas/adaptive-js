@@ -46,9 +46,9 @@ registerNSMethod(self, "apply",(
         area.style.position = "absolute";
         //(window.getComputedStyle(a).top == undefined) ? area.style.top = "0px" : area.style.top = a.style.top;
         //(window.getComputedStyle(a).top == undefined) ? area.style.left = "0px" : area.style.left = a.style.left;
-        area.style.top = a.getBoundingClientRect().top - document.body.getBoundingClientRect().top;
-        area.style.left = a.getBoundingClientRect().left - document.body.getBoundingClientRect().left;
-        area.style.zIndex = 9999;
+        area.style.top = a.getBoundingClientRect().top - document.body.getBoundingClientRect().top+"px";
+        area.style.left = a.getBoundingClientRect().left - document.body.getBoundingClientRect().left+"px";
+        area.style.zIndex = "9999";
 
         slider.type = "range";
         slider.min = "0.2";
