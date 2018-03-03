@@ -57,7 +57,7 @@ registerNSMethod(self, "apply",(
 registerNSMethod(self, "remove",(
   function(){
     self.isActive = false;
-    forall().do(a=> {
+    forall().where(a=> a instanceof HTMLElement).do(a=> {
        // try {
             a.resetCSS();
        // } catch(e){}
