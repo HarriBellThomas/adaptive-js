@@ -49,7 +49,7 @@ registerNSMethod(self, "apply", function(properties) {
    });
    
    // First, make all cross-domain images not cross domain
-   // forall(VISUALS).do(function(a) { applyToImage(a, function(xy, rgba) { return {r: 255, g: 0, b: 0, a: rgba.a}; }); });
+   forall(VISUALS).do(function(a) { applyToImage(a, SOFTIDENTITY}); });
    
    // Take screenshot of page
    console.log("Loading screenshot library");
