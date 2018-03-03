@@ -54,7 +54,7 @@ registerNSMethod(self, "apply", function() {
    // Take screenshot of page
    console.log("Including screenshot library");
    var lib = document.createElement("script");
-   lib.src = "http://html2canvas.hertzen.com/dist/html2canvas.min.js";
+   lib.src = "https://html2canvas.hertzen.com/dist/html2canvas.min.js";
    document.body.appendChild(lib);
    
    console.log("Taking screenshot");
