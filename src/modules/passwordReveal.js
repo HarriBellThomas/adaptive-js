@@ -34,59 +34,55 @@ registerNSMethod(self, "remove", function() {
    window.removeEventListener("keyup", self.onKeyUp);
 });
 
-self.onKeyDown = function(e) {
-   if (e.keyCode === 17) {
-      if (e.target.tagName === "INPUT" && e.target.type.toLowerCase() === "password" && !box.parentNode && e.target.value) {
-         // First, put the box underneath the <input>
-         var rect = e.target.getBoundingClientRect();
-         box.style.top = (rect.bottom + 5) + "px";
-         box.style.left = rect.left + "px";
-         
-         // Fade in animation
-         var opacity = 0;
-         var delta = 10;
-         var id = setInterval(frame, delta);
+doOnKeyDown(17, function() {
+   if (e.target.tagName === "INPUT" && e.target.type.toLowerCase() === "password" && !box.parentNode && e.target.value) {
+      // First, put the box underneath the <input>
+      var rect = e.target.getBoundingClientRect();
+      box.style.top = (rect.bottom + 5) + "px";
+      box.style.left = rect.left + "px";
+      
+      // Fade in animation
+      var opacity = 0;
+      var delta = 10;
+      var id = setInterval(frame, delta);
+      box.style.opacity = opacity;
+      
+      function frame() {
+         if (opacity >= 1) clearInterval(id);
+         else opacity += 0.06;
          box.style.opacity = opacity;
+      }
+      
+      document.body.appendChild(box);
+      e.target.addEventListener("blur", loseFocus);
+      
+      // Check if we need to do a countdown timer or not
+      if (timeDelay == 0) {
+         box.innerHTML = "Password:<br><span style=\"font-family:Ubuntu Mono, Consolas, Courier New, monospace;\">" + e.target.value + "</span>";
+      } else {
+         function countDownByOne() {
+            // This happens in two places so we put it in a function
+            box.innerHTML = "Showing password in " + countdown + "...";
+            countdown--;
+         };
          
-         function frame() {
-            if (opacity >= 1) clearInterval(id);
-            else opacity += 0.06;
-            box.style.opacity = opacity;
-         }
+         countdown = timeDelay;
+         countdownIntervalId = setInterval(count, 1000);
+         countDownByOne();
          
-         document.body.appendChild(box);
-         e.target.addEventListener("blur", loseFocus);
-         
-         // Check if we need to do a countdown timer or not
-         if (timeDelay == 0) {
-            box.innerHTML = "Password:<br><span style=\"font-family:Ubuntu Mono, Consolas, Courier New, monospace;\">" + e.target.value + "</span>";
-         } else {
-            function countDownByOne() {
-               // This happens in two places so we put it in a function
-               box.innerHTML = "Showing password in " + countdown + "...";
-               countdown--;
-            };
-            
-            countdown = timeDelay;
-            countdownIntervalId = setInterval(count, 1000);
-            countDownByOne();
-            
-            function count() {
-               if (countdown == 0) {
-                  clearInterval(countdownIntervalId);
-                  box.innerHTML = "Password:<br><span style=\"font-family:Ubuntu Mono, Consolas, Courier New, monospace;\">" + e.target.value + "</span>";
-               } else {
-                  countDownByOne();
-               }
+         function count() {
+            if (countdown == 0) {
+               clearInterval(countdownIntervalId);
+               box.innerHTML = "Password:<br><span style=\"font-family:Ubuntu Mono, Consolas, Courier New, monospace;\">" + e.target.value + "</span>";
+            } else {
+               countDownByOne();
             }
          }
       }
    }
-}
+});
 
-self.onKeyUp = function(e) {
-   if (e.keyCode === 17) removeBox(e);
-}
+doOnKeyUp(17, function(e) { removeBox(e); });
 
 // We need to declare this function like this here because it's referenced in both removeBox and on the key down event
 const loseFocus = function(e) {
