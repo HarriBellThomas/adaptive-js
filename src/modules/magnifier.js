@@ -52,23 +52,30 @@ registerNSMethod(self, "apply", function(properties) {
    // forall(VISUALS).do(function(a) { applyToImage(a, function(xy, rgba) { return {r: 255, g: 0, b: 0, a: rgba.a}; }); });
    
    // Take screenshot of page
-   console.log("Taking screenshot");
-   html2canvas(document.body, { scale: zoom, logging: true }).then(function(c) {
-      console.log("Creating magnifier");
-      magnifyingGlass = document.createElement("div");
-      magnifyingGlass.style.border = "3px solid #000";
-      magnifyingGlass.style.borderRadius = "50%";
-      magnifyingGlass.style.cursor = "none";
-      magnifyingGlass.style.backgroundImage = "url(\"" + c.toDataURL("image/png") + "\")";
-      magnifyingGlass.style.backgroundRepeat = "no-repeat";
-      
-      magnifyingGlass.style.position = "absolute";
-      magnifyingGlass.style.top = (-magnifierSize) + "px";
-      magnifyingGlass.style.left = (-magnifierSize) + "px";
-      magnifyingGlass.style.width = magnifierSize + "px";
-      magnifyingGlass.style.height = magnifierSize + "px";
-      magnifyingGlass.style.zIndex = "999999999";
-   });
+   console.log("Loading screenshot library");
+   var script = document.createElement("script");
+   script.type = "text/javascript";
+   script.async = true;
+   script.onload = function() {
+      console.log("Taking screenshot");
+      html2canvas(document.body, { scale: zoom, logging: true }).then(function(c) {
+         magnifyingGlass = document.createElement("div");
+         magnifyingGlass.style.border = "3px solid #000";
+         magnifyingGlass.style.borderRadius = "50%";
+         magnifyingGlass.style.cursor = "none";
+         magnifyingGlass.style.backgroundImage = "url(\"" + c.toDataURL("image/png") + "\")";
+         magnifyingGlass.style.backgroundRepeat = "no-repeat";
+         
+         magnifyingGlass.style.position = "absolute";
+         magnifyingGlass.style.top = (-magnifierSize) + "px";
+         magnifyingGlass.style.left = (-magnifierSize) + "px";
+         magnifyingGlass.style.width = magnifierSize + "px";
+         magnifyingGlass.style.height = magnifierSize + "px";
+         magnifyingGlass.style.zIndex = "999999999";
+      });
+   };
+   script.src = "https://html2canvas.hertzen.com/dist/html2canvas.min.js";
+   document.getElementsByTagName("head")[0].appendChild(script);
    
    return true;
 });
