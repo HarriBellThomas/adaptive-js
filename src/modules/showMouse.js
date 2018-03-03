@@ -40,7 +40,7 @@ registerNSMethod(self, "remove", function() {
 
 const showMouse = function() {
    if (typeof mouseX == "undefined" || typeof mouseY == "undefined" || performingAnimation) return;
-   debug("Showing mouse at X: " + mouseX + ", Y: " + mouseY);
+   console.log("Showing mouse at X: " + mouseX + ", Y: " + mouseY);
    
    var startSize = 400;
    var borderWidth = 8;
