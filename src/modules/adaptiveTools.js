@@ -1,4 +1,4 @@
-REQUIRES
+
 /* 'ForAll' ENUMs */
 registerENUM(["IMAGES","DIVS","VIDEOS","LINKS","TABLES","SPANS","BUTTONS","VISUALS","PARAGRAPHS", "HEADERS", "ELEMENTS"]);
 
@@ -345,7 +345,7 @@ onDomChange(function(){
 
 /* Argument/Type checking */
 
-registerENUM(["STRINGTYPE", "NUMTYPE", "ARRAYTYPE"])
+registerENUM(["STRINGTYPE", "NUMTYPE", "ARRAYTYPE", "BOOLTYPE"])
 
 const verifyArgs = function(obj, typs){
   for(var i=0;i<typs.length;i++){
@@ -364,6 +364,8 @@ const verifyArgs = function(obj, typs){
       case STRINGTYPE:
         if (typeof ky != 'string') return false;
         break;
+      case BOOLTYPE:
+        if (ky!==true && ky!==false) return false;
       default:
         return false;
         break;
