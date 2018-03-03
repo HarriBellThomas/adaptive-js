@@ -39,20 +39,20 @@ registerNSMethod(self, "apply",(
       }
     );
 
-    /*forall(LINKS).where(a=> a instanceof HTMLElement).do(
+    forall(LINKS).where(a=> a instanceof HTMLElement).do(
       a => {
         if (!self.isActive) return;
             a.cacheCSSProperties(["color"]);
         a.style.color = "lightblue";
       }
-    ); */
+    );
   }
 ));
 
 registerNSMethod(self, "remove",(
   function(){
     self.isActive = false;
-    forall().where(a=> a instanceof HTMLElement).do(a=> {
+    relevantTargets().where(a=> a instanceof HTMLElement).do(a=> {
       a.resetCSS();
     });
     return true;
