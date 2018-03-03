@@ -58,12 +58,10 @@ registerNSMethod(self, "remove",(
   function(){
     self.isActive = false;
     forall().do(a=> {
-        try {
+       // try {
             a.resetCSS();
-        } catch(e){}
+       // } catch(e){}
     });
-    forall(DIVS).do(a=>{a.resetCSS()});
-    /*This is dumb*/
     return true;
   }
 ));
