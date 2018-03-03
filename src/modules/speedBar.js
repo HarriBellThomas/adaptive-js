@@ -42,8 +42,6 @@ registerNSMethod(self, "apply",(
         slider = document.createElement("INPUT");
         output = document.createElement("DIV");
 
-        //base = a.getBoundingClientRect();
-
         area.className = "slider";
         area.style.position = "absolute";
         area.style.top = a.style.top.toString()+"px";
@@ -55,7 +53,7 @@ registerNSMethod(self, "apply",(
         slider.max = "2";
         slider.step = "0.1";
         slider.value = initVal;
-        area.style.opacity = "0.5";
+        area.style.opacity = "0.25";
 
         output.innerHTML = initVal;
         a.playbackRate = initVal;
@@ -75,7 +73,7 @@ registerNSMethod(self, "apply",(
           a.nextSibling.children[1].innerHTML = Math.round(10*this.value)/10;
           a.nextSibling.children[1].style.color = "yellow";
           a.playbackRate = this.value;
-          fadeTimer = window.setTimeout(function(){a.nextSibling.style.opacity="0.5";a.nextSibling.children[1].style.color = "rgb(127,127,127)"
+          fadeTimer = window.setTimeout(function(){a.nextSibling.style.opacity="0.25";a.nextSibling.children[1].style.color = "rgb(127,127,127)"
           }, 2000);
         };
       })
