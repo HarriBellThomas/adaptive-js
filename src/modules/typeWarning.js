@@ -63,8 +63,7 @@ const flash = function() {
          }
       }
    } else {
-      sound.play().then(function() {
-         currentlyFlashing = false;
-      });
+      sound.play();
+      currentlyFlashing = false;
    }
 };
