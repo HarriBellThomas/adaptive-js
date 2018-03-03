@@ -29,7 +29,7 @@ registerNSMethod(self, "changeSaturation", (
             return v;
         };
 
-        value = properties["factor"];
+        value = properties["changeSaturation"];
 
         targets().where(a=> a instanceof HTMLElement).do(
             function (a) {
@@ -105,7 +105,7 @@ registerNSMethod(self, "changeContrast", (
             return v;
         };
 
-        value = properties["factor"];
+        value = properties["changeContrast"];
         factor = (259*(value+255))/(255*(259-value));
 
         targets().where(a=> a instanceof HTMLElement).do(
@@ -170,7 +170,7 @@ registerNSMethod(self, "changeBrightness", (
             return v;
         };
 
-        value = properties["factor"];
+        value = properties["changeBrightness"];
 
         targets().where(a=> a instanceof HTMLElement).do(
             function (a) {
