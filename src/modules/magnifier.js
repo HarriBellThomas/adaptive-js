@@ -6,22 +6,22 @@ self.magnifierSize = 200;
 self.zoom = 1.75;
 self.magnifyingGlass = undefined;
 
-self.onMouseMove = function(evt) {
-   self.updatePosition({ e: evt });
+self.onMouseMove = function(e) {
+   self.updatePosition({ evt: e });
 }
 
-self.onKeyDown = function(evt) {
+self.onKeyDown = function(e) {
    // If we don't have the screenshot yet then don't do anything
    if (typeof self.magnifyingGlass == "undefined") return;
    
    if (e.keyCode === 17 && !self.isMagnifierOn) {
       document.body.appendChild(self.magnifyingGlass);
       self.isMagnifierOn = true;
-      self.updatePosition({ e: evt });
+      self.updatePosition({ evt: e });
    }
 }
 
-self.onKeyUp = function(evt) {
+self.onKeyUp = function(e) {
    // If we don't have the screenshot yet then don't do anything
    if (typeof self.magnifyingGlass == "undefined") return;
    
@@ -81,10 +81,10 @@ registerNSMethod(self, "updatePosition", function(properties) {
    if (typeof self.magnifyingGlass == "undefined") return;
    
    if (self.isMagnifierOn) {
-      properties.e.preventDefault();
+      properties.evt.preventDefault();
       
-      var x = properties.e.pageX;
-      var y = properties.e.pageY;
+      var x = properties.evt.pageX;
+      var y = properties.evt.pageY;
       
       self.magnifyingGlass.style.top = (y - self.magnifierSize/2) + "px";
       self.magnifyingGlass.style.left = (x - self.magnifierSize/2) + "px";
