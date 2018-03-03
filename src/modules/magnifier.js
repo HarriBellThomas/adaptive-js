@@ -54,6 +54,7 @@ registerNSMethod(self, "apply", function(properties) {
    // Take screenshot of page
    debug("Taking screenshot");
    html2canvas(document.body, { scale: zoom, logging: true }).then(function(c) {
+      debug("Creating magnifier");
       magnifyingGlass = document.createElement("div");
       magnifyingGlass.style.border = "3px solid #000";
       magnifyingGlass.style.borderRadius = "50%";
