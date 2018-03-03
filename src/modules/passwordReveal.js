@@ -51,7 +51,7 @@ self.onKeyDown = function(e) {
          } else {
             function countDownByOne() {
                // This happens in two places so we put it in a function
-               self.box.innerHTML = "Showing password in " + countdown + "...";
+               self.box.innerHTML = "Showing password in " + self.countdown + "...";
                self.countdown--;
             };
             
@@ -60,7 +60,7 @@ self.onKeyDown = function(e) {
             countDownByOne();
             
             function count() {
-               if (countdown == 0) {
+               if (self.countdown == 0) {
                   clearInterval(self.countdownIntervalId);
                   self.box.innerHTML = "Password:<br><span style=\"font-family:Ubuntu Mono, Consolas, Courier New, monospace;\">" + e.target.value + "</span>";
                } else {
