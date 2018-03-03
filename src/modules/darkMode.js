@@ -28,26 +28,22 @@ registerNSMethod(self, "apply",(
     document.body.style.backgroundColor = "rgb(25,25,25)";
     document.body.style.color = "white";
 
-    relevantTargets().do(
+    relevantTargets().where(a=> a instanceof HTMLElement).do(
       a => {
         if (!self.isActive) return;
         /* Ensure non-destructiveness by caching CSS */
-        try {
           a.cacheCSSProperties(["color", "background-color"]);
           alpha = rgbaValue(extractColour(a, "backgroundColor")).a;
           a.style.color = "white";
           a.style.backgroundColor = "rgba(25,25,25,"+alpha+")";
-        } catch(e) {}
       }
     );
 
-    forall(LINKS).do(
+    forall(LINKS).where(a=> a instanceof HTMLElement).do(
       a => {
         if (!self.isActive) return;
         /* Ensure non-destructiveness by caching CSS */
-        try {
             a.cacheCSSProperties(["color"]);
-        } catch (e){}
         a.style.color = "lightblue";
       }
     );
@@ -58,9 +54,7 @@ registerNSMethod(self, "remove",(
   function(){
     self.isActive = false;
     forall().where(a=> a instanceof HTMLElement).do(a=> {
-       // try {
-            a.resetCSS();
-       // } catch(e){}
+      a.resetCSS();
     });
     return true;
   }
@@ -80,7 +74,7 @@ const relevantTargets = function(typ){
     }
     if (n.className.toString().indexOf("logo")>-1) {
       for (var i=0; i<n.children.length; i++) {
-        n.children[i].className+="logo";
+        //n.children[i].className+="logo";
       }
     }
     for (var i = 0; i< n.children.length; i++) {
