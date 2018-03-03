@@ -1,5 +1,5 @@
-/* 'ForAll' ENUMs */
 
+/* 'ForAll' ENUMs */
 registerENUM(["IMAGES","DIVS","VIDEOS","LINKS","TABLES","SPANS","BUTTONS","VISUALS","PARAGRAPHS", "HEADERS", "ELEMENTS"]);
 
 const Operable=function(ls){this.elements = ls;}
@@ -120,6 +120,7 @@ const differentto = function(el){
 var KEYSDOWN = [];
 var KEYUPLISTENERS = [];
 var KEYDOWNLISTENERS = [];
+var MOUSEMOVELISTENERS = [];
 
 const hasKeyDown = function(key){
     for(var i=0;i<KEYSDOWN.length;i++){
@@ -168,6 +169,16 @@ const doOnKeyDown = function(keycode, funct){
   KEYDOWNLISTENERS.push([keycode, funct]);
 }
 
+const documentMouseMove = function(e) {
+   e = e || window.event;
+   for (var i = 0; i < MOUSEMOVELISTENERS.length; i++) MOUSEMOVELISTENERS[i](e.pageX, e.pageY);
+};
+
+const doOnMoveMouse = function(f) {
+   MOUSEMOVELISTENERS.push(f);
+}
+
+document.onmousemove = documentMouseMove;
 document.onkeydown = documentKeyDown;
 document.onkeyup = documentKeyUp;
 
@@ -334,7 +345,7 @@ onDomChange(function(){
 
 /* Argument/Type checking */
 
-registerENUM(["STRINGTYPE", "NUMTYPE", "ARRAYTYPE"])
+registerENUM(["STRINGTYPE", "NUMTYPE", "ARRAYTYPE", "BOOLTYPE"])
 
 const verifyArgs = function(obj, typs){
   for(var i=0;i<typs.length;i++){
@@ -353,6 +364,8 @@ const verifyArgs = function(obj, typs){
       case STRINGTYPE:
         if (typeof ky != 'string') return false;
         break;
+      case BOOLTYPE:
+        if (ky!==true && ky!==false) return false;
       default:
         return false;
         break;
