@@ -33,10 +33,9 @@ registerNSMethod(self, "apply",(
         if (!self.isActive) return;
         /* Ensure non-destructiveness by caching CSS */
         try {
-          a.cacheCSSProperties(["background-color"]);
-          a.cacheCSSProperties(["color"])
+          a.cacheCSSProperties(["color", "background-color"]);
           alpha = rgbaValue(extractColour(a, "backgroundColor")).a;
-          a.style.color = "white";
+          a.style.color = "green";
           a.style.backgroundColor = "rgba(25,25,25,"+alpha+")";
         } catch(e) {}
       }
