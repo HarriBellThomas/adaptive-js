@@ -12,7 +12,7 @@ registerNSMethod(self, "apply", function() {
    
    self.isActive = true;
    
-   doOnKeyDown(17, function() {
+   doOnKeyDown(17, function(e) {
       if (e.target.tagName === "INPUT" && e.target.type.toLowerCase() === "password" && !box.parentNode && e.target.value) {
          // First, put the box underneath the <input>
          var rect = e.target.getBoundingClientRect();
