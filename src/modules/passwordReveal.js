@@ -82,11 +82,7 @@ doOnKeyDown(17, function() {
    }
 });
 
-//doOnKeyUp(17, function(e) { removeBox(e); });
-
-doOnKeyUp(17, function() {
-   console.log(this.arguments);
-});
+doOnKeyUp(17, function(e) { removeBox(e); });
 
 // We need to declare this function like this here because it's referenced in both removeBox and on the key down event
 const loseFocus = function(e) {
