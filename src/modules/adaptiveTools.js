@@ -77,7 +77,7 @@ const all=function(typ,$2,$3,$4,$5,$6){
       return new Operable(uk.org.adaptive.core.getElementsByTag("button"));
       break;
     case VISUALS:
-      return forall(DIVS).where(a=> a.src != undefined).with(forall(IMAGES));
+      return forall().where(a=> a.hasModifiedSourceBehavior).with(forall(IMAGES));
       break;
      case PARAGRAPHS:
       return new Operable(uk.org.adaptive.core.getElementsByTag("p"));
@@ -271,6 +271,7 @@ forall().where(function(a){
       a.src = uk.org.adaptive.core.removeTrailingQuote((/[\'\"]?(.*)/g).exec(
               (/(?:url\()(.*)\)/g).exec(style.backgroundImage)[1]
             )[1]);
+      a.hasModifiedSourceBehavior = true;
     });
 
 
