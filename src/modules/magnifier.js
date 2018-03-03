@@ -14,6 +14,7 @@ self.onMouseMove = function(e) {
       e.preventDefault();
       
       var glass = document.getElementById("uk-org-adaptive-magnifier");
+      if (glass == null) return;
       var x = e.pageX;
       var y = e.pageY;
       
@@ -52,15 +53,18 @@ registerNSMethod(self, "apply", function() {
    window.addEventListener("keyup", self.onKeyUp);
    
    // Take screenshot of page
-   console.log("Including screenshot library");
-   var lib = document.createElement("script");
-   lib.src = "https://html2canvas.hertzen.com/dist/html2canvas.min.js";
-   document.body.appendChild(lib);
-   
-   console.log("Taking screenshot");
-   html2canvas(document.body, { scale: self.zoom, logging: true }).then(function(c) {
-      self.screenshot = c.toDataURL("image/png");
-   });
+   console.log("Loading screenshot library");
+   var script = document.createElement("script");
+   script.type = "text/javascript";
+   script.async = true;
+   script.onload = function() {
+      console.log("Taking screenshot");
+      html2canvas(document.body, { scale: self.zoom, logging: true }).then(function(c) {
+         self.screenshot = c.toDataURL("image/png");
+      });
+   };
+   script.src = "https://html2canvas.hertzen.com/dist/html2canvas.min.js";
+   document.getElementsByTagName("head")[0].appendChild(script);
 });
 
 registerNSMethod(self, "remove", function() {
