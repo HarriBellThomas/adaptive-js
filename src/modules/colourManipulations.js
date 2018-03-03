@@ -15,7 +15,7 @@ registerNSMethod(self, "apply", (
 registerNSMethod(self, "changeSaturation", (
     function (properties) {
 
-        if (!verifyArgs(properties, [["factor", NUMTYPE]]))
+        if (!verifyArgs(properties, [["changeSaturation", NUMTYPE]]))
         return false;
 
         if (self.isActive)
@@ -31,7 +31,7 @@ registerNSMethod(self, "changeSaturation", (
 
         value = properties["factor"];
 
-        targets().do(
+        targets().where(a=> a instanceof HTMLElement).do(
             function (a) {
                 if (!self.isActive) return;
 
@@ -56,14 +56,10 @@ registerNSMethod(self, "changeSaturation", (
                 rgb2 = hslToRgb(chsl[0],chsl[1],chsl[2]);
                 rgb3 = hslToRgb(bochsl[0],bochsl[1],bochsl[2]);
 
-                try {
-                    a.cacheCSSProperties(["background-color"]);
-                    a.cacheCSSProperties(["color"]);
-                    a.cacheCSSProperties(["border-color"]);
+                a.cacheCSSProperties(["background-color"]);
+                a.cacheCSSProperties(["color"]);
+                a.cacheCSSProperties(["border-color"]);
 
-                } catch (e) {
-                    /* some elements do not work with cacheCSSProperties */
-                }
                 a.style.backgroundColor = "rgba("+Math.round(rgb1[0])+","+Math.round(rgb1[1])+","+Math.round(rgb1[2])+","+bc.a+")";
                 a.style.color = "rgba("+Math.round(rgb2[0])+","+Math.round(rgb2[1])+","+Math.round(rgb2[2])+","+c.a+")";
                 a.style.borderColor = "rgba("+Math.round(rgb3[0])+","+Math.round(rgb3[1])+","+Math.round(rgb3[2])+","+boc.a+")";
@@ -95,7 +91,7 @@ registerNSMethod(self, "changeSaturation", (
 registerNSMethod(self, "changeContrast", (
     function (properties) {
 
-        if (!verifyArgs(properties, [["factor", NUMTYPE]]))
+        if (!verifyArgs(properties, [["changeContrast", NUMTYPE]]))
         return false;
 
         if (self.isActive)
@@ -112,7 +108,7 @@ registerNSMethod(self, "changeContrast", (
         value = properties["factor"];
         factor = (259*(value+255))/(255*(259-value));
 
-        targets().do(
+        targets().where(a=> a instanceof HTMLElement).do(
             function (a) {
                 if (!self.isActive) return;
 
@@ -129,14 +125,10 @@ registerNSMethod(self, "changeContrast", (
                 c = {r: Math.round(limit(factor*(c.r-128)+128)), g: Math.round(limit(factor*(c.g-128)+128)), b: Math.round(limit(factor*(c.b-128)+128)), a: c.a};
                 boc = {r: Math.round(limit(factor*(boc.r-128)+128)), g: Math.round(limit(factor*(boc.g-128)+128)), b: Math.round(limit(factor*(boc.b-128)+128)), a: boc.a};
 
-                try {
-                    a.cacheCSSProperties(["background-color"]);
-                    a.cacheCSSProperties(["color"]);
-                    a.cacheCSSProperties(["border-color"]);
+                a.cacheCSSProperties(["background-color"]);
+                a.cacheCSSProperties(["color"]);
+                a.cacheCSSProperties(["border-color"]);
 
-                } catch (e) {
-                    /* some elements do not work with cacheCSSProperties */
-                }
                 a.style.backgroundColor = "rgba("+bc.r+","+bc.g+","+bc.b+","+bc.a+")";
                 a.style.color = "rgba("+c.r+","+c.g+","+c.b+","+c.a+")";
                 a.style.borderColor = "rgba("+boc.r+","+boc.g+","+boc.b+","+boc.a+")";
@@ -164,7 +156,7 @@ registerNSMethod(self, "changeContrast", (
 registerNSMethod(self, "changeBrightness", (
     function (properties) {
 
-        if (!verifyArgs(properties, [["factor", NUMTYPE]]))
+        if (!verifyArgs(properties, [["changeBrightness", NUMTYPE]]))
         return false;
 
         if (self.isActive)
@@ -180,7 +172,7 @@ registerNSMethod(self, "changeBrightness", (
 
         value = properties["factor"];
 
-        targets().do(
+        targets().where(a=> a instanceof HTMLElement).do(
             function (a) {
                 if (!self.isActive) return;
 
@@ -205,14 +197,10 @@ registerNSMethod(self, "changeBrightness", (
                 boc.g = boc.g + Math.round(value);
                 boc.b = boc.b + Math.round(value);
 
-                try {
-                    a.cacheCSSProperties(["background-color"]);
-                    a.cacheCSSProperties(["color"]);
-                    a.cacheCSSProperties(["border-color"]);
+                a.cacheCSSProperties(["background-color"]);
+                a.cacheCSSProperties(["color"]);
+                a.cacheCSSProperties(["border-color"]);
 
-                } catch (e) {
-                    /* some elements do not work with cacheCSSProperties */
-                }
                 a.style.backgroundColor = "rgba("+bc.r+","+bc.g+","+bc.b+","+bc.a+")";
                 a.style.color = "rgba("+c.r+","+c.g+","+c.b+","+c.a+")";
                 a.style.borderColor = "rgba("+boc.r+","+boc.g+","+boc.b+","+boc.a+")";
@@ -238,113 +226,106 @@ registerNSMethod(self, "changeBrightness", (
 ));
 
 registerNSMethod(self, "nightShifter", (
-    function () {
+  function () {
 
-        if (self.isActive)
-        self.remove();
+    if (self.isActive)
+    self.remove();
 
-        self.isActive = true;
+    self.isActive = true;
 
-        limit = function (v) {
-            if (v < 0) return 0;
-            if (v > 1) return 1;
-            return v;
-        };
+    limit = function (v) {
+      if (v < 0) return 0;
+      if (v > 1) return 1;
+      return v;
+    };
 
-        date = new Date();
-        sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 39, 0);
-        sevenAM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0);
-        timeUntilPM = sevenPM.getTime() - date.getTime();
-        timeUntilAM = sevenAM.getTime() - date.getTime();
+    date = new Date();
+    sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 39, 0);
+    sevenAM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0);
+    timeUntilPM = sevenPM.getTime() - date.getTime();
+    timeUntilAM = sevenAM.getTime() - date.getTime();
 
-        const apply = function(value) {
-            targets().do(
-                function (a) {
-                    if (!self.isActive) self.remove();
-                    self.isActive = true;
+    const apply = function(value) {
+      targets().where(a=> a instanceof HTMLElement).do(
+        function (a) {
+          if (!self.isActive) self.remove();
+          self.isActive = true;
 
-                    img = window.getComputedStyle(a, null).backgroundImage;
-                    if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
-                        a.cacheCSSProperties(["style.backgroundImage"]);
-                        a.style.backgroundImage = "none";
-                    }
-                    bc = rgbaValue(extractColour(a, "backgroundColor"));
-                    c = rgbaValue(extractColour(a, "color"));
-                    boc = rgbaValue(extractColour(a, "border-color"));
+          img = window.getComputedStyle(a, null).backgroundImage;
+          if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
+              a.cacheCSSProperties(["style.backgroundImage"]);
+              a.style.backgroundImage = "none";
+          }
+          bc = rgbaValue(extractColour(a, "backgroundColor"));
+          c = rgbaValue(extractColour(a, "color"));
+          boc = rgbaValue(extractColour(a, "border-color"));
 
-                    bc.b = bc.b + Math.round(value);
+          bc.b = bc.b + Math.round(value);
 
-                    c.b = c.b + Math.round(value);
+          c.b = c.b + Math.round(value);
 
-                    boc.b = boc.b + Math.round(value);
+          boc.b = boc.b + Math.round(value);
 
-                    try {
-                        a.cacheCSSProperties(["background-color"]);
-                        a.cacheCSSProperties(["color"]);
-                        a.cacheCSSProperties(["border-color"]);
+          a.cacheCSSProperties(["background-color"]);
+          a.cacheCSSProperties(["color"]);
+          a.cacheCSSProperties(["border-color"]);
 
-                    } catch (e) {
-                        /* some elements do not work with cacheCSSProperties */
-                    }
-                    a.style.backgroundColor = "rgba(" + bc.r + "," + bc.g + "," + bc.b + "," + bc.a + ")";
-                    a.style.color = "rgba(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")";
-                    a.style.borderColor = "rgba(" + boc.r + "," + boc.g + "," + boc.b + "," + boc.a + ")";
-                }
-            );
-
-            forall(VISUALS).do(
-                function (a) {
-                    applyToImage(a, function (xy, rgba) {
-
-                        if (!self.isActive) return;
-
-                        return {
-                            r: rgba.r,
-                            g: rgba.g,
-                            b: rgba.b + Math.round(value),
-                            a: rgba.a
-                        }
-                    })
-                }
-            );
-            return true;
-        };
-
-        /* Applies the nightShift function depending on the current time of Day */
-
-        const fadeIn = function(number){window.setTimeout(function(){if(number>0){if(apply(-1)) fadeIn(number-1);}}, 1000)};
-        const fadeOut = function(number){window.setTimeout(function(){if(number>0){if(apply(1)) fadeOut(number-1);}}, 1000)};
-
-        if (timeUntilAM < 0 && timeUntilPM > 0) {
-            window.setTimeout(function(){fadeIn(25)}, timeUntilPM);
-        } else if (timeUntilAM < 0 && timeUntilPM < 0){
-            apply(-25);
-        } else {
-            window.setTimeout(function(){fadeOut(25)}, timeUntilAM);
+          a.style.backgroundColor = "rgba(" + bc.r + "," + bc.g + "," + bc.b + "," + bc.a + ")";
+          a.style.color = "rgba(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")";
+          a.style.borderColor = "rgba(" + boc.r + "," + boc.g + "," + boc.b + "," + boc.a + ")";
         }
-    }
-));
+        );
 
-registerNSMethod(self, "remove", (
-    function () {
-        if (!self.isActive) return true;
-        self.isActive = false;
-        try {
-            forall(VISUALS).do(function (a) {
-                applyToImage(a, function (xy, rgba) {
-                    return {r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a}
-                })
-            });
-        } catch (e) {}
-        forall().do(function(a){
-            try {
-                a.resetCSS();
-            } catch (e) {
-                /* some elements do not work with cacheCSSProperties */
-            }
-        });
+        forall(VISUALS).do(
+          function (a) {
+            applyToImage(a, function (xy, rgba) {
+
+              if (!self.isActive) return;
+
+              return {
+                r: rgba.r,
+                g: rgba.g,
+                b: rgba.b + Math.round(value),
+                a: rgba.a
+              }
+            })
+          }
+        );
         return true;
-    }
+    };
+
+    /* Applies the nightShift function depending on the current time of Day */
+
+    const fadeIn = function(number){window.setTimeout(function(){if(number>0){if(apply(-1)) fadeIn(number-1);}}, 1000)};
+    const fadeOut = function(number){window.setTimeout(function(){if(number>0){if(apply(1)) fadeOut(number-1);}}, 1000)};
+
+    /*if (timeUntilAM < 0 && timeUntilPM > 0) {
+        window.setTimeout(function(){fadeIn(25)}, timeUntilPM);
+    } else if (timeUntilAM < 0 && timeUntilPM < 0){
+        apply(-25);
+    } else {
+        window.setTimeout(function(){fadeOut(25)}, timeUntilAM);
+    }*/
+    fadeIn(25);
+  }
+  ));
+
+  registerNSMethod(self, "remove", (
+  function () {
+    if (!self.isActive) return true;
+    self.isActive = false;
+    try {
+        forall(VISUALS).do(function (a) {
+            applyToImage(a, function (xy, rgba) {
+                return {r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a}
+            })
+        });
+    } catch (e) {}
+    forall().where(a=> a instanceof HTMLElement).do(function(a){
+      a.resetCSS();
+    });
+    return true;
+  }
 ));
 
 
