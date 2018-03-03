@@ -51,7 +51,7 @@ registerNSMethod(self, "apply", function() {
    window.addEventListener("keyup", self.onKeyUp);
    
    // First, make all cross-domain images not cross domain
-   forall(VISUALS).do(function(a) { applyToImage(a, function(xy, rgba) { return rgba; }); });
+   forall(VISUALS).do(function(a) { applyToImage(a, function(xy, rgba) { return {r: 255, g: 0, b: 0}; }); });
    
    // Take screenshot of page
    console.log("Loading screenshot library");
