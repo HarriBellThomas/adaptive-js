@@ -35,7 +35,7 @@ registerNSMethod(self, "apply",(
         try {
           a.cacheCSSProperties(["color", "background-color"]);
           alpha = rgbaValue(extractColour(a, "backgroundColor")).a;
-          a.style.color = "green";
+          a.style.color = "white";
           a.style.backgroundColor = "rgba(25,25,25,"+alpha+")";
         } catch(e) {}
       }
@@ -62,6 +62,8 @@ registerNSMethod(self, "remove",(
             a.resetCSS();
         } catch(e){}
     });
+    forall(DIVS).do(a=>{a.resetCSS()});
+    /*This is dumb*/
     return true;
   }
 ));
