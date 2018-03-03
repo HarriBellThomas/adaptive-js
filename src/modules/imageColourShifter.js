@@ -110,7 +110,7 @@ registerNSMethod(self, "apply", (
         })
       });
 
-    uk.org.adaptive.videoTools.apply((xy, rgba)=> {return {r:rgba.r, g:0, b:rgba.g, a:255};});
+    uk.org.adaptive.videoTools.apply((xy, rgba)=> {return {r:rgba.r, g:0, b:rgba.g, a:155};});
   }));
 
 /*Colorspace transformation matrices*/

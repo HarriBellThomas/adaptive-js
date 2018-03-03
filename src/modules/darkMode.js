@@ -93,6 +93,7 @@ const relevantTargets = function(typ){
         queue.push(n.children[i]);
         if (typ == undefined || n.children[i].nodeName == typ.toString()) output.push(n.children[i]);
       } else {
+        n.children[i].cacheCSSProperties(["background-image"]);
         n.children[i].style.backgroundImage = "none";
         queue.push(n.children[i]);
         if (typ == undefined || n.children[i].nodeName == typ.toString()) output.push(n.children[i]);
