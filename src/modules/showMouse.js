@@ -1,43 +1,40 @@
 registerNamespace("uk.org.adaptive.showMouse");
 
 self.isActive = false;
+var speed = "fast";
 
 var mouseX = undefined;
 var mouseY = undefined;
 var ctrlDown = false;
 var performingAnimation = false;
 
-registerNSMethod(self, "apply", function() {
+registerNSMethod(self, "apply", function(properties) {
+   if (!verifyArgs(properties, [["speed", STRINGTYPE]])) return false;
    if (self.isActive) self.remove();
    
    self.isActive = true;
-   window.addEventListener("keydown", self.onKeyDown);
-   window.addEventListener("keyup", self.onKeyUp);
-   window.addEventListener("mousemove", self.onMouseMove);
+   speed = properties["speed"];
+   
+   doOnMouseMove(function(x, y) {
+      mouseX = x;
+      mouseY = y;
+   });
+
+   doOnKeyDown(16, function(e) {
+      if (!ctrlDown) {
+         showMouse();
+         ctrlDown = true;
+      }
+   });
+
+   doOnKeyUp(16, function(e) {
+      ctrlDown = false;
+   });
 });
 
 registerNSMethod(self, "remove", function() {
    self.isActive = false;
-   window.removeEventListener("keydown", self.onKeyDown);
-   window.removeEventListener("keyup", self.onKeyUp);
-   window.removeEventListener("mousemove", self.onMouseMove);
 });
-
-self.onMouseMove = function(e) {
-   mouseX = e.pageX;
-   mouseY = e.pageY;
-}
-
-self.onKeyDown = function(e) {
-   if (e.keyCode === 16 && !ctrlDown) {
-      showMouse();
-      ctrlDown = true;
-   }
-}
-
-self.onKeyUp = function(e) {
-   if (e.keyCode === 16) ctrlDown = false;
-}
 
 const showMouse = function() {
    if (typeof mouseX == "undefined" || typeof mouseY == "undefined" || performingAnimation) return;
