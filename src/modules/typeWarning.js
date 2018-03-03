@@ -1,14 +1,17 @@
 registerNamespace("uk.org.adaptive.typeWarning");
 
 self.isActive = false;
-const flashColour = "#ff0000";
+var type = "flash";
 
+var flashColour = "#ff0000";
 var currentlyFlashing = false;
 
-registerNSMethod(self, "apply", function() {
+registerNSMethod(self, "apply", function(properties) {
+   if (!verifyArgs(properties, [["type", STRINGTYPE]])) return false;
    if (self.isActive) self.remove();
    
    self.isActive = true;
+   type = properties["type"];
    
    doOnKeyDown(-1, function(e) {
       if (!e.ctrlKey && !e.altKey && !e.metaKey &&

@@ -1,16 +1,18 @@
 registerNamespace("uk.org.adaptive.passwordReveal");
 
 self.isActive = false;
-const timeDelay = 3;
+var timeDelay = 3;
 
 var box = undefined;
 var countdown;
 var countDownIntervalId;
 
-registerNSMethod(self, "apply", function() {
+registerNSMethod(self, "apply", function(properties) {
+   if (!verifyArgs(properties, [["timeDelay", STRINGTYPE]])) return false;
    if (self.isActive) self.remove();
    
    self.isActive = true;
+   timeDelay = properties["timeDelay"];
    
    doOnKeyDown(17, function(e) {
       if (e.target.tagName === "INPUT" && e.target.type.toLowerCase() === "password" && !box.parentNode && e.target.value) {

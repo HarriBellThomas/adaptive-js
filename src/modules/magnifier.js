@@ -1,21 +1,52 @@
 registerNamespace("uk.org.adaptive.magnifier");
 
 self.isActive = false;
-const magnifierSize = 200;
-const zoom = 1.75;
+var magnifierSize = 200;
+var zoom = 1.75;
 
 var isMagnifierOn = false;
 var magnifyingGlass = undefined;
 var mouseX = 0;
 var mouseY = 0;
 
-registerNSMethod(self, "apply", function() {
+registerNSMethod(self, "apply", function(properties) {
+   if (!verifyArgs(properties, [["magnifierSize", NUMTYPE], ["zoom", NUMTYPE]])) return false;
    if (self.isActive) self.remove();
    
    self.isActive = true;
-   window.addEventListener("mousemove", self.onMouseMove);
-   window.addEventListener("keydown", self.onKeyDown);
-   window.addEventListener("keyup", self.onKeyUp);
+   magnifierSize = properties["magnifierSize"];
+   zoom = properties["zoom"];
+   
+   doOnMouseMove(function(x, y) {
+      mouseX = x;
+      mouseY = y;
+      
+      // If we don't have the screenshot yet then don't do anything
+      if (typeof magnifyingGlass == "undefined") return;
+      
+      if (isMagnifierOn) updatePosition();
+   });
+
+   doOnKeyDown(17, function(e) {
+      // If we don't have the screenshot yet then don't do anything
+      if (typeof magnifyingGlass == "undefined") return;
+      
+      if (!isMagnifierOn) {
+         document.body.appendChild(magnifyingGlass);
+         isMagnifierOn = true;
+         updatePosition();
+      }
+   });
+
+   doOnKeyUp(17, function(e) {
+      // If we don't have the screenshot yet then don't do anything
+      if (typeof magnifyingGlass == "undefined") return;
+      
+      if (isMagnifierOn) {
+         magnifyingGlass.parentNode.removeChild(magnifyingGlass);
+         isMagnifierOn = false;
+      }
+   });
    
    // First, make all cross-domain images not cross domain
    // forall(VISUALS).do(function(a) { applyToImage(a, function(xy, rgba) { return {r: 255, g: 0, b: 0, a: rgba.a}; }); });
@@ -49,41 +80,7 @@ registerNSMethod(self, "apply", function() {
 
 registerNSMethod(self, "remove", function() {
    self.isActive = false;
-   window.removeEventListener("mousemove", self.onMouseMove);
-   window.removeEventListener("keydown", self.onKeyDown);
-   window.removeEventListener("keyup", self.onKeyUp);
 });
-
-self.onMouseMove = function(e) {
-   mouseX = e.pageX;
-   mouseY = e.pageY;
-   
-   // If we don't have the screenshot yet then don't do anything
-   if (typeof magnifyingGlass == "undefined") return;
-   
-   if (isMagnifierOn) updatePosition();
-}
-
-self.onKeyDown = function(e) {
-   // If we don't have the screenshot yet then don't do anything
-   if (typeof magnifyingGlass == "undefined") return;
-   
-   if (e.keyCode === 17 && !isMagnifierOn) {
-      document.body.appendChild(magnifyingGlass);
-      isMagnifierOn = true;
-      updatePosition();
-   }
-}
-
-self.onKeyUp = function(e) {
-   // If we don't have the screenshot yet then don't do anything
-   if (typeof magnifyingGlass == "undefined") return;
-   
-   if (e.keyCode === 17 && isMagnifierOn) {
-      magnifyingGlass.parentNode.removeChild(magnifyingGlass);
-      isMagnifierOn = false;
-   }
-}
 
 const updatePosition = function() {
    magnifyingGlass.style.top = (mouseY - magnifierSize/2) + "px";
