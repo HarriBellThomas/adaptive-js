@@ -239,6 +239,18 @@ registerNSMethod(self, "nightShifter", (
       return v;
     };
 
+    forall(VISUALS).do(
+      function (a) {
+        applyToImage(a, function (xy, rgba) {
+          return {
+            r: rgba.r,
+            g: rgba.g,
+            b: rgba.b,
+            a: rgba.a
+          }
+        })
+      });
+
     date = new Date();
     sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 39, 0);
     sevenAM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0);
