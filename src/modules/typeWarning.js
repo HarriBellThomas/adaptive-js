@@ -5,7 +5,11 @@ var type = "flash";
 
 var flashColour = "#ff0000";
 var currentlyFlashing = false;
-var sound;
+var sound = undefined;
+
+(<
+   if (typeof sound === "undefined") fail("Failed to load sound file");
+>)
 
 registerNSMethod(self, "apply", function(properties) {
    if (!verifyArgs(properties, [["type", STRINGTYPE]])) return false;
