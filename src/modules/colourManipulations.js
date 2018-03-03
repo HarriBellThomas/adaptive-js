@@ -226,7 +226,7 @@ registerNSMethod(self, "changeBrightness", (
 ));
 
 registerNSMethod(self, "invert", (
-  function (properties) {
+  function () {
 
     if (self.isActive)
       self.remove();
@@ -247,7 +247,7 @@ registerNSMethod(self, "invert", (
         boc = rgbaValue(extractColour(a, "border-color"));
 
         bc = {r: 255-bc.r, g: 255-bc.g, b: 255-bc.b, a: bc.a};
-        c = {r: 255-c.r, g: 255-c.g, b: 255-c.b, a: c.a};
+        c = {r: 255-c.r, g: 255-c.g, b: 255-c.b, a: (c.a==0)?1:c.a};
         boc = {r: 255-boc.r, g: 255-boc.g, b: 255-boc.b, a: boc.a};
 
         a.cacheCSSProperties(["background-color"]);
