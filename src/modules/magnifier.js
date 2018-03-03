@@ -51,33 +51,33 @@ registerNSMethod(self, "apply", function() {
    window.addEventListener("keyup", self.onKeyUp);
    
    // First, make all cross-domain images not cross domain
-   forall(VISUALS).do(function(a) { applyToImage(a, function(xy, rgba) { return {r: 255, g: 0, b: 0, a: rgba.a}; }); }).then(function() {
-      // Take screenshot of page
-      console.log("Loading screenshot library");
-      var script = document.createElement("script");
-      script.type = "text/javascript";
-      script.async = true;
-      script.onload = function() {
-         console.log("Taking screenshot");
-         html2canvas(document.body, { scale: self.zoom, logging: true }).then(function(c) {
-            self.magnifyingGlass = document.createElement("div");
-            self.magnifyingGlass.style.border = "3px solid #000";
-            self.magnifyingGlass.style.borderRadius = "50%";
-            self.magnifyingGlass.style.cursor = "none";
-            self.magnifyingGlass.style.backgroundImage = "url(\"" + c.toDataURL("image/png") + "\")";
-            self.magnifyingGlass.style.backgroundRepeat = "no-repeat";
-            
-            self.magnifyingGlass.style.position = "absolute";
-            self.magnifyingGlass.style.top = (-self.magnifierSize) + "px";
-            self.magnifyingGlass.style.left = (-self.magnifierSize) + "px";
-            self.magnifyingGlass.style.width = self.magnifierSize + "px";
-            self.magnifyingGlass.style.height = self.magnifierSize + "px";
-            self.magnifyingGlass.style.zIndex = "10000";     // TODO: this is a *really* bad way of doing it
-         });
-      };
-      script.src = "https://html2canvas.hertzen.com/dist/html2canvas.min.js";
-      document.getElementsByTagName("head")[0].appendChild(script);
-   });
+   // forall(VISUALS).do(function(a) { applyToImage(a, function(xy, rgba) { return {r: 255, g: 0, b: 0, a: rgba.a}; }); });
+   
+   // Take screenshot of page
+   console.log("Loading screenshot library");
+   var script = document.createElement("script");
+   script.type = "text/javascript";
+   script.async = true;
+   script.onload = function() {
+      console.log("Taking screenshot");
+      html2canvas(document.body, { scale: self.zoom, logging: true }).then(function(c) {
+         self.magnifyingGlass = document.createElement("div");
+         self.magnifyingGlass.style.border = "3px solid #000";
+         self.magnifyingGlass.style.borderRadius = "50%";
+         self.magnifyingGlass.style.cursor = "none";
+         self.magnifyingGlass.style.backgroundImage = "url(\"" + c.toDataURL("image/png") + "\")";
+         self.magnifyingGlass.style.backgroundRepeat = "no-repeat";
+         
+         self.magnifyingGlass.style.position = "absolute";
+         self.magnifyingGlass.style.top = (-self.magnifierSize) + "px";
+         self.magnifyingGlass.style.left = (-self.magnifierSize) + "px";
+         self.magnifyingGlass.style.width = self.magnifierSize + "px";
+         self.magnifyingGlass.style.height = self.magnifierSize + "px";
+         self.magnifyingGlass.style.zIndex = "10000";     // TODO: this is a *really* bad way of doing it
+      });
+   };
+   script.src = "https://html2canvas.hertzen.com/dist/html2canvas.min.js";
+   document.getElementsByTagName("head")[0].appendChild(script);
 });
 
 registerNSMethod(self, "remove", function() {
