@@ -1,12 +1,9 @@
 registerNamespace("uk.org.adaptive.typeWarning");
 
 self.isActive = false;
-self.flashColour = "#ff0000";
-self.currentlyFlashing = false;
+const flashColour = "#ff0000";
 
-self.onKeyPress = function(e) {
-   if (!e.ctrlKey && !e.altKey && !e.metaKey && e.target.tagName !== "TEXTAREA" && e.target.tagName !== "INPUT") self.flash();
-}
+var currentlyFlashing = false;
 
 registerNSMethod(self, "apply", function() {
    if (self.isActive) self.remove();
@@ -20,9 +17,13 @@ registerNSMethod(self, "remove", function() {
    window.removeEventListener("keypress", self.onKeyPress);
 });
 
-registerNSMethod(self, "flash", function() {
-   if (self.currentlyFlashing) return;
-   self.currentlyFlashing = true;
+self.onKeyPress = function(e) {
+   if (!e.ctrlKey && !e.altKey && !e.metaKey && e.target.tagName !== "TEXTAREA" && e.target.tagName !== "INPUT") flash();
+}
+
+const flash = function() {
+   if (currentlyFlashing) return;
+   currentlyFlashing = true;
    
    var cover = document.createElement("div");
    
@@ -31,11 +32,11 @@ registerNSMethod(self, "flash", function() {
    cover.style.top = "0px";
    cover.style.width = "100%";
    cover.style.height = "100%";
-   cover.style.zIndex = "10001";    // TODO: this is a *really* bad way of doing it
+   cover.style.zIndex = "999999999";
    
    var opacity = 0.7;
    
-   cover.style.backgroundColor = self.flashColour;
+   cover.style.backgroundColor = flashColour;
    cover.style.opacity = opacity;
    document.body.appendChild(cover);
    
@@ -47,10 +48,10 @@ registerNSMethod(self, "flash", function() {
       if (opacity <= 0) {
          clearInterval(id);
          cover.parentNode.removeChild(cover);
-         self.currentlyFlashing = false;
+         currentlyFlashing = false;
       } else {
          opacity -= 0.01;
          cover.style.opacity = opacity;
       }
    }
-});
+};

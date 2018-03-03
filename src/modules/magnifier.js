@@ -1,43 +1,13 @@
 registerNamespace("uk.org.adaptive.magnifier");
 
 self.isActive = false;
-self.isMagnifierOn = false;
-self.magnifierSize = 200;
-self.zoom = 1.75;
-self.magnifyingGlass = undefined;
-self.mouseX = 0;
-self.mouseY = 0;
+const magnifierSize = 200;
+const zoom = 1.75;
 
-self.onMouseMove = function(e) {
-   self.mouseX = e.pageX;
-   self.mouseY = e.pageY;
-   
-   // If we don't have the screenshot yet then don't do anything
-   if (typeof self.magnifyingGlass == "undefined") return;
-   
-   if (self.isMagnifierOn) self.updatePosition();
-}
-
-self.onKeyDown = function(e) {
-   // If we don't have the screenshot yet then don't do anything
-   if (typeof self.magnifyingGlass == "undefined") return;
-   
-   if (e.keyCode === 17 && !self.isMagnifierOn) {
-      document.body.appendChild(self.magnifyingGlass);
-      self.isMagnifierOn = true;
-      self.updatePosition();
-   }
-}
-
-self.onKeyUp = function(e) {
-   // If we don't have the screenshot yet then don't do anything
-   if (typeof self.magnifyingGlass == "undefined") return;
-   
-   if (e.keyCode === 17 && self.isMagnifierOn) {
-      self.magnifyingGlass.parentNode.removeChild(self.magnifyingGlass);
-      self.isMagnifierOn = false;
-   }
-}
+var isMagnifierOn = false;
+var magnifyingGlass = undefined;
+var mouseX = 0;
+var mouseY = 0;
 
 registerNSMethod(self, "apply", function() {
    if (self.isActive) self.remove();
@@ -57,20 +27,20 @@ registerNSMethod(self, "apply", function() {
    script.async = true;
    script.onload = function() {
       console.log("Taking screenshot");
-      html2canvas(document.body, { scale: self.zoom, logging: true }).then(function(c) {
-         self.magnifyingGlass = document.createElement("div");
-         self.magnifyingGlass.style.border = "3px solid #000";
-         self.magnifyingGlass.style.borderRadius = "50%";
-         self.magnifyingGlass.style.cursor = "none";
-         self.magnifyingGlass.style.backgroundImage = "url(\"" + c.toDataURL("image/png") + "\")";
-         self.magnifyingGlass.style.backgroundRepeat = "no-repeat";
+      html2canvas(document.body, { scale: zoom, logging: true }).then(function(c) {
+         magnifyingGlass = document.createElement("div");
+         magnifyingGlass.style.border = "3px solid #000";
+         magnifyingGlass.style.borderRadius = "50%";
+         magnifyingGlass.style.cursor = "none";
+         magnifyingGlass.style.backgroundImage = "url(\"" + c.toDataURL("image/png") + "\")";
+         magnifyingGlass.style.backgroundRepeat = "no-repeat";
          
-         self.magnifyingGlass.style.position = "absolute";
-         self.magnifyingGlass.style.top = (-self.magnifierSize) + "px";
-         self.magnifyingGlass.style.left = (-self.magnifierSize) + "px";
-         self.magnifyingGlass.style.width = self.magnifierSize + "px";
-         self.magnifyingGlass.style.height = self.magnifierSize + "px";
-         self.magnifyingGlass.style.zIndex = "10000";     // TODO: this is a *really* bad way of doing it
+         magnifyingGlass.style.position = "absolute";
+         magnifyingGlass.style.top = (-magnifierSize) + "px";
+         magnifyingGlass.style.left = (-magnifierSize) + "px";
+         magnifyingGlass.style.width = magnifierSize + "px";
+         magnifyingGlass.style.height = magnifierSize + "px";
+         magnifyingGlass.style.zIndex = "999999999";
       });
    };
    script.src = "https://html2canvas.hertzen.com/dist/html2canvas.min.js";
@@ -84,8 +54,39 @@ registerNSMethod(self, "remove", function() {
    window.removeEventListener("keyup", self.onKeyUp);
 });
 
-registerNSMethod(self, "updatePosition", function() {
-   self.magnifyingGlass.style.top = (self.mouseY - self.magnifierSize/2) + "px";
-   self.magnifyingGlass.style.left = (self.mouseX - self.magnifierSize/2) + "px";
-   self.magnifyingGlass.style.backgroundPosition = (-(self.mouseX * self.zoom - self.magnifierSize/2)) + "px" + " " + (-(self.mouseY * self.zoom - self.magnifierSize/2)) + "px";
-});
+self.onMouseMove = function(e) {
+   mouseX = e.pageX;
+   mouseY = e.pageY;
+   
+   // If we don't have the screenshot yet then don't do anything
+   if (typeof magnifyingGlass == "undefined") return;
+   
+   if (isMagnifierOn) updatePosition();
+}
+
+self.onKeyDown = function(e) {
+   // If we don't have the screenshot yet then don't do anything
+   if (typeof magnifyingGlass == "undefined") return;
+   
+   if (e.keyCode === 17 && !isMagnifierOn) {
+      document.body.appendChild(magnifyingGlass);
+      isMagnifierOn = true;
+      updatePosition();
+   }
+}
+
+self.onKeyUp = function(e) {
+   // If we don't have the screenshot yet then don't do anything
+   if (typeof magnifyingGlass == "undefined") return;
+   
+   if (e.keyCode === 17 && isMagnifierOn) {
+      magnifyingGlass.parentNode.removeChild(magnifyingGlass);
+      isMagnifierOn = false;
+   }
+}
+
+const updatePosition = function() {
+   magnifyingGlass.style.top = (mouseY - magnifierSize/2) + "px";
+   magnifyingGlass.style.left = (mouseX - magnifierSize/2) + "px";
+   magnifyingGlass.style.backgroundPosition = (-(mouseX * zoom - magnifierSize/2)) + "px" + " " + (-(mouseY * zoom - magnifierSize/2)) + "px";
+};
