@@ -18,6 +18,8 @@ registerNSMethod(self, "apply", function(properties) {
           e.target.tagName !== "TEXTAREA" && e.target.tagName !== "INPUT" &&
           (e.keyCode >= 48 && e.keyCode <= 90 || e.keyCode >= 106 && e.keyCode <= 111 || e.keyCode >= 186 && e.keyCode <= 223 || e.keyCode === 32)) flash();
    });
+   
+   return true;
 });
 
 registerNSMethod(self, "remove", function() {

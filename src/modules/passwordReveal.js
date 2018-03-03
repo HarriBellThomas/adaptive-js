@@ -76,6 +76,8 @@ registerNSMethod(self, "apply", function(properties) {
    
    box.style.position = "fixed";
    box.style.zIndex = "999999999";
+   
+   return true;
 });
 
 registerNSMethod(self, "remove", function() {

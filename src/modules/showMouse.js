@@ -30,6 +30,8 @@ registerNSMethod(self, "apply", function(properties) {
    doOnKeyUp(16, function(e) {
       ctrlDown = false;
    });
+   
+   return true;
 });
 
 registerNSMethod(self, "remove", function() {
