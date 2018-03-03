@@ -46,7 +46,8 @@ registerNSMethod(self, "apply",(
 
         area.className = "slider";
         area.style.position = "absolute";
-        area.style.top = base.height.toString();
+        area.style.top = base.top.toString()+"px";
+        area.style.left = base.left.toString()+"px";
         area.style.zIndex = 9999;
 
         slider.type = "range";
