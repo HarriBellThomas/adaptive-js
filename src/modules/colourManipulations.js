@@ -225,6 +225,59 @@ registerNSMethod(self, "changeBrightness", (
     }
 ));
 
+registerNSMethod(self, "invert", (
+  function (properties) {
+
+    if (self.isActive)
+      self.remove();
+
+    self.isActive = true;
+
+    targets().where(a=> a instanceof HTMLElement).do(
+      function (a) {
+        if (!self.isActive) return;
+
+        img = window.getComputedStyle(a, null).backgroundImage;
+        if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
+          a.cacheCSSProperties(["style.backgroundImage"]);
+          a.style.backgroundImage = "none";
+        }
+        bc = rgbaValue(extractColour(a, "backgroundColor"));
+        c = rgbaValue(extractColour(a, "color"));
+        boc = rgbaValue(extractColour(a, "border-color"));
+
+        bc = {r: 255-bc.r, g: 255-bc.g, b: 255-bc.b, a: bc.a};
+        c = {r: 255-c.r, g: 255-c.g, b: 255-c.b, a: c.a};
+        boc = {r: 255-boc.r, g: 255-boc.g, b: 255-boc.b, a: boc.a};
+
+        a.cacheCSSProperties(["background-color"]);
+        a.cacheCSSProperties(["color"]);
+        a.cacheCSSProperties(["border-color"]);
+
+        a.style.backgroundColor = "rgba("+bc.r+","+bc.g+","+bc.b+","+bc.a+")";
+        a.style.color = "rgba("+c.r+","+c.g+","+c.b+","+c.a+")";
+        a.style.borderColor = "rgba("+boc.r+","+boc.g+","+boc.b+","+boc.a+")";
+      }
+    )
+
+    forall(VISUALS).do(
+      function (a) {
+        applyToImage(a, function (xy,rgba) {
+
+          if (!self.isActive) return;
+
+          return {
+            r: 255-rgba.r,
+            g: 255-rgba.g,
+            b: 255-rgba.b,
+            a: rgba.a
+          }
+        })
+      }
+    );
+  }
+));
+
 registerNSMethod(self, "nightShifter", (
   function () {
 
