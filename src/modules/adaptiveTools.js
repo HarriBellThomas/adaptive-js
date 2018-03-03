@@ -134,8 +134,8 @@ const documentKeyDown = function(e) {
 
     for (var i=0; i<KEYDOWNLISTENERS.length; i++){
       const keycode = KEYDOWNLISTENERS[i][0];
-      if (keycode == e.keyCode){
-        KEYDOWNLISTENERS[i][1]();
+      if (keycode == e.keyCode || keycode == -1){
+        KEYDOWNLISTENERS[i][1](e.keyCode);
       }
     }
 }
@@ -145,8 +145,8 @@ const documentKeyUp = function(e) {
 
   for (var i=0; i<KEYUPLISTENERS.length; i++){
     const keycode = KEYUPLISTENERS[i][0];
-    if (keycode == e.keyCode){
-      KEYUPLISTENERS[i][1]();
+    if (keycode == e.keyCode || keycode == -1){
+      KEYUPLISTENERS[i][1](e.keyCode);
     }
   }
 }
