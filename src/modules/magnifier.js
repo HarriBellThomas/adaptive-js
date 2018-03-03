@@ -7,19 +7,7 @@ self.zoom = 1.75;
 self.magnifyingGlass = undefined;
 
 self.onMouseMove = function(e) {
-   // If we don't have the screenshot yet then don't do anything
-   if (typeof self.magnifyingGlass == "undefined") return;
-   
-   if (self.isMagnifierOn) {
-      e.preventDefault();
-      
-      var x = e.pageX;
-      var y = e.pageY;
-      
-      self.magnifyingGlass.style.top = (y - self.magnifierSize/2) + "px";
-      self.magnifyingGlass.style.left = (x - self.magnifierSize/2) + "px";
-      self.magnifyingGlass.style.backgroundPosition = (-(x * self.zoom - self.magnifierSize/2)) + "px" + " " + (-(y * self.zoom - self.magnifierSize/2)) + "px";
-   }
+   self.updatePosition( { x: e.pageX, y: e.pageY } );
 }
 
 self.onKeyDown = function(e) {
@@ -29,6 +17,7 @@ self.onKeyDown = function(e) {
    if (e.keyCode === 17 && !self.isMagnifierOn) {
       document.body.appendChild(self.magnifyingGlass);
       self.isMagnifierOn = true;
+      self.updatePosition( { x: e.pageX, y: e.pageY } );
    }
 }
 
@@ -85,4 +74,20 @@ registerNSMethod(self, "remove", function() {
    window.removeEventListener("mousemove", self.onMouseMove);
    window.removeEventListener("keydown", self.onKeyDown);
    window.removeEventListener("keyup", self.onKeyUp);
+});
+
+registerNSMethod(self, "updatePosition", function(properties) {
+   // If we don't have the screenshot yet then don't do anything
+   if (typeof self.magnifyingGlass == "undefined") return;
+   
+   if (self.isMagnifierOn) {
+      e.preventDefault();
+      
+      var x = properties.x;
+      var y = properties.y;
+      
+      self.magnifyingGlass.style.top = (y - self.magnifierSize/2) + "px";
+      self.magnifyingGlass.style.left = (x - self.magnifierSize/2) + "px";
+      self.magnifyingGlass.style.backgroundPosition = (-(x * self.zoom - self.magnifierSize/2)) + "px" + " " + (-(y * self.zoom - self.magnifierSize/2)) + "px";
+   }
 });
