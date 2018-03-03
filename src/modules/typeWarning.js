@@ -13,7 +13,7 @@ registerNSMethod(self, "apply", function(properties) {
    
    self.isActive = true;
    type = properties["type"];
-   if (type === "sound") sound = new Audio("https://js.adaptive.org.uk/assets/error.mp3");
+   if (type === "sound") sound = new Audio("https://js.adaptive.org.uk/assets/error.wav");
    
    doOnKeyDown(-1, function(e) {
       if (self.isActive && !e.ctrlKey && !e.altKey && !e.metaKey &&
