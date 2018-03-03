@@ -14,7 +14,7 @@ registerNSMethod(self, "apply", function(properties) {
    type = properties["type"];
    
    doOnKeyDown(-1, function(e) {
-      if (!e.ctrlKey && !e.altKey && !e.metaKey &&
+      if (self.isActive && !e.ctrlKey && !e.altKey && !e.metaKey &&
           e.target.tagName !== "TEXTAREA" && e.target.tagName !== "INPUT" &&
           (e.keyCode >= 48 && e.keyCode <= 90 || e.keyCode >= 106 && e.keyCode <= 111 || e.keyCode >= 186 && e.keyCode <= 223 || e.keyCode === 32)) flash();
    });

@@ -39,7 +39,7 @@ registerNSMethod(self, "remove", function() {
 });
 
 const showMouse = function() {
-   if (typeof mouseX == "undefined" || typeof mouseY == "undefined" || performingAnimation) return;
+   if (typeof mouseX == "undefined" || typeof mouseY == "undefined" || performingAnimation || !self.isActive) return;
    console.log("Showing mouse at X: " + mouseX + ", Y: " + mouseY);
    
    var startSize = 400;
