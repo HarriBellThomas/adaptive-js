@@ -1,6 +1,6 @@
 /* 'ForAll' ENUMs */
 
-registerENUM(["IMAGES","DIVS","VIDEOS","LINKS","TABLES","SPANS","BUTTONS","VISUALS","PARAGRAPHS", "HEADERS"]);
+registerENUM(["IMAGES","DIVS","VIDEOS","LINKS","TABLES","SPANS","BUTTONS","VISUALS","PARAGRAPHS", "HEADERS", "ELEMENTS"]);
 
 const Operable=function(ls){this.elements = ls;}
 Operable.prototype.where=function(p){
@@ -77,7 +77,7 @@ const all=function(typ,$2,$3,$4,$5,$6){
       return new Operable(uk.org.adaptive.core.getElementsByTag("button"));
       break;
     case VISUALS:
-      return forall().where(a=> a.tagName != "SCRIPT" && a.src != undefined);
+      return forall(DIVS).where(a=> a.src != undefined).with(forall(IMAGES));
       break;
      case PARAGRAPHS:
       return new Operable(uk.org.adaptive.core.getElementsByTag("p"));
@@ -89,6 +89,8 @@ const all=function(typ,$2,$3,$4,$5,$6){
               new Operable(uk.org.adaptive.core.getElementsByTag("h4")).with(
               new Operable(uk.org.adaptive.core.getElementsByTag("h5"))))));
       break;
+    case ELEMENTS:
+      return forall().where(a=> a instanceof HTMLElement);
     default:
       return new Operable(uk.org.adaptive.core.getElementsByTag("*"));
       break;
@@ -117,6 +119,7 @@ const differentto = function(el){
 
 var KEYSDOWN = [];
 var KEYUPLISTENERS = [];
+var KEYDOWNLISTENERS = [];
 
 const hasKeyDown = function(key){
     for(var i=0;i<KEYSDOWN.length;i++){
@@ -128,6 +131,13 @@ const documentKeyDown = function(e) {
     e = e || window.event;
     removeKeyIndicator(e.keyCode);
     KEYSDOWN.push(e.keyCode);
+
+    for (var i=0; i<KEYDOWNLISTENERS.length; i++){
+      const keycode = KEYDOWNLISTENERS[i][0];
+      if (keycode == e.keyCode){
+        KEYDOWNLISTENERS[i][1]();
+      }
+    }
 }
 const documentKeyUp = function(e) {
   e = e || window.event;
@@ -152,6 +162,10 @@ const removeKeyIndicator = function(toRemove){
 }
 const doOnKeyUp = function(keycode, funct){
   KEYUPLISTENERS.push([keycode, funct]);
+}
+
+const doOnKeyDown = function(keycode, funct){
+  KEYDOWNLISTENERS.push([keycode, funct]);
 }
 
 document.onkeydown = documentKeyDown;
@@ -240,6 +254,7 @@ HTMLElement.prototype.resetCSS = function(){
     this.cachedCSS = undefined;
   }
 }
+
 HTMLElement.prototype.resetCSSProperty = function(prop){
   if (this.cachedCSS != undefined){
     this.cachedCSS.partApply(this,prop);
