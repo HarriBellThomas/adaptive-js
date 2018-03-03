@@ -21,7 +21,7 @@ registerNSMethod(self, "changeSaturation", (
 
     value = properties["factor"];
 
-    targets().do(
+    targets().where(a=> a instanceof HTMLElement).do(
       function (a) {
         if (!self.isActive) return;
 
@@ -46,14 +46,10 @@ registerNSMethod(self, "changeSaturation", (
         rgb2 = hslToRgb(chsl[0],chsl[1],chsl[2]);
         rgb3 = hslToRgb(bochsl[0],bochsl[1],bochsl[2]);
 
-        try {
-          a.cacheCSSProperties(["background-color"]);
-          a.cacheCSSProperties(["color"]);
-          a.cacheCSSProperties(["border-color"]);
+        a.cacheCSSProperties(["background-color"]);
+        a.cacheCSSProperties(["color"]);
+        a.cacheCSSProperties(["border-color"]);
 
-        } catch (e) {
-          /* some elements do not work with cacheCSSProperties */
-        }
         a.style.backgroundColor = "rgba("+Math.round(rgb1[0])+","+Math.round(rgb1[1])+","+Math.round(rgb1[2])+","+bc.a+")";
         a.style.color = "rgba("+Math.round(rgb2[0])+","+Math.round(rgb2[1])+","+Math.round(rgb2[2])+","+c.a+")";
         a.style.borderColor = "rgba("+Math.round(rgb3[0])+","+Math.round(rgb3[1])+","+Math.round(rgb3[2])+","+boc.a+")";
@@ -101,7 +97,7 @@ registerNSMethod(self, "changeContrast", (
     value = properties["factor"];
     factor = (259*(value+255))/(255*(259-value));
 
-    targets().do(
+    targets().where(a=> a instanceof HTMLElement).do(
       function (a) {
         if (!self.isActive) return;
 
@@ -118,14 +114,10 @@ registerNSMethod(self, "changeContrast", (
         c = {r: Math.round(limit(factor*(c.r-128)+128)), g: Math.round(limit(factor*(c.g-128)+128)), b: Math.round(limit(factor*(c.b-128)+128)), a: c.a};
         boc = {r: Math.round(limit(factor*(boc.r-128)+128)), g: Math.round(limit(factor*(boc.g-128)+128)), b: Math.round(limit(factor*(boc.b-128)+128)), a: boc.a};
 
-        try {
-          a.cacheCSSProperties(["background-color"]);
-          a.cacheCSSProperties(["color"]);
-          a.cacheCSSProperties(["border-color"]);
+        a.cacheCSSProperties(["background-color"]);
+        a.cacheCSSProperties(["color"]);
+        a.cacheCSSProperties(["border-color"]);
 
-        } catch (e) {
-          /* some elements do not work with cacheCSSProperties */
-        }
         a.style.backgroundColor = "rgba("+bc.r+","+bc.g+","+bc.b+","+bc.a+")";
         a.style.color = "rgba("+c.r+","+c.g+","+c.b+","+c.a+")";
         a.style.borderColor = "rgba("+boc.r+","+boc.g+","+boc.b+","+boc.a+")";
@@ -168,7 +160,7 @@ registerNSMethod(self, "changeBrightness", (
 
     value = properties["factor"];
 
-    targets().do(
+    targets().where(a=> a instanceof HTMLElement).do(
       function (a) {
         if (!self.isActive) return;
 
@@ -193,14 +185,10 @@ registerNSMethod(self, "changeBrightness", (
         boc.g = boc.g + Math.round(value);
         boc.b = boc.b + Math.round(value);
 
-        try {
-          a.cacheCSSProperties(["background-color"]);
-          a.cacheCSSProperties(["color"]);
-          a.cacheCSSProperties(["border-color"]);
+        a.cacheCSSProperties(["background-color"]);
+        a.cacheCSSProperties(["color"]);
+        a.cacheCSSProperties(["border-color"]);
 
-        } catch (e) {
-          /* some elements do not work with cacheCSSProperties */
-        }
         a.style.backgroundColor = "rgba("+bc.r+","+bc.g+","+bc.b+","+bc.a+")";
         a.style.color = "rgba("+c.r+","+c.g+","+c.b+","+c.a+")";
         a.style.borderColor = "rgba("+boc.r+","+boc.g+","+boc.b+","+boc.a+")";
@@ -245,7 +233,7 @@ registerNSMethod(self, "nightShifter", (
     timeUntilAM = sevenAM.getTime() - date.getTime();
 
     const apply = function(value) {
-      targets().do(
+      targets().where(a=> a instanceof HTMLElement).do(
         function (a) {
           if (!self.isActive) self.remove();
           self.isActive = true;
@@ -265,17 +253,13 @@ registerNSMethod(self, "nightShifter", (
 
           boc.b = boc.b + Math.round(value);
 
-          try {
-            a.cacheCSSProperties(["background-color"]);
-            a.cacheCSSProperties(["color"]);
-            a.cacheCSSProperties(["border-color"]);
+          a.cacheCSSProperties(["background-color"]);
+          a.cacheCSSProperties(["color"]);
+          a.cacheCSSProperties(["border-color"]);
 
-          } catch (e) {
-            /* some elements do not work with cacheCSSProperties */
-          }
-          a.style.backgroundColor = "rgba(" + bc.r + "," + bc.g + "," + bc.b + "," + bc.a + ")";
-          a.style.color = "rgba(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")";
-          a.style.borderColor = "rgba(" + boc.r + "," + boc.g + "," + boc.b + "," + boc.a + ")";
+          a.style.backgroundColor = "rgba("+bc.r+","+bc.g+","+bc.b+","+bc.a+")";
+          a.style.color = "rgba("+c.r+","+c.g+","+c.b+","+c.a+")";
+          a.style.borderColor = "rgba("+boc.r+","+boc.g+","+boc.b+","+boc.a+")";
         }
       );
 
@@ -322,12 +306,8 @@ registerNSMethod(self, "remove", (
         })
       });
     } catch (e) {}
-    forall().do(function(a){
-        try {
+    forall().where(a=> a instanceof HTMLElement).do(function(a){
           a.resetCSS();
-        } catch (e) {
-          /* some elements do not work with cacheCSSProperties */
-        }
       }
     );
     return true;

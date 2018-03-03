@@ -74,7 +74,7 @@ const relevantTargets = function(typ){
     }
     if (n.className.toString().indexOf("logo")>-1) {
       for (var i=0; i<n.children.length; i++) {
-        //n.children[i].className+="logo";
+        n.children[i].className+="logo";
       }
     }
     for (var i = 0; i< n.children.length; i++) {

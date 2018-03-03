@@ -59,7 +59,7 @@ registerNSMethod(self, "apply", (
       self.remove();
     self.isActive = true;
 
-    targets().do(
+    targets().where(a=> a instanceof HTMLElement).do(
       function (a) {
         if (!self.isActive) return;
 
@@ -82,14 +82,10 @@ registerNSMethod(self, "apply", (
         bocg = Math.round(boc.r * matrix.G[0] / 100.0 + boc.g * matrix.G[1] / 100.0 + boc.b * matrix.G[2] / 100.0);
         bocb = Math.round(boc.r * matrix.B[0] / 100.0 + boc.g * matrix.B[1] / 100.0 + boc.b * matrix.B[2] / 100.0);
 
-        try {
-          a.cacheCSSProperties(["background-color"]);
-          a.cacheCSSProperties(["color"]);
-          a.cacheCSSProperties(["border-color"]);
+        a.cacheCSSProperties(["background-color"]);
+        a.cacheCSSProperties(["color"]);
+        a.cacheCSSProperties(["border-color"]);
 
-        } catch (e) {
-          /* some elements do not work with cacheCSSProperties */
-        }
         a.style.backgroundColor = "rgba("+r+","+g+","+b+","+bc.a+")";
         a.style.color = "rgba("+cr+","+cg+","+cb+","+c.a+")";
         a.style.borderColor = "rgba("+bocr+","+bocg+","+bocb+","+boc.a+")";
@@ -154,7 +150,7 @@ registerNSMethod(self, "daltonize", (
       return m;
     };
 
-    targets().do(
+    targets().where(a=> a instanceof HTMLElement).do(
       function (a) {
 
         if (!self.isActive) return;
@@ -183,13 +179,9 @@ registerNSMethod(self, "daltonize", (
         g = Math.round(limit(bc.g + fixedMatrix[1][0]));
         b = Math.round(limit(bc.b + fixedMatrix[2][0]));
 
-        try {
-          a.cacheCSSProperties(["background-color"]);
-          a.cacheCSSProperties(["color"]);
-          a.cacheCSSProperties(["border-color"]);
-        } catch (e) {
-          /*some elements do not work with cacheCSSProperties*/
-        }
+        a.cacheCSSProperties(["background-color"]);
+        a.cacheCSSProperties(["color"]);
+        a.cacheCSSProperties(["border-color"]);
         a.style.backgroundColor = "rgba("+r+","+g+","+b+","+bc.a+")";
 
         type = properties["blindType"];
@@ -254,12 +246,8 @@ registerNSMethod(self, "remove", (
     forall(VISUALS).do(function(a){applyToImage(a, function (xy,rgba) {
       return {r: rgba.r, g:rgba.g, b: rgba.b, a:rgba.a}
     })});
-      forall().do(a=> {
-        try {
-          a.resetCSS();
-        } catch (e) {
-          /* some elements do not work with cacheCSSProperties */
-        }
+      forall().where(a=> a instanceof HTMLElement).do(a=> {
+        a.resetCSS();
       }
     );
     return true;
