@@ -110,6 +110,8 @@
         continue;
       }
 
+      $forceEscape = false;
+
       if (!$escaped){
         if (peekChars(1) == "'" && ($mode == 2 || $mode == 0)){
           if ($mode == 2){
@@ -144,10 +146,9 @@
           popCharsClean(1);
           continue;
         }
-      }
-      $forceEscape = false;
-      if (peekChars(1) == "\\"){
-        $forceEscape = true;
+        if (peekChars(1) == "\\"){
+          $forceEscape = true;
+        }
       }
 
 
