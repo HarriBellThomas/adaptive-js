@@ -174,7 +174,7 @@ const documentMouseMove = function(e) {
    for (var i = 0; i < MOUSEMOVELISTENERS.length; i++) MOUSEMOVELISTENERS[i](e.pageX, e.pageY);
 };
 
-const doOnMoveMouse = function(f) {
+const doOnMouseMove = function(f) {
    MOUSEMOVELISTENERS.push(f);
 }
 
