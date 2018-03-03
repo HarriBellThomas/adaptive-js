@@ -27,7 +27,7 @@ self.onKeyDown = function(e) {
    if (typeof self.magnifyingGlass == "undefined") return;
    
    if (e.keyCode === 17 && !self.isMagnifierOn) {
-      document.appendChild(self.magnifyingGlass);
+      document.body.appendChild(self.magnifyingGlass);
       self.isMagnifierOn = true;
    }
 }
