@@ -22,14 +22,14 @@ registerNSMethod(self, "apply", function(properties) {
       mouseY = y;
       
       // If we don't have the screenshot yet then don't do anything
-      if (typeof magnifyingGlass == "undefined") return;
+      if (typeof magnifyingGlass == "undefined" || !self.isActive) return;
       
       if (isMagnifierOn) updatePosition();
    });
 
    doOnKeyDown(17, function(e) {
       // If we don't have the screenshot yet then don't do anything
-      if (typeof magnifyingGlass == "undefined") return;
+      if (typeof magnifyingGlass == "undefined" || !self.isActive) return;
       
       if (!isMagnifierOn) {
          document.body.appendChild(magnifyingGlass);
@@ -40,7 +40,7 @@ registerNSMethod(self, "apply", function(properties) {
 
    doOnKeyUp(17, function(e) {
       // If we don't have the screenshot yet then don't do anything
-      if (typeof magnifyingGlass == "undefined") return;
+      if (typeof magnifyingGlass == "undefined" || !self.isActive) return;
       
       if (isMagnifierOn) {
          magnifyingGlass.parentNode.removeChild(magnifyingGlass);

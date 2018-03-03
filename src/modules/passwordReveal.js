@@ -15,7 +15,7 @@ registerNSMethod(self, "apply", function(properties) {
    timeDelay = properties["timeDelay"];
    
    doOnKeyDown(17, function(e) {
-      if (e.target.tagName === "INPUT" && e.target.type.toLowerCase() === "password" && !box.parentNode && e.target.value) {
+      if (self.isActive && e.target.tagName === "INPUT" && e.target.type.toLowerCase() === "password" && !box.parentNode && e.target.value) {
          // First, put the box underneath the <input>
          var rect = e.target.getBoundingClientRect();
          box.style.top = (rect.bottom + 5) + "px";
