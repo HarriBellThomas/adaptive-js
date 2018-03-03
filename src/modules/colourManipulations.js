@@ -285,8 +285,7 @@ registerNSMethod(self, "nightShifter", (
           a.style.backgroundColor = "rgba(" + bc.r + "," + bc.g + "," + bc.b + "," + bc.a + ")";
           a.style.color = "rgba(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")";
           a.style.borderColor = "rgba(" + boc.r + "," + boc.g + "," + boc.b + "," + boc.a + ")";
-        }
-        );
+        });
 
         forall(VISUALS).do(
           function (a) {
@@ -318,7 +317,7 @@ registerNSMethod(self, "nightShifter", (
     } else {
         window.setTimeout(function(){fadeOut(25)}, timeUntilAM);
     }*/
-    fadeIn(25);
+    window.setTimeout(()=>fadeIn(25), 7000);
   }
   ));
 
