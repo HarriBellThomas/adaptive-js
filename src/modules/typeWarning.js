@@ -5,6 +5,7 @@ var type = "flash";
 
 var flashColour = "#ff0000";
 var currentlyFlashing = false;
+var sound;
 
 registerNSMethod(self, "apply", function(properties) {
    if (!verifyArgs(properties, [["type", STRINGTYPE]])) return false;
@@ -12,6 +13,7 @@ registerNSMethod(self, "apply", function(properties) {
    
    self.isActive = true;
    type = properties["type"];
+   if (type === "sound") sound = new Audio("https://js.adaptive.org.uk/assets/error.mp3");
    
    doOnKeyDown(-1, function(e) {
       if (self.isActive && !e.ctrlKey && !e.altKey && !e.metaKey &&
@@ -30,33 +32,38 @@ const flash = function() {
    if (currentlyFlashing) return;
    currentlyFlashing = true;
    
-   var cover = document.createElement("div");
-   
-   cover.style.position = "fixed";
-   cover.style.left = "0px";
-   cover.style.top = "0px";
-   cover.style.width = "100%";
-   cover.style.height = "100%";
-   cover.style.zIndex = "999999999";
-   
-   var opacity = 0.7;
-   
-   cover.style.backgroundColor = flashColour;
-   cover.style.opacity = opacity;
-   document.body.appendChild(cover);
-   
-   // Animation
-   var delta = 5;
-   var id = setInterval(frame, delta);
-   
-   function frame() {
-      if (opacity <= 0) {
-         clearInterval(id);
-         cover.parentNode.removeChild(cover);
-         currentlyFlashing = false;
-      } else {
-         opacity -= 0.01;
-         cover.style.opacity = opacity;
+   if (type === "flash") {
+      var cover = document.createElement("div");
+      
+      cover.style.position = "fixed";
+      cover.style.left = "0px";
+      cover.style.top = "0px";
+      cover.style.width = "100%";
+      cover.style.height = "100%";
+      cover.style.zIndex = "999999999";
+      
+      var opacity = 0.7;
+      
+      cover.style.backgroundColor = flashColour;
+      cover.style.opacity = opacity;
+      document.body.appendChild(cover);
+      
+      // Animation
+      var delta = 5;
+      var id = setInterval(frame, delta);
+      
+      function frame() {
+         if (opacity <= 0) {
+            clearInterval(id);
+            cover.parentNode.removeChild(cover);
+            currentlyFlashing = false;
+         } else {
+            opacity -= 0.01;
+            cover.style.opacity = opacity;
+         }
       }
+   } else {
+      sound.play();
+      currentlyFlashing = false;
    }
 };
