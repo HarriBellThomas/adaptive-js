@@ -52,7 +52,7 @@ registerNSMethod(self, "apply",(
 registerNSMethod(self, "remove",(
   function(){
     self.isActive = false;
-    relevantTargets().where(a=> a instanceof HTMLElement).do(a=> {
+    forall().where(a=> a instanceof HTMLElement).do(a=> {
       a.resetCSS();
     });
     return true;
@@ -93,5 +93,5 @@ const relevantTargets = function(typ){
       }
     }
   }
-  return new Operable(output);
+  return new Operable(output.reverse());
 };
