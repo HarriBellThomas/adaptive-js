@@ -52,9 +52,9 @@ registerNSMethod(self, "apply", function(properties) {
    // forall(VISUALS).do(function(a) { applyToImage(a, function(xy, rgba) { return {r: 255, g: 0, b: 0, a: rgba.a}; }); });
    
    // Take screenshot of page
-   debug("Taking screenshot");
+   console.log("Taking screenshot");
    html2canvas(document.body, { scale: zoom, logging: true }).then(function(c) {
-      debug("Creating magnifier");
+      console.log("Creating magnifier");
       magnifyingGlass = document.createElement("div");
       magnifyingGlass.style.border = "3px solid #000";
       magnifyingGlass.style.borderRadius = "50%";
