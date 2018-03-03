@@ -9,17 +9,17 @@ registerNSMethod(self, "apply", function() {
    if (self.isActive) self.remove();
    
    self.isActive = true;
-   window.addEventListener("keypress", self.onKeyPress);
+   
+   doOnKeyDown(-1, function(e) {
+      if (!e.ctrlKey && !e.altKey && !e.metaKey &&
+          e.target.tagName !== "TEXTAREA" && e.target.tagName !== "INPUT" &&
+          (e.keyCode >= 48 && e.keyCode <= 90 || e.keyCode >= 106 && e.keyCode <= 111 || e.keyCode >= 186 && e.keyCode <= 222)) flash();
+   });
 });
 
 registerNSMethod(self, "remove", function() {
    self.isActive = false;
-   window.removeEventListener("keypress", self.onKeyPress);
 });
-
-self.onKeyPress = function(e) {
-   if (!e.ctrlKey && !e.altKey && !e.metaKey && e.target.tagName !== "TEXTAREA" && e.target.tagName !== "INPUT") flash();
-}
 
 const flash = function() {
    if (currentlyFlashing) return;
