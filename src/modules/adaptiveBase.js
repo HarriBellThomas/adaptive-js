@@ -175,6 +175,8 @@ registerNSMethod(self, "imageReplaceSmartUnchecked", function(img, indx, cache, 
     img.onload = cb;
 });
 
+registerENUM(["SOFTIDENTITY"]);
+
 registerNSMethod(self, "imageReplaceSmart", function(img, f, i, cb){
   if (!img.originFix){
     var imageurl;
@@ -196,14 +198,14 @@ registerNSMethod(self, "imageReplaceSmart", function(img, f, i, cb){
         img.originFix = true;
         self.imageGetRawSize(imageurl, function(j){
           self.IMAGE_SIZES[i] = j;
-          self.imageReplaceSmartUnchecked(img, i, true, f, cb);
+          if (f!==SOFTIDENTITY) self.imageReplaceSmartUnchecked(img, i, true, f, cb);
         });
 
       }
     }, 100);
 
   }else{
-    self.imageReplaceSmartUnchecked(img, i, false, f, cb);
+    if (f!==SOFTIDENTITY) self.imageReplaceSmartUnchecked(img, i, false, f, cb);
   }
 });
 
