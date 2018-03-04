@@ -215,7 +215,8 @@ registerNSMethod(uk.org.adaptive, "applyStyles", (function(properties) {
             if(module["module"] in uk.org.adaptive) {
                 // Module has been defined
                 console.log("Loading module: " + module["module"]);
-                uk.org.adaptive[module["module"]].apply(module["properties"]);
+                var result = uk.org.adaptive[module["module"]].apply(module["properties"]);
+                if(!result) console.log("Failed to initialise " + module["module"]);
             }
         }
     }
