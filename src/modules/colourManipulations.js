@@ -311,7 +311,7 @@ registerNSMethod(self, "nightShifter", (
     };
 
     date = new Date();
-    sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 18, 59, 53);
+    sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 22, 59, 53);
     sevenAM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0);
     timeUntilPM = sevenPM.getTime() - date.getTime();
     timeUntilAM = sevenAM.getTime() - date.getTime();
@@ -422,7 +422,7 @@ registerNSMethod(self, "nightShifter", (
 
     window.setTimeout(()=>fadeIn(25), 10000);
     window.setTimeout(()=>{applyVisuals(-25); fadeOut(25)}, 35000);
-    window.setTimeout(()=> applyVisuals(0),40000);
+    window.setTimeout(()=> applyVisuals(0),60000);
   }
 ));
 
