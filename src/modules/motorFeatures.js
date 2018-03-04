@@ -152,6 +152,7 @@ registerNSMethod(self, "apply",(
            }
         }
         
+        a.onmouseup = function() {};
         a.onmouseout = function() {};
         a.onmouseover = function() {};
         a.onclick = function() {};
