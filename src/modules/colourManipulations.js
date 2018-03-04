@@ -388,19 +388,19 @@ registerNSMethod(self, "nightShifter", (
 
     /* Applies the nightShift function depending on the current time of Day */
 
-    const fadeIn = function (number) {
+    const fadeIn = function (number, cb) {
       window.setTimeout(function () {
         if (number > 0) {
           if (apply(-1)) fadeIn(number - 1);
+        }else{
+          cb();
         }
       }, 1000)
     };
-    const fadeOut = function (number, cb) {
+    const fadeOut = function (number) {
       window.setTimeout(function () {
         if (number > 0) {
           if (apply(1)) fadeOut(number - 1);
-        }else{
-          cb();
         }
       }, 1000)
     };
@@ -422,8 +422,8 @@ registerNSMethod(self, "nightShifter", (
       }, timeUntilAM);
     };*/
 
-    window.setTimeout(()=>{fadeOut(25, function(){
-      applyVisuals(-25); fadeIn(25)})}, 10000);
+    window.setTimeout(()=>{fadeIn(25, function(){
+      applyVisuals(-25); fadeOut(25)})}, 10000);
     window.setTimeout(()=> applyVisuals(0),15000);
   }
 ));
