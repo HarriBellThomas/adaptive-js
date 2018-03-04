@@ -25,7 +25,7 @@ registerNSMethod(self, "apply",(
         which properties are permitted, we can simply
         perform simple field/type-checking like:      */
 
-    if (!verifyArgs(properties, [["backgroundColor", STRINGTYPE]]))
+    if (!verifyArgs(properties, [["backgroundColour", STRINGTYPE]]))
                                               return false;
 
     /* Ensure idempotence by first removing the
@@ -45,7 +45,7 @@ registerNSMethod(self, "apply",(
                                   "padding", "margin",
                                   "border-radius"]);
           this.style.color = "black";
-          this.style.backgroundColor = properties["backgroundColor"];
+          this.style.backgroundColour = properties["backgroundColour"];
           this.style.borderRadius = "8px";
           this.style.padding = "15px 15px 15px 15px";
           this.style.margin = "-15px -15px";
