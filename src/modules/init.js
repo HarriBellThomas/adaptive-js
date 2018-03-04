@@ -132,7 +132,7 @@ registerNSMethod(uk.org.adaptive, "init", (
 
 
             var style = document.createElement("style");
-            style.innerHTML = "div#adaptive-bar{position:fixed;z-index:999999;bottom:0;right:0;height:40px;padding:0;margin:0;background-color:#fff;font-family:Helvetica,system;font-weight:400;font-size:13px;line-height:40px;vertical-align:middle;border-color:#000;border-width:1px 0 0 1px;border-style:solid;-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}div#adaptive-bar img{max-height:16px;padding:12px;float:right;box-sizing:content-box}div#adaptive-bar #status{padding:12px;float:right;max-height:16px;font-family:monospace;font-size:13px;line-height:16px;font-weight:1000;background-color:#fff;box-sizing:content-box}div#adaptive-bar #status:hover{opacity:.7}div#adaptive-bar #status.enabled{background-color:green;color:#fff;cursor:pointer}div#adaptive-bar #status.disabled{background-color:#e20000;color:#fff;cursor:pointer}div#adaptive-bar #status.login{background-color:#e20000;color:#fff;cursor:pointer}";
+            style.innerHTML = "div#adaptive-bar{position:fixed;z-index:999999;bottom:0;right:0;height:40px;padding:0;margin:0;background-color:#fff;font-family:Helvetica,system;font-weight:400;font-size:13px;line-height:40px;vertical-align:middle;border-color:#000;border-width:1px 0 0 1px;border-style:solid;-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}div#adaptive-bar img{max-height:16px;padding:12px;float:right;box-sizing:content-box}div#adaptive-bar #status{padding:12px;float:right;max-height:16px;font-family:monospace;font-size:13px;line-height:16px;font-weight:1000;background-color:#fff;box-sizing:content-box}div#adaptive-bar #status:hover{opacity:.7}div#adaptive-bar #status.enabled{background-color:green;color:#fff;cursor:pointer}div#adaptive-bar #status.disabled{background-color:#e20000;color:#fff;cursor:pointer}div#adaptive-bar #status.login{background-color:#e20000;color:#fff;cursor:pointer}div#adaptive-bar #number{cursor: pointer;background-color: #353535;color: #989898;}";
             document.body.appendChild(style);
 
             var adaptiveBar = document.createElement("div");
@@ -150,8 +150,13 @@ registerNSMethod(uk.org.adaptive, "init", (
             var status = document.createElement("span");
             status.id = "status";
 
+            var number = document.createElement("span");
+            status.id = "number";
+            status.innerHTML = "#";
+
             adaptiveBar.appendChild(imageLink);
             adaptiveBar.appendChild(status);
+            adaptiveBar.appendChild(number);
 
             document.body.appendChild(adaptiveBar);
 
@@ -180,6 +185,23 @@ registerNSMethod(uk.org.adaptive, "init", (
                     removeStyles();
                     status.className = "disabled";
                     status.innerHTML = "Disabled";
+                }
+            });
+
+
+            number.addEventListener("click", function(event) {
+                var person = prompt("Style ID", "Harry Potter");
+                if (person == null || person == "") {
+                    alert("Cancelled");
+                } else {
+                    var n = Math.floor(Number(str));
+                    if(n !== Infinity && String(n) === str && n >= 0) {
+                        setCookie("ADAPTIVE_B", n, 365);
+                        location.reload();
+                    }
+                    else {
+                        alert("Invalid");
+                    }
                 }
             });
 
