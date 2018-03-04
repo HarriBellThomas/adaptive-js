@@ -223,7 +223,7 @@ registerNSMethod(uk.org.adaptive, "init", (
 
                 else {
                     // get style from style route
-                    retrieveJSON(userJSONRoute + styleID);
+                    retrieveJSON(styleJSONRoute + styleID);
                 }
 
                 /* Initialise from Style JSON */
