@@ -8,7 +8,9 @@ var isMagnifierOn = false;
 var magnifyingGlass = undefined;
 var mouseX = 0;
 var mouseY = 0;
-var takingScreenshot = false;
+
+var dirty = true;
+var dirtyCheckIntervalId;
 
 registerNSMethod(self, "apply", function(properties) {
    if (!verifyArgs(properties, [["size", NUMTYPE], ["zoom", NUMTYPE]])) return false;
@@ -48,10 +50,14 @@ registerNSMethod(self, "apply", function(properties) {
          isMagnifierOn = false;
       }
    });
-   
-   // Take another screenshot on window resize
-   window.addEventListener("resize", takeScreenshot);
 
+   // Check if we need to take another screenshot every 2 seconds
+   dirtyCheckIntervalId = setInterval(function() {
+      if (dirty) takeScreenshot();
+   }, 2000);
+   
+   window.addEventListener("resize", onResize);
+   
    // Take screenshot of page
    console.log("Loading screenshot library");
    var script = document.createElement("script");
@@ -66,34 +72,32 @@ registerNSMethod(self, "apply", function(properties) {
 
 registerNSMethod(self, "remove", function() {
    self.isActive = false;
-   window.removeEventListener("resize", takeScreenshot);
+   clearInterval(dirtyCheckIntervalId);
+   window.removeEventListener("resize", onResize);
 });
 
-const takeScreenshot = function() {
-   if (takingScreenshot) {
-      // If we're in the middle of taking a screenshot then try again in 2 seconds
-      setTimeout(takeScreenshot, 2000);
-   } else {
-      console.log("Taking screenshot");
-      takingScreenshot = true;
-      html2canvas(document.body, { proxy:"https://js.adaptive.org.uk/helpers/canvas.php", scale: zoom, logging: true }).then(function(c) {
-         magnifyingGlass = document.createElement("div");
-         magnifyingGlass.style.border = "3px solid #000";
-         magnifyingGlass.style.borderRadius = "50%";
-         magnifyingGlass.style.cursor = "none";
-         magnifyingGlass.style.backgroundImage = "url(\"" + c.toDataURL("image/png") + "\")";
-         magnifyingGlass.style.backgroundRepeat = "no-repeat";
+const onResize = function(e) {
+   dirty = true;
+}
 
-         magnifyingGlass.style.position = "absolute";
-         magnifyingGlass.style.top = (-magnifierSize) + "px";
-         magnifyingGlass.style.left = (-magnifierSize) + "px";
-         magnifyingGlass.style.width = magnifierSize + "px";
-         magnifyingGlass.style.height = magnifierSize + "px";
-         magnifyingGlass.style.zIndex = "999999999";
-         
-         takingScreenshot = false;
-      });
-   }
+const takeScreenshot = function() {
+   dirty = false;
+   console.log("Taking screenshot");
+   html2canvas(document.body, { proxy:"https://js.adaptive.org.uk/helpers/canvas.php", scale: zoom, logging: true }).then(function(c) {
+      magnifyingGlass = document.createElement("div");
+      magnifyingGlass.style.border = "3px solid #000";
+      magnifyingGlass.style.borderRadius = "50%";
+      magnifyingGlass.style.cursor = "none";
+      magnifyingGlass.style.backgroundImage = "url(\"" + c.toDataURL("image/png") + "\")";
+      magnifyingGlass.style.backgroundRepeat = "no-repeat";
+
+      magnifyingGlass.style.position = "absolute";
+      magnifyingGlass.style.top = (-magnifierSize) + "px";
+      magnifyingGlass.style.left = (-magnifierSize) + "px";
+      magnifyingGlass.style.width = magnifierSize + "px";
+      magnifyingGlass.style.height = magnifierSize + "px";
+      magnifyingGlass.style.zIndex = "999999999";
+   });
 }
 
 const updatePosition = function() {
