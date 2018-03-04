@@ -105,7 +105,7 @@ registerNSMethod(self, "apply",(
     });
     forall(BUTTONS).do(
       function(a){
-        const prof = new self.buttonMapping(a, a.onmousedown, (a.href == "" || a.href == "undefined")?a.onmouseup:function(){
+        const prof = new self.buttonMapping(a, a.onmousedown, (a.href == "" || a.href == undefined)?a.onmouseup:function(){
           document.location = this.getAttribute("href");
         }, a.onmouseout, a.onclick);
         self.buttonMappings[a.buttonID] = prof;
@@ -150,11 +150,11 @@ registerNSMethod(self, "apply",(
              self.activeElement = this;
              self.prepareTimer();
            }
-           
-           a.onmouseout = function() {};
-           a.onmouseover = function() {};
-           a.onclick = function() {};
         }
+        
+        a.onmouseout = function() {};
+        a.onmouseover = function() {};
+        a.onclick = function() {};
     });
   }
 ));
