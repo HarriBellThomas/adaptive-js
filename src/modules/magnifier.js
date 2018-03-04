@@ -8,6 +8,7 @@ var isMagnifierOn = false;
 var magnifyingGlass = undefined;
 var mouseX = 0;
 var mouseY = 0;
+var takingScreenshot = false;
 
 registerNSMethod(self, "apply", function(properties) {
    if (!verifyArgs(properties, [["size", NUMTYPE], ["zoom", NUMTYPE]])) return false;
@@ -47,17 +48,34 @@ registerNSMethod(self, "apply", function(properties) {
          isMagnifierOn = false;
       }
    });
-
-   // First, make all cross-domain images not cross domain
-   //forall(VISUALS).do(function(a) { applyToImage(a, SOFTIDENTITY); });
+   
+   // Take another screenshot on window resize
+   window.addEventListener("resize", takeScreenshot);
 
    // Take screenshot of page
    console.log("Loading screenshot library");
    var script = document.createElement("script");
    script.type = "text/javascript";
    script.async = true;
-   script.onload = function() {
+   script.onload = takeScreenshot;
+   script.src = "https://html2canvas.hertzen.com/dist/html2canvas.min.js";
+   document.getElementsByTagName("head")[0].appendChild(script);
+
+   return true;
+});
+
+registerNSMethod(self, "remove", function() {
+   self.isActive = false;
+   window.removeEventListener("resize", takeScreenshot);
+});
+
+const takeScreenshot = function() {
+   if (takingScreenshot) {
+      // If we're in the middle of taking a screenshot then try again in 2 seconds
+      setTimeout(takeScreenshot, 2000);
+   } else {
       console.log("Taking screenshot");
+      takingScreenshot = true;
       html2canvas(document.body, { proxy:"https://js.adaptive.org.uk/helpers/canvas.php", scale: zoom, logging: true }).then(function(c) {
          magnifyingGlass = document.createElement("div");
          magnifyingGlass.style.border = "3px solid #000";
@@ -72,17 +90,11 @@ registerNSMethod(self, "apply", function(properties) {
          magnifyingGlass.style.width = magnifierSize + "px";
          magnifyingGlass.style.height = magnifierSize + "px";
          magnifyingGlass.style.zIndex = "999999999";
+         
+         takingScreenshot = false;
       });
-   };
-   script.src = "https://html2canvas.hertzen.com/dist/html2canvas.min.js";
-   document.getElementsByTagName("head")[0].appendChild(script);
-
-   return true;
-});
-
-registerNSMethod(self, "remove", function() {
-   self.isActive = false;
-});
+   }
+}
 
 const updatePosition = function() {
    magnifyingGlass.style.top = (mouseY - magnifierSize/2) + "px";
