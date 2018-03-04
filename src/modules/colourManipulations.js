@@ -423,10 +423,8 @@ registerNSMethod(self, "nightShifter", (
     };*/
 
     window.setTimeout(()=>{fadeOut(25, function(){
-      applyVisuals(-25); fadeIn(25);
-    }, 10000);
+      applyVisuals(-25); fadeIn(25)})}, 10000);
     window.setTimeout(()=> applyVisuals(0),15000);
-
   }
 ));
 
