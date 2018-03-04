@@ -197,7 +197,7 @@ registerNSMethod(uk.org.adaptive, "init", (
                     alert("Cancelled");
                 } else {
                     var n = Math.floor(Number(input_id));
-                    if(n !== Infinity && String(n) === str && n >= 0) {
+                    if(n !== Infinity && String(n) === input_id && n >= 0) {
                         setCookie("ADAPTIVE_B", n, 365);
                         location.reload();
                     }
@@ -208,10 +208,12 @@ registerNSMethod(uk.org.adaptive, "init", (
             });
 
             if(requireAuth) {
-                status.className = "disabled";
+                status.classList.add("disabled");
+                status.classList.add("box");
                 status.innerHTML = "Disabled";
             } else {
-                status.className = "enabled";
+                status.classList.add("enabled");
+                status.classList.add("box");
                 status.innerHTML = "Enabled";
 
                 if(userMode) {
