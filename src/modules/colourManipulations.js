@@ -316,7 +316,7 @@ registerNSMethod(self, "nightShifter", (
     timeUntilPM = sevenPM.getTime() - date.getTime();
     timeUntilAM = sevenAM.getTime() - date.getTime();
 
-    if (timeUntilAM > 0 || timeUntilPM > 0) {
+    if (timeUntilAM < 0 && timeUntilPM > 0) {
       forall(VISUALS).do(
         function (a) {
           applyToImage(a, SOFTIDENTITY);
@@ -403,7 +403,7 @@ registerNSMethod(self, "nightShifter", (
       }, 1000)
     };
 
-    if (timeUntilAM < 0 && timeUntilPM > 0) {
+    /*if (timeUntilAM < 0 && timeUntilPM > 0) {
       window.setTimeout(function () {
         fadeIn(25);
         applyVisuals(-25)
@@ -412,12 +412,17 @@ registerNSMethod(self, "nightShifter", (
       apply(-25);
       applyVisuals(-25);
     } else {
+      apply(-25);
+      applyVisuals(-25);
       window.setTimeout(function () {
         fadeOut(25);
         applyVisuals(25)
       }, timeUntilAM);
-    }
-    ;
+    };*/
+
+    window.setTimeout(()=>{fadeIn(25);
+    applyVisuals(-25)},10000);
+
   }
 ));
 
