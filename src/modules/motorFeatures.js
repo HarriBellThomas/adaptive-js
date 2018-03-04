@@ -39,8 +39,7 @@ registerNSMethod(self, "apply",(
 
     if (!verifyArgs(properties, [["delay", NUMTYPE], ["doubleClick", BOOLTYPE]])) return false;
 
-    if (properties["delay"] < 1) return false;
-    self.waitTime = properties["delay"];
+    self.waitTime = properties["delay"] * 1000;
     self.doubleClick = properties["doubleClick"];
     
     /* Ensure idempotence by first removing the
