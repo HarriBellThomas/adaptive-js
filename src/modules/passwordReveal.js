@@ -92,7 +92,7 @@ const loseFocus = function(e) {
 // We pass the key event to removeBox so we can clear the "onblur" event listener we added to the password field
 const removeBox = function(e) {
    if (box.parentNode) {
-      clearInterval(countdownIntervalId);
+      if (timeDelay > 0) clearInterval(countdownIntervalId);
       box.innerHTML = "";
       box.parentNode.removeChild(box);
       e.target.removeEventListener("blur", loseFocus);
