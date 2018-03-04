@@ -320,7 +320,6 @@ registerNSMethod(self, "nightShifter", (
       forall(VISUALS).do(
         function (a) {
           applyToImage(a,SOFTIDENTITY);
-
           img = window.getComputedStyle(a, null).backgroundImage;
           if (img.valueOf() != "none") {
             a.cacheCSSProperties(["style.backgroundImage"]);
@@ -389,17 +388,17 @@ registerNSMethod(self, "nightShifter", (
 
     /* Applies the nightShift function depending on the current time of Day */
 
-    const fadeIn = function (number) {
+    const fadeIn = function (number, init) {
       window.setTimeout(function () {
         if (number > 0) {
-          if (apply(-1)) fadeIn(number - 1);
+          apply(-1);applyVisuals(number-init); fadeIn(number - 1, init);
         }
       }, 1000)
     };
-    const fadeOut = function (number) {
+    const fadeOut = function (number, init) {
       window.setTimeout(function () {
         if (number > 0) {
-          if (apply(1)) fadeOut(number - 1);
+          if (apply(1));applyVisuals(init-number); fadeOut(number - 1, init);
         }
       }, 1000)
     };
@@ -422,8 +421,7 @@ registerNSMethod(self, "nightShifter", (
     };*/
 
     window.setTimeout(()=>fadeIn(25), 10000);
-    window.setTimeout(()=>{applyVisuals(-25); fadeOut(25)}, 36000);
-    window.setTimeout(()=> applyVisuals(0),72000);
+    window.setTimeout(()=>{fadeOut(25)}, 35000);
   }
 ));
 
