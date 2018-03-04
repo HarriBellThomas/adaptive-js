@@ -332,7 +332,7 @@ registerNSMethod(self, "nightShifter", (
           img = window.getComputedStyle(a, null).backgroundImage;
           if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
             a.cacheCSSProperties(["style.backgroundImage"]);
-            a.style.backgroundImage = "none";
+            //a.style.backgroundImage = "none";
           }
           bc = rgbaValue(extractColour(a, "backgroundColor"));
           c = rgbaValue(extractColour(a, "color"));
@@ -422,7 +422,7 @@ registerNSMethod(self, "nightShifter", (
 
     window.setTimeout(()=>fadeIn(25), 10000);
     window.setTimeout(()=>{applyVisuals(-25); fadeOut(25)}, 36000);
-    window.setTimeout(()=> applyVisuals(25),62000);
+    window.setTimeout(()=> applyVisuals(25),72000);
   }
 ));
 
