@@ -395,10 +395,10 @@ registerNSMethod(self, "nightShifter", (
         }
       }, 1000)
     };
-    const fadeOut = function (number, init) {
+    const fadeOut = function (number) {
       window.setTimeout(function () {
         if (number > 0) {
-          if (apply(1));applyVisuals(init-number); fadeOut(number - 1, init);
+          if (apply(1));applyVisuals(0-number); fadeOut(number - 1);
         }
       }, 1000)
     };
