@@ -10,11 +10,11 @@ var mouseX = 0;
 var mouseY = 0;
 
 registerNSMethod(self, "apply", function(properties) {
-   if (!verifyArgs(properties, [["magnifierSize", NUMTYPE], ["zoom", NUMTYPE]])) return false;
+   if (!verifyArgs(properties, [["size", NUMTYPE], ["zoom", NUMTYPE]])) return false;
    if (self.isActive) self.remove();
 
    self.isActive = true;
-   magnifierSize = properties["magnifierSize"];
+   magnifierSize = properties["size"];
    zoom = properties["zoom"];
 
    doOnMouseMove(function(x, y) {
