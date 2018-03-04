@@ -105,7 +105,7 @@ registerNSMethod(self, "apply",(
     });
     forall(BUTTONS).do(
       function(a){
-        const prof = new self.buttonMapping(a, a.onmousedown, (a.href == "" || a.href == "undefined")?a.onmouseup:function(){
+        const prof = new self.buttonMapping(a, a.onmousedown, (a.href == "" || a.href == undefined)?a.onmouseup:function(){
           document.location = this.getAttribute("href");
         }, a.onmouseout, a.onclick);
         self.buttonMappings[a.buttonID] = prof;
@@ -145,7 +145,7 @@ registerNSMethod(self, "apply",(
                }
              }, delta);
              
-             //document.body.appendChild(canvas);
+             document.body.appendChild(canvas);
              
              self.activeElement = this;
              self.prepareTimer();
