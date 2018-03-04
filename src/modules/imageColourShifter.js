@@ -180,9 +180,10 @@ registerNSMethod(self, "daltonize", (
         type = properties["blindType"];
         matrix = ColorMatrixMatrixes[type];
 
-        bc = uk.org.adaptive.colourTools.rgbaValue(extractColour(a, "backgroundColor"));
-        c = uk.org.adaptive.colourTools.rgbaValue(extractColour(a, "color"));
-        boc = uk.org.adaptive.colourTools.rgbaValue(extractColour(a, "border-color"));
+        console.log(colourNameToHex("yellow"));
+        bc = rgbaValue(extractColour(a, "backgroundColor"));
+        c = rgbaValue(extractColour(a, "color"));
+        boc = rgbaValue(extractColour(a, "border-color"));
 
 
         let type = properties["blindType"];
