@@ -420,9 +420,9 @@ registerNSMethod(self, "nightShifter", (
       }, timeUntilAM);
     };*/
 
-    window.setTimeout(()=>{fadeOut(25); applyVisuals(-25)}, 10000);
-    fadeIn(25);
-    applyVisuals(0);
+    window.setTimeout(()=>{fadeOut(25); applyVisuals(-25); fadeIn(25);
+      applyVisuals(0);}, 10000);
+
 
   }
 ));
