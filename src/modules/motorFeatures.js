@@ -79,6 +79,17 @@ registerNSMethod(self, "apply",(
       if (self.activeElement) self.activeElement.style.cursor = "default";
       self.cancelOutcome();
     }
+    
+    canvas.onmouseup = function() {
+      if (canvas.parentNode) {
+        clearInterval(animationIntervalId);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.parentNode.removeChild(canvas);
+      }
+      
+      self.activeElement.style.cursor = "default";
+      self.queryOutcome();
+    }
 
     forall(BUTTONS).do(a=> {
       a.buttonID = self.buttonID;
@@ -129,17 +140,6 @@ registerNSMethod(self, "apply",(
           
           self.activeElement = this;
           self.prepareTimer();
-        }
-        
-        a.onmouseup = function() {
-          if (canvas.parentNode) {
-            clearInterval(animationIntervalId);
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            canvas.parentNode.removeChild(canvas);
-          }
-          
-          self.activeElement.style.cursor = "default";
-          self.queryOutcome();
         }
         
         a.onmouseout = function() {};
