@@ -1,7 +1,6 @@
 /* File of Colour transformation tools */
 
-
-/**
+/*
  *
  * Code taken from https://gist.github.com/mjackson/5311256
  *
