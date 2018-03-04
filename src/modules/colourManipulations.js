@@ -319,7 +319,7 @@ registerNSMethod(self, "nightShifter", (
     if (timeUntilAM < 0 && timeUntilPM > 0) {
       forall(VISUALS).do(
         function (a) {
-          applyToImage(a, (xy,rgba)=>{return{rgba}});
+          applyToImage(a, (xy,rgba)=>rgba);
         });
     }
 
@@ -330,11 +330,11 @@ registerNSMethod(self, "nightShifter", (
           self.isActive = true;
 
           img = window.getComputedStyle(a, null).backgroundImage;
-          /*if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")>1) {
+          if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")>-1) {
             console.log(a);
             a.cacheCSSProperties(["style.backgroundImage"]);
             a.style.backgroundImage = "linear-gradient()";
-          }*/
+          }
           bc = rgbaValue(extractColour(a, "backgroundColor"));
           c = rgbaValue(extractColour(a, "color"));
           boc = rgbaValue(extractColour(a, "border-color"));
@@ -421,9 +421,9 @@ registerNSMethod(self, "nightShifter", (
       }, timeUntilAM);
     };*/
 
-    /*window.setTimeout(()=>fadeIn(25), 10000);
+    window.setTimeout(()=>fadeIn(25), 10000);
     window.setTimeout(()=>{applyVisuals(-25); fadeOut(25)}, 36000);
-    window.setTimeout(()=> applyVisuals(0),72000);*/
+    window.setTimeout(()=> applyVisuals(0),72000);
   }
 ));
 
