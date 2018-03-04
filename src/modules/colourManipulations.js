@@ -319,11 +319,10 @@ registerNSMethod(self, "nightShifter", (
     if (timeUntilAM < 0 && timeUntilPM > 0) {
       forall(VISUALS).do(
         function (a) {
-          applyToImage(a, (xy,rgba)=>rgba);
+          applyToImage(a,SOFTIDENTITY);
 
           img = window.getComputedStyle(a, null).backgroundImage;
           if (img.valueOf() != "none") {
-            console.log(a);
             a.cacheCSSProperties(["style.backgroundImage"]);
             a.style.backgroundImage = "none";
           }
