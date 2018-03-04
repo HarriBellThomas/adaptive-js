@@ -310,18 +310,18 @@ registerNSMethod(self, "nightShifter", (
       return v;
     };
 
+    date = new Date();
+    sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 18, 59, 53);
+    sevenAM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0);
+    timeUntilPM = sevenPM.getTime() - date.getTime();
+    timeUntilAM = sevenAM.getTime() - date.getTime();
+
     if (timeUntilAM > 0 || timeUntilPM > 0) {
       forall(VISUALS).do(
         function (a) {
           applyToImage(a, SOFTIDENTITY);
         });
     }
-
-    date = new Date();
-    sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 18, 59, 53);
-    sevenAM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0);
-    timeUntilPM = sevenPM.getTime() - date.getTime();
-    timeUntilAM = sevenAM.getTime() - date.getTime();
 
     const apply = function (value) {
       targets().where(a => a instanceof HTMLElement).do(
