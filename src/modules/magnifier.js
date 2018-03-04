@@ -58,6 +58,20 @@ registerNSMethod(self, "apply", function(properties) {
    
    window.addEventListener("resize", onResize);
    
+   // Initialise magnifying glass
+   magnifyingGlass = document.createElement("div");
+   magnifyingGlass.style.border = "3px solid #000";
+   magnifyingGlass.style.borderRadius = "50%";
+   magnifyingGlass.style.cursor = "none";
+   magnifyingGlass.style.backgroundRepeat = "no-repeat";
+
+   magnifyingGlass.style.position = "absolute";
+   magnifyingGlass.style.top = (-magnifierSize) + "px";
+   magnifyingGlass.style.left = (-magnifierSize) + "px";
+   magnifyingGlass.style.width = magnifierSize + "px";
+   magnifyingGlass.style.height = magnifierSize + "px";
+   magnifyingGlass.style.zIndex = "999999999";
+   
    // Take screenshot of page
    console.log("Loading screenshot library");
    var script = document.createElement("script");
@@ -84,19 +98,7 @@ const takeScreenshot = function() {
    dirty = false;
    console.log("Taking screenshot");
    html2canvas(document.body, { proxy:"https://js.adaptive.org.uk/helpers/canvas.php", scale: zoom, logging: true }).then(function(c) {
-      magnifyingGlass = document.createElement("div");
-      magnifyingGlass.style.border = "3px solid #000";
-      magnifyingGlass.style.borderRadius = "50%";
-      magnifyingGlass.style.cursor = "none";
       magnifyingGlass.style.backgroundImage = "url(\"" + c.toDataURL("image/png") + "\")";
-      magnifyingGlass.style.backgroundRepeat = "no-repeat";
-
-      magnifyingGlass.style.position = "absolute";
-      magnifyingGlass.style.top = (-magnifierSize) + "px";
-      magnifyingGlass.style.left = (-magnifierSize) + "px";
-      magnifyingGlass.style.width = magnifierSize + "px";
-      magnifyingGlass.style.height = magnifierSize + "px";
-      magnifyingGlass.style.zIndex = "999999999";
    });
 }
 
