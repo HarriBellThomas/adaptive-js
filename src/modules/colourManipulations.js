@@ -349,7 +349,7 @@ registerNSMethod(self, "nightShifter", (
           a.style.borderColor = "rgba(" + boc.r + "," + boc.g + "," + boc.b + "," + boc.a + ")";
         });
 
-      forall(IMAGES).do(
+      forall(IMAGES).where(a=> window.getComputedStyle(a).backgroundImage.valueOf() == "none").do(
         function (a) {
           applyToImage(a, function (xy, rgba) {
 
@@ -422,7 +422,7 @@ registerNSMethod(self, "nightShifter", (
 
     window.setTimeout(()=>fadeIn(25), 10000);
     window.setTimeout(()=>{applyVisuals(-25); fadeOut(25)}, 35000);
-    window.setTimeout(()=> applyVisuals(0),60000);
+    window.setTimeout(()=> applyVisuals(25),60000);
   }
 ));
 
