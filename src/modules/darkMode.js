@@ -1,15 +1,7 @@
-/* This is an example module which will cause all links
-    on a given page to highlight when they exprience
-    a mouseover. This example exhibits the main parts of
-    what each module should have to prepare for future
-    integration.                                         */
-
 /* We register a unique namespace for the module, so that
     it can be referenced later                           */
 
 registerNamespace("uk.org.adaptive.darkMode");
-
-/* We can now set/use member variables */
 
 self.isActive = false;
 
@@ -48,6 +40,9 @@ registerNSMethod(self, "apply",(
     );
   }
 ));
+
+
+/* Removes the dark mode function */
 
 registerNSMethod(self, "remove",(
   function(){
