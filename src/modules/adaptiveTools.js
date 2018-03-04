@@ -366,6 +366,7 @@ const verifyArgs = function(obj, typs){
         break;
       case BOOLTYPE:
         if (typeof ky != 'boolean') return false;
+        break;
       default:
         return false;
         break;
