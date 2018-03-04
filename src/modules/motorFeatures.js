@@ -8,6 +8,8 @@ registerNamespace("uk.org.adaptive.motorFeatures");
 self.activeTimer = false;
 self.isActive = false;
 self.waitTime = 0;
+self.doubleClick = false;
+var doubleClickTime = 300;
 self.activeElement = false;
 self.clearToLand = false;
 self.buttonMappings = {};
@@ -35,16 +37,16 @@ registerNSMethod(self, "apply",(
         which properties are permitted, we can simply
         perform simple field/type-checking like:      */
 
-    if (!verifyArgs(properties, [["delay", NUMTYPE]]))
-                                              return false;
+    if (!verifyArgs(properties, [["delay", NUMTYPE], ["doubleClick", BOOLTYPE]])) return false;
 
     if (properties["delay"] < 1) return false;
     self.waitTime = properties["delay"];
+    self.doubleClick = properties["doubleClick"];
+    
     /* Ensure idempotence by first removing the
         effect if it is present                   */
 
-    if (self.isActive)
-            self.remove();
+    if (self.isActive) self.remove();
 
     self.isActive = true;
     forall(LINKS).where(a=> a.src == undefined||a.src =="")
@@ -109,42 +111,51 @@ registerNSMethod(self, "apply",(
         }, a.onmouseout, a.onclick);
         self.buttonMappings[a.buttonID] = prof;
         
-        a.onmousedown = function() {
-          canvas.style.top = (mouseY - circleRadius) + "px";
-          canvas.style.left = (mouseX - circleRadius) + "px";
-          
-          var elapsed = 0;
-          var delta = 5;
+        if (self.doubleClick) {
+           a.lastClick = 0;
+           a.onmousedown = function() {
+              var time = (new Date).getTime();
+              if (time - a.lastClick <= doubleClickTime) self.buttonMappings[a.buttonID].call();
+              a.lastClick = time;
+           };
+        } else {
+           a.onmousedown = function() {
+             canvas.style.top = (mouseY - circleRadius) + "px";
+             canvas.style.left = (mouseX - circleRadius) + "px";
+             
+             var elapsed = 0;
+             var delta = 5;
 
-          animationIntervalId = setInterval(function() {
-            if (elapsed >= self.waitTime) {
-              clearInterval(animationIntervalId);
-              context.clearRect(0, 0, canvas.width, canvas.height);
-              context.beginPath();
-              context.arc(circleRadius, circleRadius, circleRadius - lineWidth, -Math.PI/2, -Math.PI/2 + 2*Math.PI*elapsed/self.waitTime);
-              context.strokeStyle = "green";
-              context.lineWidth = lineWidth;
-              context.stroke();
-            } else {
-              elapsed += delta;
-              context.clearRect(0, 0, canvas.width, canvas.height);
-              context.beginPath();
-              context.arc(circleRadius, circleRadius, circleRadius - lineWidth, -Math.PI/2, -Math.PI/2 + 2*Math.PI*elapsed/self.waitTime);
-              context.strokeStyle = "#000";
-              context.lineWidth = lineWidth;
-              context.stroke();
-            }
-          }, delta);
-          
-          document.body.appendChild(canvas);
-          
-          self.activeElement = this;
-          self.prepareTimer();
+             animationIntervalId = setInterval(function() {
+               if (elapsed >= self.waitTime) {
+                 clearInterval(animationIntervalId);
+                 context.clearRect(0, 0, canvas.width, canvas.height);
+                 context.beginPath();
+                 context.arc(circleRadius, circleRadius, circleRadius - lineWidth, -Math.PI/2, -Math.PI/2 + 2*Math.PI*elapsed/self.waitTime);
+                 context.strokeStyle = "green";
+                 context.lineWidth = lineWidth;
+                 context.stroke();
+               } else {
+                 elapsed += delta;
+                 context.clearRect(0, 0, canvas.width, canvas.height);
+                 context.beginPath();
+                 context.arc(circleRadius, circleRadius, circleRadius - lineWidth, -Math.PI/2, -Math.PI/2 + 2*Math.PI*elapsed/self.waitTime);
+                 context.strokeStyle = "#000";
+                 context.lineWidth = lineWidth;
+                 context.stroke();
+               }
+             }, delta);
+             
+             document.body.appendChild(canvas);
+             
+             self.activeElement = this;
+             self.prepareTimer();
+           }
+           
+           a.onmouseout = function() {};
+           a.onmouseover = function() {};
+           a.onclick = function() {};
         }
-        
-        a.onmouseout = function() {};
-        a.onmouseover = function() {};
-        a.onclick = function() {};
     });
   }
 ));
