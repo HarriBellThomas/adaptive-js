@@ -255,7 +255,8 @@ registerNSMethod(self, "invert", (
         if (!self.isActive) return;
 
         img = window.getComputedStyle(a, null).backgroundImage;
-        if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
+        if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")>-1) {
+          console.log(a);
           a.cacheCSSProperties(["style.backgroundImage"]);
           a.style.backgroundImage = "none";
         }
@@ -420,9 +421,9 @@ registerNSMethod(self, "nightShifter", (
       }, timeUntilAM);
     };*/
 
-    window.setTimeout(()=>fadeIn(25), 10000);
+    /*window.setTimeout(()=>fadeIn(25), 10000);
     window.setTimeout(()=>{applyVisuals(-25); fadeOut(25)}, 36000);
-    window.setTimeout(()=> applyVisuals(0),72000);
+    window.setTimeout(()=> applyVisuals(0),72000);*/
   }
 ));
 
