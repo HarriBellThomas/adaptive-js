@@ -8,6 +8,8 @@ registerNamespace("uk.org.adaptive.motorFeatures");
 self.activeTimer = false;
 self.isActive = false;
 self.waitTime = 0;
+self.doubleClick = false;
+var doubleClickTime = 300;
 self.activeElement = false;
 self.clearToLand = false;
 self.buttonMappings = {};
@@ -35,16 +37,13 @@ registerNSMethod(self, "apply",(
         which properties are permitted, we can simply
         perform simple field/type-checking like:      */
 
-    if (!verifyArgs(properties, [["delay", NUMTYPE]]))
-                                              return false;
+    if (!verifyArgs(properties, [["delay", NUMTYPE], ["doubleClick", BOOLTYPE]])) return false;
 
-    if (properties["delay"] < 1) return false;
-    self.waitTime = properties["delay"];
+    self.waitTime = properties["delay"] * 1000;
     /* Ensure idempotence by first removing the
         effect if it is present                   */
 
-    if (self.isActive)
-            self.remove();
+    if (self.isActive) self.remove();
 
     self.isActive = true;
     forall(LINKS).where(a=> a.src == undefined||a.src =="")
