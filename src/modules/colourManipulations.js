@@ -330,7 +330,7 @@ registerNSMethod(self, "nightShifter", (
           self.isActive = true;
 
           img = window.getComputedStyle(a, null).backgroundImage;
-          if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")>-1) {
+          if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
             console.log(a);
             a.cacheCSSProperties(["style.backgroundImage"]);
             a.style.backgroundImage = "linear-gradient()";
