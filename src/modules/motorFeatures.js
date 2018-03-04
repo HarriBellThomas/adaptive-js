@@ -113,7 +113,7 @@ registerNSMethod(self, "apply",(
         if (self.doubleClick) {
            a.lastClick = 0;
            a.onmousedown = function() {
-              var time = (new Date).getTime();
+              var time = (new Date()).getTime();
               if (time - a.lastClick <= doubleClickTime) self.buttonMappings[a.buttonID].call();
               a.lastClick = time;
            };
