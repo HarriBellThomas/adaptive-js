@@ -180,11 +180,9 @@ registerNSMethod(self, "daltonize", (
         type = properties["blindType"];
         matrix = ColorMatrixMatrixes[type];
 
-        console.log(colourNameToHex("yellow"));
         bc = rgbaValue(extractColour(a, "backgroundColor"));
         c = rgbaValue(extractColour(a, "color"));
         boc = rgbaValue(extractColour(a, "border-color"));
-
 
         let type = properties["blindType"];
         let LMSMatrix = multiply(rgb2lms, [[bc.r], [bc.g], [bc.b]]);
