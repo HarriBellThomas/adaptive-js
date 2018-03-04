@@ -7,7 +7,6 @@ function COMPILE($modules, $customScope, $selfURL, $outputLocation, $outputToBro
   $stringsF = "";
   $testsF = "
     console.log('Running tests...');
-    var no_passed = 0;
     ";
 
   function debugPreamble($mod){
@@ -49,7 +48,7 @@ function COMPILE($modules, $customScope, $selfURL, $outputLocation, $outputToBro
       })()
       ";
   }
-  $compiled = "\nvar SOURCEJS='".$selfURL."';\n\n";
+  $compiled = "\nvar SOURCEJS='".$selfURL."';\n\nvar no_passed = 0;\n\n";
 
   for($i=0;$i<count($modules);$i++){
     if( file_exists("../modules/".$modules[$i].".js") ){
