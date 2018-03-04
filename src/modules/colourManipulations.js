@@ -311,15 +311,15 @@ registerNSMethod(self, "nightShifter", (
     };
 
     date = new Date();
-    sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 22, 59, 53);
+    sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 53);
     sevenAM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0);
     timeUntilPM = sevenPM.getTime() - date.getTime();
     timeUntilAM = sevenAM.getTime() - date.getTime();
 
     if (timeUntilAM < 0 && timeUntilPM > 0) {
-      forall(IMAGES).do(
+      forall(VISUALS).do(
         function (a) {
-          applyToImage(a, SOFTIDENTITY);
+          applyToImage(a, (xy,rgba)=>{return{rgba}});
         });
     }
 
@@ -330,10 +330,10 @@ registerNSMethod(self, "nightShifter", (
           self.isActive = true;
 
           img = window.getComputedStyle(a, null).backgroundImage;
-          if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")>-1) {
+          /*if (img.valueOf() != "none") {
             a.cacheCSSProperties(["style.backgroundImage"]);
-            a.style.backgroundImage = "none";
-          }
+            a.style.backgroundImage = "linear-gradient()";
+          }*/
           bc = rgbaValue(extractColour(a, "backgroundColor"));
           c = rgbaValue(extractColour(a, "color"));
           boc = rgbaValue(extractColour(a, "border-color"));
