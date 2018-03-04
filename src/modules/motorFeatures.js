@@ -63,7 +63,7 @@ registerNSMethod(self, "apply",(
 
     // Create canvas
     var canvas = document.createElement("canvas");
-    canvas.style.position = "fixed";
+    canvas.style.position = "absolute";
     canvas.width = canvas.height = 2*circleRadius;
     var context = canvas.getContext("2d");
     var animationIntervalId;
