@@ -151,8 +151,8 @@ registerNSMethod(uk.org.adaptive, "init", (
             status.id = "status";
 
             var number = document.createElement("span");
-            status.id = "number";
-            status.innerHTML = "#";
+            number.id = "number";
+            number.innerHTML = "#";
 
             adaptiveBar.appendChild(imageLink);
             adaptiveBar.appendChild(status);
