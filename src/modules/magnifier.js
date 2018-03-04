@@ -97,8 +97,10 @@ const onResize = function(e) {
 const takeScreenshot = function() {
    dirty = false;
    console.log("Taking screenshot");
+   magnifyingGlass.style.visibility = "hidden";
    html2canvas(document.body, { proxy:"https://js.adaptive.org.uk/helpers/canvas.php", scale: zoom, logging: true }).then(function(c) {
       magnifyingGlass.style.backgroundImage = "url(\"" + c.toDataURL("image/png") + "\")";
+      magnifyingGlass.style.visibility = "visible";
    });
 }
 

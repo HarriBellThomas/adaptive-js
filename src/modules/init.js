@@ -190,11 +190,11 @@ registerNSMethod(uk.org.adaptive, "init", (
 
 
             number.addEventListener("click", function(event) {
-                var person = prompt("Style ID", "Harry Potter");
-                if (person == null || person == "") {
+                var input_id = prompt("Style ID", "Harry Potter");
+                if (input_id == null || input_id == "") {
                     alert("Cancelled");
                 } else {
-                    var n = Math.floor(Number(str));
+                    var n = Math.floor(Number(input_id));
                     if(n !== Infinity && String(n) === str && n >= 0) {
                         setCookie("ADAPTIVE_B", n, 365);
                         location.reload();

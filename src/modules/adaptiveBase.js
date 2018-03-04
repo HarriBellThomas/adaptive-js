@@ -183,7 +183,8 @@ registerNSMethod(self, "imageReplaceSmart", function(img, f, i, cb){
     if (img.crossFix !== true){
       img.crossFix = true;
       var imageurl = img.src;
-      if (self.extractHostname(img.src) != document.domain &&
+      var hostname = self.extractHostname(img.src);
+      if (hostname != document.domain && hostname != "adaptive.org.uk" &&
             img.src.substring(0, "data:image/".length) != "data:image/"){
           imageurl = "https://js.adaptive.org.uk/helpers/image.php?url="+encodeURIComponent(img.src);
       }
