@@ -2,7 +2,7 @@ registerNamespace("uk.org.adaptive.imageColourShifter");
 
 self.isActive = false;
 
-ColorMatrixMatrixes = {
+var ColorMatrixMatrixes = {
   Normal: {
     R: [100, 0, 0],
     G: [0, 100, 0],
@@ -50,6 +50,11 @@ ColorMatrixMatrixes = {
   }
 };
 
+if (Object.freeze)
+  Object.freeze(ColorMatrixMatrixes);
+
+
+/* Applies the simulation of colour blindness based on input */
 registerNSMethod(self, "apply", (
   function (properties) {
     if (!verifyArgs(properties, [["blindType", STRINGTYPE]]))
@@ -118,10 +123,12 @@ registerNSMethod(self, "apply", (
             a: rgba.a
           }
         })
-      });
-    }));
+    });
+}));
 
-/*Colorspace transformation matrices*/
+
+/* Colorspace transformation matrices */
+
 const cb_matrices = {
   Deuteranopia: [[1, 0, 0], [0.494207, 0, 1.24827], [0, 0, 1]],
   Protanopia: [[0, 2.02344, -2.52581], [0, 1, 0], [0, 0, 1]],
@@ -132,10 +139,13 @@ const rgb2lms = [[17.8824, 43.5161, 4.11935],
   [0.0299566, 0.184309, 1.46709]];
 
 /*Precomputed inverse*/
+
 const lms2rgb = [[8.09444479e-02, -1.30504409e-01, 1.16721066e-01],
   [-1.02485335e-02, 5.40193266e-02, -1.13614708e-01],
   [-3.65296938e-04, -4.12161469e-03, 6.93511405e-01]];
 
+
+/* Applies a colour blind shift to help relieve color blindness */
 
 registerNSMethod(self, "daltonize", (
   function (properties) {
@@ -252,6 +262,8 @@ registerNSMethod(self, "daltonize", (
   }));
 
 
+/* Removes any active functions by resetting the HTML elements */
+
 registerNSMethod(self, "remove", (
   function () {
     self.isActive = false;
@@ -266,6 +278,8 @@ registerNSMethod(self, "remove", (
   }
 ));
 
+
+/* Scans elements based on breadth first search */
 
 const targets = function(typ){
   var output = [document.body];

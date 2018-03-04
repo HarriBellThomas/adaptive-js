@@ -1,35 +1,20 @@
-/* This is an example module which will cause all links
-    on a given page to highlight when they exprience
-    a mouseover. This example exhibits the main parts of
-    what each module should have to prepare for future
-    integration.                                         */
-
 /* We register a unique namespace for the module, so that
     it can be referenced later                           */
 
 registerNamespace("uk.org.adaptive.speedBar");
 
-/* We can now set/use member variables */
-
 self.isActive = false;
 
-/* Now, we can define the member method "apply", which
-    takes an object, containing the required properties.
-    For example, a darken module might take the object
-    {value: 30} in order to specify a darkness of 30     */
+
+/* Applies the module to add speed bar to all video elements */
 
 registerNSMethod(self, "apply",(
   function(properties) {
-    /* Since we can't specify in the function prototype
-        which properties are permitted, we can simply
-        perform simple field/type-checking like:      */
 
     if (!verifyArgs(properties, [["default", NUMTYPE]]))
       return false;
 
     initVal = properties["default"];
-    /* Ensure idempotence by first removing the
-        effect if it is present                   */
 
     if (self.isActive)
       self.remove();
@@ -65,7 +50,9 @@ registerNSMethod(self, "apply",(
         area.appendChild(output);
         a.parentNode.insertBefore(area, a.nextSibling);
         fadeTimer = window.setTimeout(function(){},0);
-// Update the current slider value (each time you drag the slider handle)
+
+
+        // Update the current slider value (each time you drag the slider handle)
 
         slider.oninput = function() {
           window.clearTimeout(fadeTimer);
@@ -94,8 +81,3 @@ registerNSMethod(self, "remove",(
     return true;
   }
 ));
-
-/* We can now include this module in page by adding
-    "linkHighlighter" to the list of modules in the URL and then
-    calling self.apply({color: "yellow"})
-    on the page */

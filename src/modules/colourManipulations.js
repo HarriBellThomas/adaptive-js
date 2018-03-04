@@ -2,15 +2,26 @@ registerNamespace("uk.org.adaptive.colourManipulations");
 
 self.isActive = false;
 
+(<
+debug("Module loaded.");
+require(self.isActive == false);
+>)
+
+
+/* apply method depending on user selected parameters */
+
 registerNSMethod(self, "apply", (
     function (properties) {
         if("changeSaturation" in properties) self.changeSaturation(properties["changeSaturation"]);
         if("changeContrast" in properties) self.changeContrast(properties["changeContrast"]);
         if("changeBrightness" in properties) self.changeBrightness(properties["changeBrightness"]);
-        if("nightShifter" in properties) self.nightShifter(properties["nightShifter"]);
+        if("nightShifter" in properties) self.nightShifter();
+        if("invert" in properties) self.invert();
         return true;
     }
 ));
+
+/* Changing saturation of page elements */
 
 registerNSMethod(self, "changeSaturation", (
     function (properties) {
@@ -56,6 +67,14 @@ registerNSMethod(self, "changeSaturation", (
                 rgb2 = hslToRgb(chsl[0],chsl[1],chsl[2]);
                 rgb3 = hslToRgb(bochsl[0],bochsl[1],bochsl[2]);
 
+
+                (<
+                 debug("Checking RGB Values within range.");
+                 require(0<=rgb1[0]<=255 && 0<=rgb1[1]<=255 && 0<=rgb1[2]<=255);
+                 require(0<=rgb2[0]<=255 && 0<=rgb2[1]<=255 && 0<=rgb2[2]<=255);
+                 require(0<=rgb3[0]<=255 && 0<=rgb3[1]<=255 && 0<=rgb3[2]<=255);
+                >)
+
                 a.cacheCSSProperties(["background-color"]);
                 a.cacheCSSProperties(["color"]);
                 a.cacheCSSProperties(["border-color"]);
@@ -64,7 +83,7 @@ registerNSMethod(self, "changeSaturation", (
                 a.style.color = "rgba("+Math.round(rgb2[0])+","+Math.round(rgb2[1])+","+Math.round(rgb2[2])+","+c.a+")";
                 a.style.borderColor = "rgba("+Math.round(rgb3[0])+","+Math.round(rgb3[1])+","+Math.round(rgb3[2])+","+boc.a+")";
             }
-        )
+        );
 
         forall(VISUALS).do(
             function (a) {
@@ -87,6 +106,9 @@ registerNSMethod(self, "changeSaturation", (
         );
     }
 ));
+
+
+/* Change contrast of page elements */
 
 registerNSMethod(self, "changeContrast", (
     function (properties) {
@@ -125,6 +147,13 @@ registerNSMethod(self, "changeContrast", (
                 c = {r: Math.round(limit(factor*(c.r-128)+128)), g: Math.round(limit(factor*(c.g-128)+128)), b: Math.round(limit(factor*(c.b-128)+128)), a: c.a};
                 boc = {r: Math.round(limit(factor*(boc.r-128)+128)), g: Math.round(limit(factor*(boc.g-128)+128)), b: Math.round(limit(factor*(boc.b-128)+128)), a: boc.a};
 
+                (<
+                  debug("Checking RGB Values within range.");
+                  require(0<=bc.r<=255 && 0<=bc.g<=255 && 0<=bc.g<=255);
+                  require(0<=c.r<=255 && 0<=c.g<=255 && 0<=c.b<=255);
+                  require(0<=boc.r<=255 && 0<=boc.g<=255 && 0<=boc.b<=255);
+                >)
+
                 a.cacheCSSProperties(["background-color"]);
                 a.cacheCSSProperties(["color"]);
                 a.cacheCSSProperties(["border-color"]);
@@ -152,6 +181,9 @@ registerNSMethod(self, "changeContrast", (
         );
     }
 ));
+
+
+/* Change brightness of page elements */
 
 registerNSMethod(self, "changeBrightness", (
     function (properties) {
@@ -197,6 +229,13 @@ registerNSMethod(self, "changeBrightness", (
                 boc.g = boc.g + Math.round(value);
                 boc.b = boc.b + Math.round(value);
 
+                (<
+                  debug("Checking RGB Values within range.");
+                  require(0<=bc.r<=255 && 0<=bc.g<=255 && 0<=bc.b<=255);
+                  require(0<=c.r<=255 && 0<=c.g<=255 && 0<=c.b<=255);
+                  require(0<=boc.r<=255 && 0<=boc.g<=255 && 0<=boc.b<=255);
+                >)
+
                 a.cacheCSSProperties(["background-color"]);
                 a.cacheCSSProperties(["color"]);
                 a.cacheCSSProperties(["border-color"]);
@@ -225,6 +264,9 @@ registerNSMethod(self, "changeBrightness", (
     }
 ));
 
+
+/* Invert colour of page elements */
+
 registerNSMethod(self, "invert", (
   function () {
 
@@ -249,6 +291,13 @@ registerNSMethod(self, "invert", (
         bc = {r: 255-bc.r, g: 255-bc.g, b: 255-bc.b, a: bc.a};
         c = {r: 255-c.r, g: 255-c.g, b: 255-c.b, a: (c.a==0)?1:c.a};
         boc = {r: 255-boc.r, g: 255-boc.g, b: 255-boc.b, a: boc.a};
+
+        (<
+          debug("Checking RGB Values within range.");
+          require(0<=bc.r<=255 && 0<=bc.g<=255 && 0<=bc.b<=255);
+          require(0<=c.r<=255 && 0<=c.g<=255 && 0<=c.b<=255);
+          require(0<=boc.r<=255 && 0<=boc.g<=255 && 0<=boc.b<=255);
+        >)
 
         a.cacheCSSProperties(["background-color"]);
         a.cacheCSSProperties(["color"]);
@@ -277,6 +326,9 @@ registerNSMethod(self, "invert", (
     );
   }
 ));
+
+
+/* Apply night shift function to reduce blue hue during the night */
 
 registerNSMethod(self, "nightShifter", (
   function () {
@@ -335,6 +387,13 @@ registerNSMethod(self, "nightShifter", (
           a.cacheCSSProperties(["color"]);
           a.cacheCSSProperties(["border-color"]);
 
+          (<
+            debug("Checking RGB Values within range.");
+            require(0<=bc.r<=255 && 0<=bc.g<=255 && 0<=bc.b<=255);
+            require(0<=c.r<=255 && 0<=c.g<=255 && 0<=c.b<=255);
+            require(0<=boc.r<=255 && 0<=boc.g<=255 && 0<=boc.b<=255);
+          >)
+
           a.style.backgroundColor = "rgba(" + bc.r + "," + bc.g + "," + bc.b + "," + bc.a + ")";
           a.style.color = "rgba(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")";
           a.style.borderColor = "rgba(" + boc.r + "," + boc.g + "," + boc.b + "," + boc.a + ")";
@@ -374,16 +433,19 @@ registerNSMethod(self, "nightShifter", (
   }
   ));
 
+
+/* Remove function to reset the manipulated HTML elements */
+
   registerNSMethod(self, "remove", (
   function () {
     if (!self.isActive) return true;
     self.isActive = false;
     try {
-        forall(VISUALS).do(function (a) {
-            applyToImage(a, function (xy, rgba) {
-                return {r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a}
-            })
-        });
+      forall(VISUALS).do(function (a) {
+        applyToImage(a, function (xy, rgba) {
+            return {r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a}
+        })
+      });
     } catch (e) {}
     forall().where(a=> a instanceof HTMLElement).do(function(a){
       a.resetCSS();
@@ -392,6 +454,8 @@ registerNSMethod(self, "nightShifter", (
   }
 ));
 
+
+/* Scans through elements based on breadth first search */
 
 const targets = function(typ){
     var output = [document.body];
