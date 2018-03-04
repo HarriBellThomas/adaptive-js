@@ -12,6 +12,8 @@ self.activeElement = false;
 self.clearToLand = false;
 self.buttonMappings = {};
 
+var mouseX = -1000;
+var mouseY = -1000;
 
 registerNSMethod(self, "buttonMapping", function(a, omd, omu, omo, oc){
   this.caller = a;
@@ -50,6 +52,11 @@ registerNSMethod(self, "apply",(
     self.buttonID = 0;
     self.buttonMappings = {};
 
+    doOnMouseMove(function(x, y) {
+      mouseX = x;
+      mouseY = y;
+    });
+    
     // Config for the animation
     const circleRadius = 40;
     const animationTime = 1000;
@@ -80,9 +87,9 @@ registerNSMethod(self, "apply",(
         }, a.onmouseout, a.onclick);
         self.buttonMappings[a.buttonID] = prof;
         
-        a.onmousedown = function(e) {
-          canvas.style.top = (e.pageY - circleRadius) + "px";
-          canvas.style.left = (e.pageX - circleRadius) + "px";
+        a.onmousedown = function() {
+          canvas.style.top = (mouseY - circleRadius) + "px";
+          canvas.style.left = (mouseX - circleRadius) + "px";
           
           var elapsed = 0;
           var delta = 5;
@@ -108,6 +115,8 @@ registerNSMethod(self, "apply",(
           }, delta);
           
           document.body.appendChild(canvas);
+          
+          self.activeElement = this;
           self.prepareTimer();
         }
         
@@ -117,6 +126,8 @@ registerNSMethod(self, "apply",(
             context.clearRect(0, 0, canvas.width, canvas.height);
             canvas.parentNode.removeChild(canvas);
           }
+          
+          self.activeElement.style.cursor = "default";
           self.queryOutcome();
         }
         
@@ -126,6 +137,8 @@ registerNSMethod(self, "apply",(
             context.clearRect(0, 0, canvas.width, canvas.height);
             canvas.parentNode.removeChild(canvas);
           }
+          
+          self.activeElement.style.cursor = "default";
           self.cancelOutcome();
         }
         
