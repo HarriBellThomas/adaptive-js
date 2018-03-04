@@ -145,14 +145,13 @@ registerNSMethod(self, "apply",(
                }
              }, delta);
              
-             document.body.appendChild(canvas);
+             //document.body.appendChild(canvas);
              
              self.activeElement = this;
              self.prepareTimer();
            }
         }
         
-        a.onmouseup = function() {};
         a.onmouseout = function() {};
         a.onmouseover = function() {};
         a.onclick = function() {};
