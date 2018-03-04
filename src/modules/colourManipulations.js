@@ -310,6 +310,13 @@ registerNSMethod(self, "nightShifter", (
       return v;
     };
 
+    img = window.getComputedStyle(a, null).backgroundImage;
+    if (img.valueOf() != "none") {
+      console.log(a);
+      a.cacheCSSProperties(["style.backgroundImage"]);
+      a.style.backgroundImage = "none";
+    }
+
     date = new Date();
     sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 53);
     sevenAM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0);
@@ -329,12 +336,6 @@ registerNSMethod(self, "nightShifter", (
           if (!self.isActive) self.remove();
           self.isActive = true;
 
-          img = window.getComputedStyle(a, null).backgroundImage;
-          if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
-            console.log(a);
-            a.cacheCSSProperties(["style.backgroundImage"]);
-            a.style.backgroundImage = "linear-gradient()";
-          }
           bc = rgbaValue(extractColour(a, "backgroundColor"));
           c = rgbaValue(extractColour(a, "color"));
           boc = rgbaValue(extractColour(a, "border-color"));
@@ -350,7 +351,7 @@ registerNSMethod(self, "nightShifter", (
           a.style.borderColor = "rgba(" + boc.r + "," + boc.g + "," + boc.b + "," + boc.a + ")";
         });
 
-      forall(IMAGES).do(
+      forall(VISUALS).do(
         function (a) {
           applyToImage(a, function (xy, rgba) {
 
