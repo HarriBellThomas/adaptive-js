@@ -64,17 +64,7 @@ registerNSMethod(self, "apply", (
       self.remove();
     self.isActive = true;
 
-    forall(VISUALS).do(
-      function (a) {
-        applyToImage(a, function (xy, rgba) {
-          return {
-            r: rgba.r,
-            g: rgba.g,
-            b: rgba.b,
-            a: rgba.a
-          }
-        })
-      });
+    forall(VISUALS).do(a=>applyToImage(a, SOFTIDENTITY));
 
     uk.org.adaptive.videoTools.apply((xy, rgba)=> {return {r:rgba.r, g:0, b:rgba.g, a:155};});
 
