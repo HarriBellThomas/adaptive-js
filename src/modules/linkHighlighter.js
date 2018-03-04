@@ -45,7 +45,7 @@ registerNSMethod(self, "apply",(
                                   "padding", "margin",
                                   "border-radius"]);
           this.style.color = "black";
-          this.style.backgroundColour = properties["backgroundColour"];
+          this.style.backgroundColor = properties["backgroundColour"];
           this.style.borderRadius = "8px";
           this.style.padding = "15px 15px 15px 15px";
           this.style.margin = "-15px -15px";
