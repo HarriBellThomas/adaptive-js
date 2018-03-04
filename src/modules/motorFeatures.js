@@ -50,6 +50,17 @@ registerNSMethod(self, "apply",(
     self.buttonID = 0;
     self.buttonMappings = {};
 
+    // Config for the animation
+    const circleRadius = 40;
+    const animationTime = 1000;
+    const lineWidth = 10;
+
+    // Create canvas
+    var canvas = document.createElement("canvas");
+    canvas.style.position = "fixed";
+    canvas.width = canvas.height = 2*circleRadius;
+    var context = canvas.getContext("2d");
+    var animationIntervalId;
 
     forall(BUTTONS).do(a=> {
       a.buttonID = self.buttonID;
@@ -61,8 +72,6 @@ registerNSMethod(self, "apply",(
       a.style["background-color"] = "rgba(0,0,0,0)";
       a.style["color"] = "red";
       a.style["outline"] = "0";
-      a.style["-webkit-transition"] = "border "+self.waitTime+"ms ease, color "+self.waitTime+"ms ease, background-color "+self.waitTime+"ms ease";
-      a.style["transition"] = "border "+self.waitTime+"ms ease, color "+self.waitTime+"ms ease, background-color "+self.waitTime+"ms ease";
     });
     forall(BUTTONS).do(
       function(a){
@@ -70,11 +79,62 @@ registerNSMethod(self, "apply",(
           document.location = this.getAttribute("href");
         }, a.onmouseout, a.onclick);
         self.buttonMappings[a.buttonID] = prof;
+        
+        // TODO remove these
         a.onmousedown = function(){ this.style.border = "2px solid green"; this.style.color = "white"; this.style.backgroundColor = "green"; self.activeElement = this; self.prepareTimer(); }
         a.onmouseup = function(){  self.activeElement.style.cursor = "default"; this.style.border = "2px solid red"; this.style.color = "red"; this.style.backgroundColor = "rgba(0,0,0,0)"; self.queryOutcome(); }
         a.onmouseout = function(){ self.activeElement.style.cursor = "default"; this.style.border = "2px solid red"; this.style.color = "red"; this.style.backgroundColor = "rgba(0,0,0,0)"; self.cancelOutcome(); }
         a.onmouseover = function(){};
         a.onclick = function(){};
+        
+        a.onmousedown = function(e) {
+          canvas.style.top = (e.pageY - circleRadius) + "px";
+          canvas.style.left = (e.pageX - circleRadius) + "px";
+          
+          var elapsed = 0;
+          var delta = 5;
+
+          animationIntervalId = setInterval(function() {
+            if (elapsed >= animationTime) {
+              clearInterval(animationIntervalId);
+              context.clearRect(0, 0, canvas.width, canvas.height);
+              context.beginPath();
+              context.arc(circleRadius, circleRadius, circleRadius - lineWidth, -Math.PI/2, -Math.PI/2 + 2*Math.PI*elapsed/animationTime);
+              context.strokeStyle = "green";
+              context.lineWidth = lineWidth;
+              context.stroke();
+            } else {
+              elapsed += delta;
+              context.clearRect(0, 0, canvas.width, canvas.height);
+              context.beginPath();
+              context.arc(circleRadius, circleRadius, circleRadius - lineWidth, -Math.PI/2, -Math.PI/2 + 2*Math.PI*elapsed/animationTime);
+              context.strokeStyle = "#000";
+              context.lineWidth = lineWidth;
+              context.stroke();
+            }
+          }, delta);
+          
+          document.body.appendChild(canvas);
+          self.prepareTimer();
+        }
+        
+        a.onmouseup = function() {
+          if (canvas.parentNode) {
+            clearInterval(animationIntervalId);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            canvas.parentNode.removeChild(canvas);
+          }
+          self.queryOutcome();
+        }
+        
+        a.onmouseout = function() {
+          if (canvas.parentNode) {
+            clearInterval(animationIntervalId);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            canvas.parentNode.removeChild(canvas);
+          }
+          self.cancelOutcome();
+        }
     });
   }
 ));
