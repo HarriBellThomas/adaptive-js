@@ -80,13 +80,6 @@ registerNSMethod(self, "apply",(
         }, a.onmouseout, a.onclick);
         self.buttonMappings[a.buttonID] = prof;
         
-        // TODO remove these
-        a.onmousedown = function(){ this.style.border = "2px solid green"; this.style.color = "white"; this.style.backgroundColor = "green"; self.activeElement = this; self.prepareTimer(); }
-        a.onmouseup = function(){  self.activeElement.style.cursor = "default"; this.style.border = "2px solid red"; this.style.color = "red"; this.style.backgroundColor = "rgba(0,0,0,0)"; self.queryOutcome(); }
-        a.onmouseout = function(){ self.activeElement.style.cursor = "default"; this.style.border = "2px solid red"; this.style.color = "red"; this.style.backgroundColor = "rgba(0,0,0,0)"; self.cancelOutcome(); }
-        a.onmouseover = function(){};
-        a.onclick = function(){};
-        
         a.onmousedown = function(e) {
           canvas.style.top = (e.pageY - circleRadius) + "px";
           canvas.style.left = (e.pageX - circleRadius) + "px";
@@ -135,6 +128,9 @@ registerNSMethod(self, "apply",(
           }
           self.cancelOutcome();
         }
+        
+        a.onmouseover = function() {};
+        a.onclick = function() {};
     });
   }
 ));
