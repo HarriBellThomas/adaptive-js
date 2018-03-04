@@ -51,7 +51,8 @@
     $length = strlen($input);
     $fileIndex = 0;
     $vars = $stringsC;
-    $outputFile = "DEBUGMESSAGES['".$modSimple."']=[];\ntry{ \n";
+    //$outputFile = "DEBUGMESSAGES['".$modSimple."']=[];\ntry{ \n";
+    $outputFile = "";
     $currentString = "";
 
 
@@ -198,13 +199,14 @@
 
     $testsFile = preg_replace("/(?:([^A-Za-z\_\-\.]+)(require\())|(?:(^)(require\())/", "$1require(()=> ", $testsFile);
 
+/*
     $outputFile .= "\nDEBUGMESSAGES['".$modSimple."'].push(true);
 }catch(e){
   console.log('Module ".$modSimple." exception: '+e);
   DEBUGMESSAGES['".$modSimple."'].push(e.message);
   DEBUGMESSAGES['".$modSimple."'].push(false);
 }";
-
+*/
     $fp = fopen($fl."-compiled", "w+");
     fwrite($fp, $outputFile);
     fclose($fp);
