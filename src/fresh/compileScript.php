@@ -14,6 +14,7 @@ function COMPILE($modules, $customScope, $selfURL, $outputLocation, $outputToBro
     DEBUGMESSAGES['$mod']=[];
     (function(){
       var failed = false;
+      var passing = true;
       var debug=function(a){
         console.log('           $mod.js/DEBUG: '+a);
         DEBUGMESSAGES['$mod'].push(a);
@@ -26,18 +27,28 @@ function COMPILE($modules, $customScope, $selfURL, $outputLocation, $outputToBro
         console.log('           $mod.js/ERROR: '+a);
         DEBUGMESSAGES['$mod'].push(a);
       }
+      var ASYNC_TEST = function(){
+        passing = false;
+      }
+      var pass = function(){
+        if (!failed){
+          console.log('✅ $mod');
+          DEBUGMESSAGES['$mod'].push(true);
+        }else{
+          FAIL_TEST();
+        }
+      }
+      var FAIL_TEST = function(){
+        console.log('❌ $mod');
+        DEBUGMESSAGES['$mod'].push(false);
+      }
       try{
     ";
   }
   function debugPost($mod){
     return "
-      if (!failed){
-        console.log('✅ $mod');
-        no_passed++;
-        DEBUGMESSAGES['$mod'].push(true);
-      }else{
-        console.log('❌ $mod');
-        DEBUGMESSAGES['$mod'].push(false);
+      if (passing){
+        pass();
       }
     }catch(e){
       console.log('           $mod.js/ERROR: '+e.message);
@@ -48,7 +59,7 @@ function COMPILE($modules, $customScope, $selfURL, $outputLocation, $outputToBro
       })()
       ";
   }
-  $compiled = "\nvar SOURCEJS='".$selfURL."';\n\nvar no_passed = 0;\n\n";
+  $compiled = "\nvar SOURCEJS='".$selfURL."';\n\n\n";
 
   for($i=0;$i<count($modules);$i++){
     if( file_exists("../modules/".$modules[$i].".js") ){
@@ -81,7 +92,6 @@ function COMPILE($modules, $customScope, $selfURL, $outputLocation, $outputToBro
   \n".$compiled."\n\nMODULESLOADED=1;";
     header('Content-Type:text/plain');
     $countmodules = count($modules)-1;
-    $testsF .= "\nconsole.log('Finished tests with '+no_passed+' of $countmodules modules passing.');";
     $testsF .= "
   const testSuccess = function(){
     for (A in DEBUGMESSAGES){

@@ -245,15 +245,18 @@ registerNSMethod(self, "ytVideoDescription",(
 
 
 (<
-  /*
-  ASYNC_TEST();
-  var httpRequest = new XMLHttpRequest()
-  httpRequest.onreadystatechange = function (data) {
-    if (this.readyState == 4){
-      require(this.status == 200);
+
+  if(window.location.href.indexOf("youtube.com")>0){
+    ASYNC_TEST();
+    var httpRequest = new XMLHttpRequest()
+    httpRequest.onreadystatechange = function (data) {
+      if (this.readyState == 4){
+        debug("YT Support.")
+        require(this.status == 200);
+        pass();
+      }
     }
+    httpRequest.open('GET', "https://www.youtube.com/get_video_info?video_id=aqz-KE-bpKQ");
+    httpRequest.send();
   }
-  httpRequest.open('GET', "https://www.youtube.com/get_video_info?video_id=aqz-KE-bpKQ");
-  httpRequest.send();
-  */
 >)
