@@ -180,30 +180,33 @@ registerENUM(["SOFTIDENTITY"]);
 
 registerNSMethod(self, "imageReplaceSmart", function(img, f, i, cb){
   if (!img.originFix){
-    var imageurl;
-    if (self.extractHostname(img.src) == document.domain){
-      imageurl = img.src;
-    }else{
-      // Need to apply domain fix
-      imageurl = "https://js.adaptive.org.uk/helpers/image.php?url="+encodeURIComponent(img.src);
-    }
-    console.log(img.oldsrc);
-    // The security fix:
-    img.src = "";
-    img.srcset = "";
-    img.crossOrigin = "Anonymous";
-    setTimeout(function(){
-      img.src = imageurl;
-      img.onload = function(){
-        this.onload = function(){};
-        img.originFix = true;
-        self.imageGetRawSize(imageurl, function(j){
-          self.IMAGE_SIZES[i] = j;
-          if (f!==SOFTIDENTITY) self.imageReplaceSmartUnchecked(img, i, true, f, cb);
-        });
-
+    if (img.crossFix !== true){
+      img.crossFix = true;
+      var imageurl = img.src;
+      if (self.extractHostname(img.src) != document.domain &&
+            img.src.substring(0, "data:image/".length) != "data:image/"){
+          imageurl = "https://js.adaptive.org.uk/helpers/image.php?url="+encodeURIComponent(img.src);
       }
-    }, 100);
+      // The security fix:
+      img.src = "";
+      img.srcset = "";
+      img.crossOrigin = "Anonymous";
+      setTimeout(function(){
+        img.src = imageurl;
+        img.onload = function(){
+          this.onload = function(){};
+          self.imageGetRawSize(imageurl, function(j){
+            self.IMAGE_SIZES[i] = j;
+            img.originFix = true;
+            img.crossFix = false;
+            if (f!==SOFTIDENTITY) self.imageReplaceSmartUnchecked(img, i, true, f, cb);
+          });
+
+        }
+      }, 100);
+    }else{
+      return;
+    }
 
   }else{
     if (f!==SOFTIDENTITY) self.imageReplaceSmartUnchecked(img, i, false, f, cb);
