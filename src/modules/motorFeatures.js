@@ -106,14 +106,14 @@ registerNSMethod(self, "apply",(
     forall(BUTTONS).do(
       function(a){
         const prof = new self.buttonMapping(a, a.onmousedown, (a.href == "" || a.href == undefined)?a.onmouseup:function(){
-          document.location = this.getAttribute("href");
+          document.location = a.getAttribute("href");
         }, a.onmouseout, a.onclick);
         self.buttonMappings[a.buttonID] = prof;
         
         if (self.doubleClick) {
            a.lastClick = 0;
            a.onmousedown = function() {
-              var time = (new Date).getTime();
+              var time = (new Date()).getTime();
               if (time - a.lastClick <= doubleClickTime) self.buttonMappings[a.buttonID].call();
               a.lastClick = time;
            };
