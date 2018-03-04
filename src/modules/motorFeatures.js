@@ -68,6 +68,17 @@ registerNSMethod(self, "apply",(
     canvas.width = canvas.height = 2 * circleRadius;
     var context = canvas.getContext("2d");
     var animationIntervalId;
+    
+    canvas.onmouseout = function() {
+      if (canvas.parentNode) {
+        clearInterval(animationIntervalId);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.parentNode.removeChild(canvas);
+      }
+      
+      if (self.activeElement) self.activeElement.style.cursor = "default";
+      self.cancelOutcome();
+    }
 
     forall(BUTTONS).do(a=> {
       a.buttonID = self.buttonID;
@@ -131,19 +142,7 @@ registerNSMethod(self, "apply",(
           self.queryOutcome();
         }
         
-        a.onmouseout = function() {
-          console.log("mouse out");
-          
-          if (canvas.parentNode) {
-            clearInterval(animationIntervalId);
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            canvas.parentNode.removeChild(canvas);
-          }
-          
-          if (self.activeElement) self.activeElement.style.cursor = "default";
-          self.cancelOutcome();
-        }
-        
+        a.onmouseout = function() {};
         a.onmouseover = function() {};
         a.onclick = function() {};
     });
