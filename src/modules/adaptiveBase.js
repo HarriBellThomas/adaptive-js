@@ -1,3 +1,4 @@
+// Adaptive Base
 const namespace = "uk.org.adaptive.core";
 
 const registerNSMethod=function(p,k,f){p[k]=f;};
