@@ -310,13 +310,6 @@ registerNSMethod(self, "nightShifter", (
       return v;
     };
 
-    img = window.getComputedStyle(a, null).backgroundImage;
-    if (img.valueOf() != "none") {
-      console.log(a);
-      a.cacheCSSProperties(["style.backgroundImage"]);
-      a.style.backgroundImage = "none";
-    }
-
     date = new Date();
     sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 53);
     sevenAM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0);
@@ -327,6 +320,13 @@ registerNSMethod(self, "nightShifter", (
       forall(VISUALS).do(
         function (a) {
           applyToImage(a, (xy,rgba)=>rgba);
+
+          img = window.getComputedStyle(a, null).backgroundImage;
+          if (img.valueOf() != "none") {
+            console.log(a);
+            a.cacheCSSProperties(["style.backgroundImage"]);
+            a.style.backgroundImage = "none";
+          }
         });
     }
 
