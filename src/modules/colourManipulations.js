@@ -61,9 +61,7 @@ registerNSMethod(self, "changeSaturation", (
                 rgb2 = hslToRgb(chsl[0],chsl[1],chsl[2]);
                 rgb3 = hslToRgb(bochsl[0],bochsl[1],bochsl[2]);
 
-                a.cacheCSSProperties(["background-color"]);
-                a.cacheCSSProperties(["color"]);
-                a.cacheCSSProperties(["border-color"]);
+                a.cacheCSSProperties(["background-color", "color", "border-color"]);
 
                 a.style.backgroundColor = "rgba("+Math.round(rgb1[0])+","+Math.round(rgb1[1])+","+Math.round(rgb1[2])+","+bc.a+")";
                 a.style.color = "rgba("+Math.round(rgb2[0])+","+Math.round(rgb2[1])+","+Math.round(rgb2[2])+","+c.a+")";
@@ -133,9 +131,7 @@ registerNSMethod(self, "changeContrast", (
                 c = {r: Math.round(limit(factor*(c.r-128)+128)), g: Math.round(limit(factor*(c.g-128)+128)), b: Math.round(limit(factor*(c.b-128)+128)), a: c.a};
                 boc = {r: Math.round(limit(factor*(boc.r-128)+128)), g: Math.round(limit(factor*(boc.g-128)+128)), b: Math.round(limit(factor*(boc.b-128)+128)), a: boc.a};
 
-                a.cacheCSSProperties(["background-color"]);
-                a.cacheCSSProperties(["color"]);
-                a.cacheCSSProperties(["border-color"]);
+                a.cacheCSSProperties(["background-color", "color", "border-color"]);
 
                 a.style.backgroundColor = "rgba("+bc.r+","+bc.g+","+bc.b+","+bc.a+")";
                 a.style.color = "rgba("+c.r+","+c.g+","+c.b+","+c.a+")";
@@ -196,21 +192,13 @@ registerNSMethod(self, "changeBrightness", (
                 c = rgbaValue(extractColour(a, "color"));
                 boc = rgbaValue(extractColour(a, "border-color"));
 
-                bc.r = bc.r + Math.round(value);
-                bc.g = bc.g + Math.round(value);
-                bc.b = bc.b + Math.round(value);
+                bc = {r: bc.r + Math.round(value), g: bc.g + Math.round(value), b: bc.b + Math.round(value)};
 
-                c.r = c.r + Math.round(value);
-                c.g = c.g + Math.round(value);
-                c.b = c.b + Math.round(value);
+                c = {r: c.r + Math.round(value), g: c.g + Math.round(value), b: c.b + Math.round(value)};
 
-                boc.r = boc.r + Math.round(value);
-                boc.g = boc.g + Math.round(value);
-                boc.b = boc.b + Math.round(value);
+                boc = {r: boc.r + Math.round(value), g: boc.g + Math.round(value), b: boc.b + Math.round(value)};
 
-                a.cacheCSSProperties(["background-color"]);
-                a.cacheCSSProperties(["color"]);
-                a.cacheCSSProperties(["border-color"]);
+                a.cacheCSSProperties(["background-color", "color", "border-color"]);
 
                 a.style.backgroundColor = "rgba("+bc.r+","+bc.g+","+bc.b+","+bc.a+")";
                 a.style.color = "rgba("+c.r+","+c.g+","+c.b+","+c.a+")";
@@ -261,12 +249,10 @@ registerNSMethod(self, "invert", (
         boc = rgbaValue(extractColour(a, "border-color"));
 
         bc = {r: 255-bc.r, g: 255-bc.g, b: 255-bc.b, a: bc.a};
-        c = {r: 255-c.r, g: 255-c.g, b: 255-c.b, a: (c.a==0)?255:c.a};
+        c = {r: 255-c.r, g: 255-c.g, b: 255-c.b, a: (c.a==0)?1:c.a};
         boc = {r: 255-boc.r, g: 255-boc.g, b: 255-boc.b, a: boc.a};
 
-        a.cacheCSSProperties(["background-color"]);
-        a.cacheCSSProperties(["color"]);
-        a.cacheCSSProperties(["border-color"]);
+        a.cacheCSSProperties(["background-color", "color", "border-color"]);
 
         a.style.backgroundColor = "rgba("+bc.r+","+bc.g+","+bc.b+","+bc.a+")";
         a.style.color = "rgba("+c.r+","+c.g+","+c.b+","+c.a+")";
@@ -343,14 +329,10 @@ registerNSMethod(self, "nightShifter", (
           boc = rgbaValue(extractColour(a, "border-color"));
 
           bc.b = bc.b + Math.round(value);
-
           c.b = c.b + Math.round(value);
-
           boc.b = boc.b + Math.round(value);
 
-          a.cacheCSSProperties(["background-color"]);
-          a.cacheCSSProperties(["color"]);
-          a.cacheCSSProperties(["border-color"]);
+          a.cacheCSSProperties(["background-color", "color", "border-color"]);
 
           a.style.backgroundColor = "rgba(" + bc.r + "," + bc.g + "," + bc.b + "," + bc.a + ")";
           a.style.color = "rgba(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")";
