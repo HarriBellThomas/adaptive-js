@@ -63,8 +63,8 @@ function COMPILE($modules, $customScope, $selfURL, $outputLocation, $outputToBro
         //$compiled .= "\n\n/* File: ".$modules[$i]."*/ \n\ntry{\n".$o1[0]."\n}catch(e){if (debug!=undefined) debug(e.message+' in file "+$modules[$i]+"');}";
 
         $enclosed = ($modules[$i]=="adaptiveBase"||$modules[$i]=="adaptiveTools"||$modules[$i]=="onDOMChange")?$o1[0]:
-                          debugPreamble($modules[$i]).$o1[0].debugPost($modules[$i]);
-        $compiled .= "\n\n/* File: ".$modules[$i]." */ \n\n".debugPreamble($modules[$i]).$o1[0].debugPost($modules[$i]);
+                          (debugPreamble($modules[$i]).$o1[0].debugPost($modules[$i]));
+        $compiled .= "\n\n/* File: ".$modules[$i]." */ \n\n".$enclosed;
         $stringsF .= $o1[1];
         $noOfStrings = $o1[2];
         if ($modules[$i] != "debug"){
