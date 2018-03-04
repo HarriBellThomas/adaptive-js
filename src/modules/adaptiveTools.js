@@ -365,7 +365,8 @@ const verifyArgs = function(obj, typs){
         if (typeof ky != 'string') return false;
         break;
       case BOOLTYPE:
-        if (ky!==true && ky!==false) return false;
+        if (typeof ky != 'boolean') return false;
+        break;
       default:
         return false;
         break;
