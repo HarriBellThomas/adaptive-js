@@ -6,6 +6,7 @@ var timeDelay = 3;
 var box = undefined;
 var countdown;
 var countDownIntervalId;
+var boxShown = false;
 
 registerNSMethod(self, "apply", function(properties) {
    if (!verifyArgs(properties, [["timeDelay", NUMTYPE]])) return false;
@@ -14,8 +15,10 @@ registerNSMethod(self, "apply", function(properties) {
    self.isActive = true;
    timeDelay = properties["timeDelay"];
    
-   doOnKeyDown(17, function(e) {
-      if (self.isActive && e.target.tagName === "INPUT" && e.target.type.toLowerCase() === "password" && !box.parentNode && e.target.value) {
+   doOnKeyDown(77, function(e) {
+      if (self.isActive && e.ctrlKey && e.target.tagName === "INPUT" && e.target.type.toLowerCase() === "password" && !box.parentNode && e.target.value) {
+         boxShown = true;
+         
          // First, put the box underneath the <input>
          var rect = e.target.getBoundingClientRect();
          box.style.top = (rect.bottom + 5) + "px";
@@ -62,7 +65,12 @@ registerNSMethod(self, "apply", function(properties) {
       }
    });
 
-   doOnKeyUp(17, function(e) { removeBox(e); });
+   doOnKeyUp(17, function(e) {
+      if (boxShown) {
+         boxShown = false;
+         removeBox(e);
+      }
+   });
    
    box = document.createElement("div");
    box.style.display = "inline-block";

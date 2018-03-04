@@ -5,7 +5,7 @@ var speed = "fast";
 
 var mouseX = undefined;
 var mouseY = undefined;
-var ctrlDown = false;
+var keyDown = false;
 var performingAnimation = false;
 
 registerNSMethod(self, "apply", function(properties) {
@@ -20,15 +20,15 @@ registerNSMethod(self, "apply", function(properties) {
       mouseY = y;
    });
 
-   doOnKeyDown(16, function(e) {
-      if (!ctrlDown) {
+   doOnKeyDown(17, function(e) {
+      if (!keyDown) {
          showMouse();
-         ctrlDown = true;
+         keyDown = true;
       }
    });
 
-   doOnKeyUp(16, function(e) {
-      ctrlDown = false;
+   doOnKeyUp(17, function(e) {
+      keyDown = false;
    });
    
    return true;
