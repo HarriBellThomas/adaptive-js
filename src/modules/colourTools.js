@@ -146,7 +146,6 @@ const hsvToRgb = function(h, s, v) {
 
 /* Extracting rgb/hex values from element
 
->>>>>>> a27dea8bf95dbb1c0cd3db93a6dd00714a69d161
  Example: colour = rgbaValue(extractColour(element, "backgroundColor"))
             colour = hexValue(extractColour(element, "color"))
 */
