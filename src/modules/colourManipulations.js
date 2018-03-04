@@ -323,7 +323,6 @@ registerNSMethod(self, "nightShifter", (
           img = window.getComputedStyle(a, null).backgroundImage;
           if (img.valueOf() != "none") {
             a.cacheCSSProperties(["style.backgroundImage"]);
-            //a.style.backgroundImage = "none";
           }
         });
     }
@@ -391,22 +390,21 @@ registerNSMethod(self, "nightShifter", (
     const fadeIn = function (number, init) {
       window.setTimeout(function () {
         if (number > 0) {
-          apply(-1);applyVisuals(number-init); fadeIn(number - 1, init);
+          apply(-2);applyVisuals(number-2*init); fadeIn(number - 2, init);
         }
       }, 1000)
     };
     const fadeOut = function (number) {
       window.setTimeout(function () {
         if (number > 0) {
-          if (apply(1));applyVisuals(0-number); fadeOut(number - 1);
+          if (apply(2));applyVisuals(0-2*number); fadeOut(number - 2);
         }
       }, 1000)
     };
 
     /*if (timeUntilAM < 0 && timeUntilPM > 0) {
       window.setTimeout(function () {
-        fadeIn(25);
-        applyVisuals(-25)
+        fadeIn(25,25);
       }, timeUntilPM);
     } else if (timeUntilAM < 0 && timeUntilPM < 0) {
       apply(-25);
@@ -416,12 +414,11 @@ registerNSMethod(self, "nightShifter", (
       applyVisuals(-25);
       window.setTimeout(function () {
         fadeOut(25);
-        applyVisuals(25)
       }, timeUntilAM);
     };*/
 
-    window.setTimeout(()=>fadeIn(25, 25), 10000);
-    window.setTimeout(()=>{fadeOut(25, 25)}, 35000);
+    fadeIn(12, 12);
+    window.setTimeout(()=>fadeOut(12), 12000);
   }
 ));
 
