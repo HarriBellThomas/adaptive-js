@@ -59,7 +59,6 @@ registerNSMethod(self, "apply",(
     
     // Config for the animation
     const circleRadius = 40;
-    const animationTime = 1000;
     const lineWidth = 10;
 
     // Create canvas
@@ -95,11 +94,11 @@ registerNSMethod(self, "apply",(
           var delta = 5;
 
           animationIntervalId = setInterval(function() {
-            if (elapsed >= animationTime) {
+            if (elapsed >= self.waitTime) {
               clearInterval(animationIntervalId);
               context.clearRect(0, 0, canvas.width, canvas.height);
               context.beginPath();
-              context.arc(circleRadius, circleRadius, circleRadius - lineWidth, -Math.PI/2, -Math.PI/2 + 2*Math.PI*elapsed/animationTime);
+              context.arc(circleRadius, circleRadius, circleRadius - lineWidth, -Math.PI/2, -Math.PI/2 + 2*Math.PI*elapsed/self.waitTime);
               context.strokeStyle = "green";
               context.lineWidth = lineWidth;
               context.stroke();
@@ -107,7 +106,7 @@ registerNSMethod(self, "apply",(
               elapsed += delta;
               context.clearRect(0, 0, canvas.width, canvas.height);
               context.beginPath();
-              context.arc(circleRadius, circleRadius, circleRadius - lineWidth, -Math.PI/2, -Math.PI/2 + 2*Math.PI*elapsed/animationTime);
+              context.arc(circleRadius, circleRadius, circleRadius - lineWidth, -Math.PI/2, -Math.PI/2 + 2*Math.PI*elapsed/self.waitTime);
               context.strokeStyle = "#000";
               context.lineWidth = lineWidth;
               context.stroke();
@@ -138,7 +137,7 @@ registerNSMethod(self, "apply",(
             canvas.parentNode.removeChild(canvas);
           }
           
-          self.activeElement.style.cursor = "default";
+          if (self.activeElement) self.activeElement.style.cursor = "default";
           self.cancelOutcome();
         }
         
