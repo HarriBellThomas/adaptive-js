@@ -25,7 +25,7 @@ self.f = ((xy,rgba)=>rgba);
 
 registerNSMethod(self, "applyDomainFix",(
   function(){
-    if(window.location.href.indexOf("youtube.com")){
+    if(window.location.href.indexOf("youtube.com")>0){
       self.ytSpecialFeatures = true;
       const regex = /watch\?v=([A-z0-9_-]*)[&$]?/g;
       m = regex.exec(window.location);
@@ -53,8 +53,7 @@ registerNSMethod(self, "applyDomainFixToVideo",(
         }
       });
     }else{
-      v.oldsrc = v.src;
-      const newSRC = v.src;
+      v.oldsrc = v.currentSrc;
       v.src = "";
       setTimeout(function(){
         v.src = v.oldsrc;
@@ -246,6 +245,8 @@ registerNSMethod(self, "ytVideoDescription",(
 
 
 (<
+  /*
+  ASYNC_TEST();
   var httpRequest = new XMLHttpRequest()
   httpRequest.onreadystatechange = function (data) {
     if (this.readyState == 4){
@@ -254,4 +255,5 @@ registerNSMethod(self, "ytVideoDescription",(
   }
   httpRequest.open('GET', "https://www.youtube.com/get_video_info?video_id=aqz-KE-bpKQ");
   httpRequest.send();
+  */
 >)
