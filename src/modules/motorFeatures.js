@@ -150,11 +150,11 @@ registerNSMethod(self, "apply",(
              self.activeElement = this;
              self.prepareTimer();
            }
-           
-           a.onmouseout = function() {};
-           a.onmouseover = function() {};
-           a.onclick = function() {};
         }
+        
+        a.onmouseout = function() {};
+        a.onmouseover = function() {};
+        a.onclick = function() {};
     });
   }
 ));
