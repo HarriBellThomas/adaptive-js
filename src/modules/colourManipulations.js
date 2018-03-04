@@ -316,12 +316,12 @@ registerNSMethod(self, "nightShifter", (
     timeUntilPM = sevenPM.getTime() - date.getTime();
     timeUntilAM = sevenAM.getTime() - date.getTime();
 
-    if (timeUntilAM < 0 && timeUntilPM > 0) {
-      forall(VISUALS).do(
+    /*if (timeUntilAM < 0 && timeUntilPM > 0) {
+      forall(IMAGES).do(
         function (a) {
           applyToImage(a, SOFTIDENTITY);
         });
-    }
+    }*/
 
     const apply = function (value) {
       targets().where(a => a instanceof HTMLElement).do(
@@ -419,9 +419,10 @@ registerNSMethod(self, "nightShifter", (
         applyVisuals(25)
       }, timeUntilAM);
     };*/
-
-    window.setTimeout(()=>{fadeIn(25);
-    applyVisuals(-25)},10000);
+    apply(-25);
+    applyVisuals(-25);
+    window.setTimeout(()=>{fadeOut(25);
+    applyVisuals(0)},10000);
 
   }
 ));
