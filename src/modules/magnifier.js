@@ -30,18 +30,18 @@ registerNSMethod(self, "apply", function(properties) {
       if (isMagnifierOn) updatePosition();
    });
 
-   doOnKeyDown(18, function(e) {
+   doOnKeyDown(77, function(e) {
       // If we don't have the screenshot yet then don't do anything
       if (typeof magnifyingGlass == "undefined" || !self.isActive) return;
 
-      if (!isMagnifierOn) {
+      if (!isMagnifierOn && e.ctrlKey) {
          document.body.appendChild(magnifyingGlass);
          isMagnifierOn = true;
          updatePosition();
       }
    });
 
-   doOnKeyUp(18, function(e) {
+   doOnKeyUp(17, function(e) {
       // If we don't have the screenshot yet then don't do anything
       if (typeof magnifyingGlass == "undefined" || !self.isActive) return;
 

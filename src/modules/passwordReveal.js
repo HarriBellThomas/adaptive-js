@@ -15,7 +15,7 @@ registerNSMethod(self, "apply", function(properties) {
    self.isActive = true;
    timeDelay = properties["timeDelay"];
    
-   doOnKeyDown(77, function(e) {
+   doOnKeyDown(73, function(e) {
       if (self.isActive && e.ctrlKey && e.target.tagName === "INPUT" && e.target.type.toLowerCase() === "password" && !box.parentNode && e.target.value) {
          boxShown = true;
          
