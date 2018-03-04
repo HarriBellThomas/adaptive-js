@@ -155,18 +155,21 @@ registerNSMethod(self, "prepareTimer", function(){
   }
   self.clearToLand = false;
   self.activeTimer = setTimeout(function(){
+    console.log("clear to land");
     self.activeElement.style.cursor = "context-menu";
     self.clearToLand = true;
   }, self.waitTime);
 });
 
 registerNSMethod(self, "cancelOutcome", function(){
+  console.log("cancelOutcome");
   clearTimeout(self.activeTimer);
   self.clearToLand = false;
   self.activeTimer = false;
 });
 
 registerNSMethod(self, "queryOutcome", function(){
+  console.log("queryOutcome");
   if (self.clearToLand){
     self.clearToLand = false;
     self.activeTimer = false;
