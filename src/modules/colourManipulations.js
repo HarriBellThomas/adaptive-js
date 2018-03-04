@@ -395,10 +395,12 @@ registerNSMethod(self, "nightShifter", (
         }
       }, 1000)
     };
-    const fadeOut = function (number) {
+    const fadeOut = function (number, cb) {
       window.setTimeout(function () {
         if (number > 0) {
           if (apply(1)) fadeOut(number - 1);
+        }else{
+          cb();
         }
       }, 1000)
     };
@@ -420,9 +422,10 @@ registerNSMethod(self, "nightShifter", (
       }, timeUntilAM);
     };*/
 
-    window.setTimeout(()=>{fadeOut(25); applyVisuals(-25); fadeIn(25);
-      applyVisuals(0);}, 10000);
-
+    window.setTimeout(()=>{fadeOut(25, function(){
+      applyVisuals(-25); fadeIn(25);
+    }, 10000);
+    window.setTimeout(()=> applyVisuals(0),15000);
 
   }
 ));
