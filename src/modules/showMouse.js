@@ -88,8 +88,11 @@ registerNSMethod(self, "showMouse", function() {
 
 (<
    ASYNC_TEST();
-   require(uk.org.adaptive.showMouse.speed === "fast");
-   require(uk.org.adaptive.showMouse.showMouse());
-   require(uk.org.adaptive.showMouse.circle.parentNode);
+   uk.org.adaptive.showMouse.isActive = true;               // Make sure the module is active
+   require(uk.org.adaptive.showMouse.speed === "fast");     // Test default parameter value
+   require(uk.org.adaptive.showMouse.showMouse());          // Check that the function works
+   require(uk.org.adaptive.showMouse.circle.parentNode);    // Check that the circle exists
+   
+   // Check that the circle has now disappeared
    setTimeout(function() { require(!uk.org.adaptive.showMouse.circle.parentNode); pass(); }, 350);
 >)
