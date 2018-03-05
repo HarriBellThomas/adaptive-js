@@ -99,5 +99,5 @@ registerNSMethod(self, "showMouse", function() {
    require(uk.org.adaptive.showMouse.circle.parentNode);    // Check that the circle exists
    
    // Check that the circle has now disappeared
-   setTimeout(function() { require(!uk.org.adaptive.showMouse.circle.parentNode); pass(); }, 350);
+   setTimeout(function() { require(!uk.org.adaptive.showMouse.circle.parentNode); pass(); }, 1000);
 >)
