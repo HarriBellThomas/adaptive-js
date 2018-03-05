@@ -50,10 +50,6 @@ var ColorMatrixMatrixes = {
     }
 };
 
-if (Object.freeze)
-    Object.freeze(ColorMatrixMatrixes);
-
-
 /* Applies the simulation of colour blindness based on input */
 registerNSMethod(self, "apply", (
     function (properties) {
@@ -89,9 +85,7 @@ registerNSMethod(self, "apply", (
                 bocg = Math.round(boc.r * matrix.G[0] / 100.0 + boc.g * matrix.G[1] / 100.0 + boc.b * matrix.G[2] / 100.0);
                 bocb = Math.round(boc.r * matrix.B[0] / 100.0 + boc.g * matrix.B[1] / 100.0 + boc.b * matrix.B[2] / 100.0);
 
-                a.cacheCSSProperties(["background-color"]);
-                a.cacheCSSProperties(["color"]);
-                a.cacheCSSProperties(["border-color"]);
+                a.cacheCSSProperties(["background-color", "color", "border-color"]);
 
                 a.style.backgroundColor = "rgba(" + r + "," + g + "," + b + "," + bc.a + ")";
                 a.style.color = "rgb(" + cr + "," + cg + "," + cb + ")";
@@ -155,7 +149,9 @@ registerNSMethod(self, "daltonize", (
             self.remove();
         self.isActive = true;
 
-        multiply = function (a, b) {
+        let type = properties["identifier"];
+
+        const multiply = function (a, b) {
             var aNumRows = a.length, aNumCols = a[0].length,
                 bNumRows = b.length, bNumCols = b[0].length,
                 m = new Array(aNumRows);  // initialize array of rows
@@ -171,6 +167,12 @@ registerNSMethod(self, "daltonize", (
             return m;
         };
 
+        let limit = function (a) {
+            if (a > 255) return 255;
+            else if (a < 0) return 0;
+            else return a;
+        };
+
         forall(VISUALS).do(a => applyToImage(a, SOFTIDENTITY));
 
         targets().where(a => a instanceof HTMLElement).do(
@@ -184,33 +186,26 @@ registerNSMethod(self, "daltonize", (
                 c = rgbaValue(extractColour(a, "color"));
                 boc = rgbaValue(extractColour(a, "border-color"));
 
-                let type = properties["identifier"];
                 let LMSMatrix = multiply(rgb2lms, [[bc.r], [bc.g], [bc.b]]);
                 let colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
                 let simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
                 let errorMatrix = [[Math.abs(bc.r - simulatedMatrix[0][0])], [Math.abs(bc.g - simulatedMatrix[1][0])], [Math.abs(bc.b - simulatedMatrix[2][0])]];
                 let modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
                 let fixedMatrix = multiply(modMatrix, errorMatrix);
-                let limit = function (a) {
-                    if (a > 255) return 255;
-                    else if (a < 0) return 0;
-                    else return a;
-                };
+
                 r = Math.round(limit(bc.r + fixedMatrix[0][0]));
                 g = Math.round(limit(bc.g + fixedMatrix[1][0]));
                 b = Math.round(limit(bc.b + fixedMatrix[2][0]));
 
-                a.cacheCSSProperties(["background-color"]);
-                a.cacheCSSProperties(["color"]);
-                a.cacheCSSProperties(["border-color"]);
+                a.cacheCSSProperties(["background-color", "color", "border-color"]);
                 a.style.backgroundColor = "rgba(" + r + "," + g + "," + b + "," + bc.a + ")";
 
                 LMSMatrix = multiply(rgb2lms, [[c.r], [c.g], [c.b]]);
                 colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
                 simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
                 errorMatrix = [[Math.abs(c.r - simulatedMatrix[0][0])], [Math.abs(c.g - simulatedMatrix[1][0])], [Math.abs(c.b - simulatedMatrix[2][0])]];
-                modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
                 fixedMatrix = multiply(modMatrix, errorMatrix);
+
                 r = Math.round(limit(c.r + fixedMatrix[0][0]));
                 g = Math.round(limit(c.g + fixedMatrix[1][0]));
                 b = Math.round(limit(c.b + fixedMatrix[2][0]));
@@ -221,8 +216,8 @@ registerNSMethod(self, "daltonize", (
                 colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
                 simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
                 errorMatrix = [[Math.abs(boc.r - simulatedMatrix[0][0])], [Math.abs(boc.g - simulatedMatrix[1][0])], [Math.abs(boc.b - simulatedMatrix[2][0])]];
-                modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
                 fixedMatrix = multiply(modMatrix, errorMatrix);
+
                 r = Math.round(limit(boc.r + fixedMatrix[0][0]));
                 g = Math.round(limit(boc.g + fixedMatrix[1][0]));
                 b = Math.round(limit(boc.b + fixedMatrix[2][0]));
@@ -235,7 +230,7 @@ registerNSMethod(self, "daltonize", (
             function (a) {
                 applyToImage(a, function (xy, rgba) {
                     if (!self.isActive) return;
-                    let type = properties["identifier"];
+
                     let LMSMatrix = multiply(rgb2lms, [[rgba.r], [rgba.g], [rgba.b]]);
                     let colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
                     let simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
@@ -243,11 +238,6 @@ registerNSMethod(self, "daltonize", (
                     let modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
                     let fixedMatrix = multiply(modMatrix, errorMatrix);
 
-                    let limit = function (a) {
-                        if (a > 255) return 255;
-                        else if (a < 0) return 0;
-                        else return a;
-                    };
                     return {
                         r: limit(rgba.r + fixedMatrix[0][0]),
                         g: limit(rgba.g + fixedMatrix[1][0]),
@@ -259,7 +249,7 @@ registerNSMethod(self, "daltonize", (
 
         uk.org.adaptive.videoTools.apply((xy, rgba) => {
             if (!self.isActive) return;
-            let type = properties["identifier"];
+
             let LMSMatrix = multiply(rgb2lms, [[rgba.r], [rgba.g], [rgba.b]]);
             let colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
             let simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
@@ -267,11 +257,6 @@ registerNSMethod(self, "daltonize", (
             let modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
             let fixedMatrix = multiply(modMatrix, errorMatrix);
 
-            let limit = function (a) {
-                if (a > 255) return 255;
-                else if (a < 0) return 0;
-                else return a;
-            };
             return {
                 r: limit(rgba.r + fixedMatrix[0][0]),
                 g: limit(rgba.g + fixedMatrix[1][0]),

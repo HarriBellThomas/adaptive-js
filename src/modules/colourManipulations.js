@@ -235,12 +235,7 @@ registerNSMethod(self, "changeBrightness", (
 
                 bc = {r: bc.r + Math.round(value), g: bc.g + Math.round(value), b: bc.b + Math.round(value), a: bc.a};
                 c = {r: c.r + Math.round(value), g: c.g + Math.round(value), b: c.b + Math.round(value), a: c.a};
-                boc = {
-                    r: boc.r + Math.round(value),
-                    g: boc.g + Math.round(value),
-                    b: boc.b + Math.round(value),
-                    a: boc.a
-                };
+                boc = {r: boc.r + Math.round(value), g: boc.g + Math.round(value), b: boc.b + Math.round(value), a: boc.a};
 
                 a.cacheCSSProperties(["background-color", "color", "border-color"]);
 
