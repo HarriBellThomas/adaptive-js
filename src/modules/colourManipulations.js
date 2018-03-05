@@ -311,7 +311,7 @@ registerNSMethod(self, "nightShifter", (
     };
 
     date = new Date();
-    sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 53);
+    sevenPM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 19, 0, 0);
     sevenAM = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 7, 0, 0);
     timeUntilPM = sevenPM.getTime() - date.getTime();
     timeUntilAM = sevenAM.getTime() - date.getTime();
