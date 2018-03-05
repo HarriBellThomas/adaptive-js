@@ -55,10 +55,10 @@ registerNSMethod(self, "apply",(
         output.style.color = "rgb(127,127,127)";
         output.style.height = area.height;
 
-        document.body.appendChild(clickBlock);
         area.appendChild(slider);
         area.appendChild(output);
         a.parentNode.insertBefore(area, a.nextSibling);
+        area.parentNode.insertBefore(clickBlock, area.nextSibling);
         fadeTimer = window.setTimeout(function(){},0);
 
 
