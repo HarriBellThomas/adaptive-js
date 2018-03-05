@@ -10,8 +10,6 @@ function COMPILE($modules, $customScope, $selfURL, $outputLocation, $outputToBro
     ";
 
   function debugPreamble($mod){
-    /* This defines functions like debug, require etc.
-        so that they can be used inside of tests or modules */
     return "
     DEBUGMESSAGES['$mod']=[];
     (function(){
@@ -48,8 +46,6 @@ function COMPILE($modules, $customScope, $selfURL, $outputLocation, $outputToBro
     ";
   }
   function debugPost($mod){
-    /* This finishes up the testing window
-        + prints to the console. */
     return "
       if (passing){
         pass();
@@ -72,6 +68,10 @@ function COMPILE($modules, $customScope, $selfURL, $outputLocation, $outputToBro
         }
 
         $o1 = compileFile("../modules/".$modules[$i].".js", $noOfStrings,$modules[$i]);
+        //$compiled .= "\n\n/* File: ".$modules[$i]."*/ \n\n".$o1[0];
+
+        //$compiled .= "\n\n/* File: ".$modules[$i]."*/ \n\ntry{\n".$o1[0]."\n}catch(e){if (debug!=undefined) debug(e.message+' in file "+$modules[$i]+"');}";
+
         $enclosed = ($modules[$i]=="adaptiveBase"||$modules[$i]=="adaptiveTools"||$modules[$i]=="onDOMChange"||$modules[$i]=="colourTools")?$o1[0]:
                           (debugPreamble($modules[$i]).$o1[0].debugPost($modules[$i]));
         $compiled .= "\n\n/* File: ".$modules[$i]." */ \n\n".$enclosed;

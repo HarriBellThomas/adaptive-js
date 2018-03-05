@@ -44,14 +44,14 @@
 
   function compileFile($fl, $stringsC,$modSimple){
     global $fileIndex, $length, $output, $escaped, $input, $outputFile;
+
+    /* This is our state machine for parsing inputs */
+    
     $input = file_get_contents($fl);
-    /* Single line comments removal */
-    //$input = preg_replace("/\/\/(.)*[\n|\r|\r\n]/", "", $input);
 
     $length = strlen($input);
     $fileIndex = 0;
     $vars = $stringsC;
-    //$outputFile = "DEBUGMESSAGES['".$modSimple."']=[];\ntry{ \n";
     $outputFile = "";
     $currentString = "";
 
@@ -182,10 +182,8 @@
 
     /* Replace 'const' and 'let' with var */
 
-    //$outputFile = preg_replace("/([^[A-Za-z\_\-\.]]*)?(const)\ /s", "$1var ", $outputFile);
     $outputFile = preg_replace("/([^A-Za-z\_\-\.\n])+(const)\ |(\n)(const)\ /", "\n$1var ", $outputFile);
 
-    //$outputFile = preg_replace("/([^[A-Za-z\_\-\.]]*)?(let)\ /s", "$1var ", $outputFile);
     $outputFile = preg_replace("/([^A-Za-z\_\-\.\n])+(let)\ |(\n)(let)\ /", "\n$1var ", $outputFile);
 
     /* Replace self with package name */
@@ -195,18 +193,8 @@
     $outputFile = preg_replace("/[\n]+/", "\n", $outputFile);
 
     /* Make sure tests conform to requirements */
-    $outputFile = preg_replace("/[\n]+/", "\n", $outputFile);
-
     $testsFile = preg_replace("/(?:([^A-Za-z\_\-\.]+)(require\())|(?:(^)(require\())/", "$1require(()=> ", $testsFile);
 
-/*
-    $outputFile .= "\nDEBUGMESSAGES['".$modSimple."'].push(true);
-}catch(e){
-  console.log('Module ".$modSimple." exception: '+e);
-  DEBUGMESSAGES['".$modSimple."'].push(e.message);
-  DEBUGMESSAGES['".$modSimple."'].push(false);
-}";
-*/
     $fp = fopen($fl."-compiled", "w+");
     fwrite($fp, $outputFile);
     fclose($fp);
@@ -218,9 +206,6 @@
     $fp = fopen($fl."-tests", "w+");
     fwrite($fp, $testsFile);
     fclose($fp);
-
-
-
 
     return array($outputFile, $stringsFile, $vars, $testsFile);
   }
