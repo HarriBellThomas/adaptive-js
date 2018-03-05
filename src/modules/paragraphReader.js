@@ -225,7 +225,7 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   }
 
 
-  document.fonts.add(new FontFace("Comic Neue Bold", "url(https://js.adaptive.org.uk/assets/comic-neue-bold.woff)"););
+  document.fonts.add(new FontFace("Comic Neue Bold", "url(https://js.adaptive.org.uk/assets/comic-neue-bold.woff)"));
   
   const foregroundPanel = document.createElement("div");
   foregroundPanel.style.width = "600px";
