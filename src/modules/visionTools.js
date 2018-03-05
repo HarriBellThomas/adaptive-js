@@ -1,12 +1,3 @@
-/* This is an example module which will cause all links
-    on a given page to highlight when they exprience
-    a mouseover. This example exhibits the main parts of
-    what each module should have to prepare for future
-    integration.                                         */
-
-/* We register a unique namespace for the module, so that
-    it can be referenced later                           */
-
 registerNamespace("uk.org.adaptive.visionTools");
 
 self.isActive = false;
@@ -57,11 +48,11 @@ registerNSMethod(self, "apply", (
     k.style.color = "white";
     document.body.appendChild(k);
 
-    var inputImages = forall(IMAGES).where(a=> a.width*a.height > 1000
-                      && a.alt.length < 1 && (a.src.indexOf("://")>0||(a.oldsrc!=undefined && a.oldsrc.indexOf("://")>0)) > -1);
+    var inputImages = forall(VISUALS).where(a=> a.hasModifiedSourceBehavior || (a.width*a.height > 1000 && a.alt.length < 1)
+                          && (a.src.indexOf("://")>0||(a.oldsrc!=undefined && a.oldsrc.indexOf("://")>0)) > -1);
 
     k.innerHTML = "<img src='https://cp.md/adaptive/vx/spin.gif?0' width=40/> Describing "+inputImages.count()+" images...";
-    self.requestDescriptions(inputImages.where(function(a){return true;}).do(a=>(a.oldsrc==undefined)?a.src:a.oldsrc).elements, function(tags){
+    self.requestDescriptions(inputImages.having(a=>(a.oldsrc==undefined)?a.src:a.oldsrc).elements, function(tags){
       if (tags === false){
         k.innerHTML = "<img src='https://cp.md/adaptive/vx/spin.gif?0' width=40/> Failed...";
         setTimeout(function(){k.outerHTML = "";}, 1000);
@@ -70,10 +61,12 @@ registerNSMethod(self, "apply", (
       for (var i=0;i<tags.length;i++) {
         inputImages.elements[i].alt = tags[i];
       }
-      inputImages.do(function(a){applyToImage(a, function(xy, rgba){
+      inputImages.do(function(a){
+        console.log(a);applyToImage(a, function(xy, rgba){
         if (xy.x < 10 && xy.y < 10) return {r:255,g:0,b:0,a:255};
         return rgba;
       })});
+      debug("DOne");
       k.outerHTML = "";
     });
   }
@@ -85,6 +78,6 @@ registerNSMethod(self, "apply", (
 
 registerNSMethod(self, "remove",(
   function(){
-    // Why would you want to do that??
+    // But why would you want to do that??
   }
 ));

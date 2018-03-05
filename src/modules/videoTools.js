@@ -1,12 +1,3 @@
-/* This is an example module which will cause all links
-    on a given page to highlight when they exprience
-    a mouseover. This example exhibits the main parts of
-    what each module should have to prepare for future
-    integration.                                         */
-
-/* We register a unique namespace for the module, so that
-    it can be referenced later                           */
-
 registerNamespace("uk.org.adaptive.videoTools");
 
 /* We can now set/use member variables */
@@ -39,6 +30,7 @@ registerNSMethod(self, "applyDomainFix",(
 registerNSMethod(self, "applyDomainFixToVideo",(
   function(v){
     if (self.ytSpecialFeatures){
+      /* If this is YouTube, then get raw stream URL */
       self.ytVideoDescription(self.ytID, function(o){
         v.src = appropriateYTSource(o.sources).url;
         osources = o.sources;
@@ -47,7 +39,6 @@ registerNSMethod(self, "applyDomainFixToVideo",(
           self.domainFixesRequired --;
           if (self.domainFixesRequired == 0){
             self.domainFixApplied = true;
-            console.log("Done APply");
             self.apply();
           }
         }
@@ -77,7 +68,6 @@ registerNSMethod(self, "apply",(
               (func==undefined)?self.f:func;
     self.isActive = true;
     if (self.domainFixApplied){
-      console.log("Fix was applied.");
       forall(VIDEOS).do(a=>{
           const fVid = document.createElement("canvas");
           fVid.style.position = "absolute";
@@ -115,7 +105,6 @@ registerNSMethod(self, "apply",(
         a.crossOrigin = "Anonymous";
         self.domainFixesRequired++;
       });
-      console.log("Fix was not applied.");
       self.applyDomainFix();
     }
   }
