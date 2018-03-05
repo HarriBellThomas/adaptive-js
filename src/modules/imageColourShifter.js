@@ -290,6 +290,7 @@ registerNSMethod(self, "remove", (
     forall(VISUALS).do(function(a){applyToImage(a, function (xy,rgba) {
       return {r: rgba.r, g:rgba.g, b: rgba.b, a:rgba.a}
     })});
+    uk.org.adaptive.videoTools.apply((xy,rgba)=> rgba);
       forall().where(a=> a instanceof HTMLElement).do(a=> {
         a.resetCSS();
       }

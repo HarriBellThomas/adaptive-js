@@ -16,7 +16,6 @@ registerNSMethod(self, "apply",(
     self.isActive = true;
 
     document.body.cacheCSSProperties(["color", "background-color"]);
-    //document.body.setAttribute('style', 'background-color:rgb(25,25,25) !important');
     document.body.style.backgroundColor = "rgb(25,25,25)";
     document.body.style.color = "white";
 
@@ -27,7 +26,6 @@ registerNSMethod(self, "apply",(
           a.cacheCSSProperties(["color", "background-color"]);
           alpha = rgbaValue(extractColour(a, "backgroundColor")).a;
           a.style.color = "white";
-          if (a.style.backgroundColor.indexOf("!important"))
           a.style.backgroundColor = "rgba(25,25,25,"+alpha+")";
       }
     );
