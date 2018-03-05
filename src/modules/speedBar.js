@@ -32,6 +32,8 @@ registerNSMethod(self, "apply",(
         area.style.top = a.offsetTop+"px";
         area.style.left = a.offsetLeft+"px";
         area.style.zIndex = "9999";
+        area.onmousedown = ()=>{};
+        area.onmouseup = ()=>{};
 
         slider.type = "range";
         slider.min = "0.2";
