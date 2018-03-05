@@ -86,8 +86,8 @@ registerNSMethod(self, "showMouse", function() {
 
 (<
    ASYNC_TEST();
-   require(self.speed === "fast");
-   self.showMouse();
-   require(self.circle.parentNode);
-   setTimeout(function() { require(!self.circle.parentNode); pass(); }, 350);
+   require(uk.org.adaptive.showMouse.speed === "fast");
+   uk.org.adaptive.showMouse.showMouse();
+   require(uk.org.adaptive.showMouse.circle.parentNode);
+   setTimeout(function() { require(!uk.org.adaptive.showMouse.circle.parentNode); pass(); }, 350);
 >)
