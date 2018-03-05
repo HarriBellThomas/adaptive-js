@@ -55,6 +55,8 @@ registerNSMethod(self, "apply",(
         this.resetCSS();
       }
     });
+    
+    return true;
   }
 ));
 
