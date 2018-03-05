@@ -26,7 +26,7 @@ registerNSMethod(self, "apply", function(properties) {
       lastCall = self.toXOriginFixes;
 
       debug(self.toXOriginFixes+" remain to be fixed");
-      if (self.toXOriginFixes > 0 && consistentCalls < 5){
+      if (self.toXOriginFixes > 0 && consistentCalls < 3){
         setTimeout(function(){
           self.apply(properties);
         }, 1000);
@@ -105,7 +105,7 @@ registerNSMethod(self, "apply", function(properties) {
    magnifyingGlass.style.cursor = "none";
    magnifyingGlass.style.backgroundRepeat = "no-repeat";
 
-   magnifyingGlass.style.position = "fixed";
+   magnifyingGlass.style.position = "absolute";
    magnifyingGlass.style.top = (-magnifierSize) + "px";
    magnifyingGlass.style.left = (-magnifierSize) + "px";
    magnifyingGlass.style.width = magnifierSize + "px";
@@ -138,7 +138,7 @@ const takeScreenshot = function() {
    dirty = false;
    debug("Taking screenshot");
    magnifyingGlass.style.visibility = "hidden";
-   html2canvas(document.body, { proxy:"https://js.adaptive.org.uk/helpers/canvas.php", scale: zoom, logging: true }).then(function(c) {
+   html2canvas(document.body, { allowTaint:false, useCORS:false, proxy:"https://js.adaptive.org.uk/helpers/canvas.php", scale: zoom, logging: true }).then(function(c) {
       magnifyingGlass.style.backgroundImage = "url('" + c.toDataURL("image/png") + "')";
       magnifyingGlass.style.visibility = "visible";
    });
