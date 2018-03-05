@@ -271,8 +271,8 @@ registerNSMethod(uk.org.adaptive, "applyStyles", (function(properties) {
 
 
 /* Shall we begin? */
-if (typeof _adaptiveAuth !== 'undefined') uk.org.adaptive.init({id:"", user: _adaptiveAuth});
-else uk.org.adaptive.init({id:"", user: ""});
+// if (typeof _adaptiveAuth !== 'undefined') uk.org.adaptive.init({id:"", user: _adaptiveAuth});
+// else uk.org.adaptive.init({id:"", user: ""});
 
 
 
