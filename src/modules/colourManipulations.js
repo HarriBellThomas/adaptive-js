@@ -25,9 +25,6 @@ registerNSMethod(self, "changeSaturation", (
     if (!verifyArgs(properties, [["factor", NUMTYPE]]))
       return false;
 
-    if (self.isActive)
-      self.remove();
-
     self.isActive = true;
 
     limit = function (v) {
@@ -101,9 +98,6 @@ registerNSMethod(self, "changeContrast", (
 
     if (!verifyArgs(properties, [["factor", NUMTYPE]]))
       return false;
-
-    if (self.isActive)
-      self.remove();
 
     self.isActive = true;
 
@@ -183,9 +177,6 @@ registerNSMethod(self, "changeBrightness", (
     if (!verifyArgs(properties, [["factor", NUMTYPE]]))
       return false;
 
-  /*  if (self.isActive)
-      self.remove();
-*/
     self.isActive = true;
     value = properties["factor"];
 
@@ -194,7 +185,6 @@ registerNSMethod(self, "changeBrightness", (
       if (v > 1) return 1;
       return v;
     };
-
 
     targets().where(a => a instanceof HTMLElement).do(
       function (a) {
@@ -244,9 +234,6 @@ registerNSMethod(self, "changeBrightness", (
 
 registerNSMethod(self, "invert", (
   function () {
-
-    if (self.isActive)
-      self.remove();
 
     self.isActive = true;
 
@@ -298,9 +285,6 @@ registerNSMethod(self, "invert", (
 
 registerNSMethod(self, "nightShifter", (
   function () {
-
-    if (self.isActive)
-      self.remove();
 
     self.isActive = true;
 
