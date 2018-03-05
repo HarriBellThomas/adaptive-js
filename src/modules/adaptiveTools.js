@@ -184,20 +184,25 @@ document.onkeyup = documentKeyUp;
 
 
 
-const applyToImage = function(img, f){
+const applyToImage = function(img, f, composite, cb){
   if (img.tagName != "IMG"){
     // we create a proxy image to apply changes to
     const prox = document.createElement("img");
     imageIndex++;
+    img.originFix = false;
     prox.uid = img.uid;
     prox.src = img.src;
     prox.onload = function(){
       uk.org.adaptive.core.imageReplaceSmart(prox, f, prox.uid, function(){
         img.style.backgroundImage = "url("+prox.src+")";
-      });
+        img.originFix = true;
+        if (cb!=undefined){
+          cb();
+        }
+      }, composite==undefined?false:composite);
     }
   }
-  uk.org.adaptive.core.imageReplaceSmart(img, f, img.uid, function(){});
+  uk.org.adaptive.core.imageReplaceSmart(img, f, img.uid, cb==undefined?function(){}:cb, composite==undefined?false:composite);
 }
 var imageIndex = 0;
 forall().do(function(a){ imageIndex++; a.uid = imageIndex; });

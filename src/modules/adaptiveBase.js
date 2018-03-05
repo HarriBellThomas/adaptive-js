@@ -1,4 +1,4 @@
-var UKORGADAPTIVECORE = 0;
+var UKORGADAPTIVECORE = 4;
 const namespace = "uk.org.adaptive.core";
 
 const registerNSMethod=function(p,k,f){p[k]=f;};
@@ -153,7 +153,7 @@ registerNSMethod(self, "imageGetRawSize", function(src,callback){
 
 });
 
-registerNSMethod(self, "imageReplaceSmartUnchecked", function(img, indx, cache, f, cb){
+registerNSMethod(self, "imageReplaceSmartUnchecked", function(img, indx, cache, f, cb, comps){
     const c = document.createElement("canvas");
     const IMAGEWIDTH = self.IMAGE_SIZES[indx].width;
     const IMAGEHEIGHT = self.IMAGE_SIZES[indx].height;
@@ -167,7 +167,9 @@ registerNSMethod(self, "imageReplaceSmartUnchecked", function(img, indx, cache, 
       var copy = self.copyImageDataFromArray(canvasDataOld, c.width, c.height);
       self.IMAGE_CACHE[indx] = copy;
     }else{
-      canvasDataOld = self.copyImageDataFromArray(self.IMAGE_CACHE[indx], c.width, c.height);
+      if (!comps){
+        canvasDataOld = self.copyImageDataFromArray(self.IMAGE_CACHE[indx], c.width, c.height);
+      }
     }
     const canvasDataNew = self.applyRGBAFunctionToImageData(canvasDataOld, f, IMAGEWIDTH, IMAGEHEIGHT);
     ctx.putImageData(canvasDataNew, 0, 0);
@@ -177,8 +179,9 @@ registerNSMethod(self, "imageReplaceSmartUnchecked", function(img, indx, cache, 
 });
 
 registerENUM(["SOFTIDENTITY"]);
+window["HARDIDENTITY"] = ((xy,rgba)=>rgba);
 
-registerNSMethod(self, "imageReplaceSmart", function(img, f, i, cb){
+registerNSMethod(self, "imageReplaceSmart", function(img, f, i, cb, comps){
   if (!img.originFix){
     if (img.crossFix !== true){
       img.crossFix = true;
@@ -200,7 +203,7 @@ registerNSMethod(self, "imageReplaceSmart", function(img, f, i, cb){
             self.IMAGE_SIZES[i] = j;
             img.originFix = true;
             img.crossFix = false;
-            if (f!==SOFTIDENTITY) self.imageReplaceSmartUnchecked(img, i, true, f, cb);
+            if (f!==SOFTIDENTITY) self.imageReplaceSmartUnchecked(img, i, true, f, cb, comps);
           });
 
         }
@@ -210,7 +213,7 @@ registerNSMethod(self, "imageReplaceSmart", function(img, f, i, cb){
     }
 
   }else{
-    if (f!==SOFTIDENTITY) self.imageReplaceSmartUnchecked(img, i, false, f, cb);
+    if (f!==SOFTIDENTITY) self.imageReplaceSmartUnchecked(img, i, false, f, cb, comps);
   }
 });
 
