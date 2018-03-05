@@ -25,14 +25,12 @@ registerNSMethod(self, "apply",(
         which properties are permitted, we can simply
         perform simple field/type-checking like:      */
 
-    if (!verifyArgs(properties, [["backgroundColour", STRINGTYPE]]))
-                                              return false;
+    if (!verifyArgs(properties, [["size", NUMTYPE], ["backgroundColour", STRINGTYPE], ["textColour", STRINGTYPE]])) return false;
 
     /* Ensure idempotence by first removing the
         effect if it is present                   */
 
-    if (self.isActive)
-            self.remove();
+    if (self.isActive) self.remove();
 
     self.isActive = true;
 
@@ -42,10 +40,11 @@ registerNSMethod(self, "apply",(
           if (!self.isActive) return;
           /* Ensure non-destructiveness by caching CSS */
           this.cacheCSSProperties(["color", "background-color",
-                                  "padding", "margin",
+                                  "padding", "margin", "font-size",
                                   "border-radius"]);
-          this.style.color = "black";
+          this.style.fontSize = properties["size"] + "pt";
           this.style.backgroundColor = properties["backgroundColour"];
+          this.style.color = properties["textColour"];
           this.style.borderRadius = "8px";
           this.style.padding = "15px 15px 15px 15px";
           this.style.margin = "-15px -15px";
@@ -56,6 +55,8 @@ registerNSMethod(self, "apply",(
         this.resetCSS();
       }
     });
+    
+    return true;
   }
 ));
 
