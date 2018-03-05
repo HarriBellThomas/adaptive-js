@@ -25,7 +25,7 @@ registerNSMethod(self, "apply",(
         which properties are permitted, we can simply
         perform simple field/type-checking like:      */
 
-    if (!verifyArgs(properties, [["size", NUMTYPE], ["backgroundColour", STRINGTYPE], ["textColour", NUMTYPE]])) return false;
+    if (!verifyArgs(properties, [["size", NUMTYPE], ["backgroundColour", STRINGTYPE], ["textColour", STRINGTYPE]])) return false;
 
     /* Ensure idempotence by first removing the
         effect if it is present                   */
