@@ -183,7 +183,7 @@ registerNSMethod(self, "changeBrightness", (
     if (!verifyArgs(properties, [["factor", NUMTYPE]]))
       return false;
 
-    if (self.isActive)
+    /*if (self.isActive)
       self.remove();
 
     self.isActive = true;
@@ -219,7 +219,7 @@ registerNSMethod(self, "changeBrightness", (
         a.style.color = "rgba(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")";
         a.style.borderColor = "rgba(" + boc.r + "," + boc.g + "," + boc.b + "," + boc.a + ")";
       }
-    );
+    );*/
 
     forall(VISUALS).do(
       function (a) {
