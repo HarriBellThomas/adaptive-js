@@ -145,9 +145,7 @@ const takeScreenshot = function() {
 }
 
 const updatePosition = function() {
-   var x = mouseX - Math.max(document.body.scrollLeft, document.documentElement.scrollLeft);
-   var y = mouseY - Math.max(document.body.scrollTop, document.documentElement.scrollTop);
-   magnifyingGlass.style.top = (y - magnifierSize/2) + "px";
-   magnifyingGlass.style.left = (x - magnifierSize/2) + "px";
-   magnifyingGlass.style.backgroundPosition = (-(x * zoom - magnifierSize/2)) + "px" + " " + (-(y * zoom - magnifierSize/2)) + "px";
+   magnifyingGlass.style.top = (mouseY - magnifierSize/2) + "px";
+   magnifyingGlass.style.left = (mouseX - magnifierSize/2) + "px";
+   magnifyingGlass.style.backgroundPosition = (-(mouseX * zoom - magnifierSize/2)) + "px" + " " + (-(mouseY * zoom - magnifierSize/2)) + "px";
 };
