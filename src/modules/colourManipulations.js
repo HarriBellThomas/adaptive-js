@@ -65,7 +65,7 @@ registerNSMethod(self, "changeSaturation", (
 
         a.cacheCSSProperties(["background-color", "color", "border-color"]);
 
-        a.style.backgroundColor = "rgba(" + Math.round(rgb1[0]) + "," + Math.round(rgb1[1]) + "," + Math.round(rgb1[2]) + "," + bc.a + ")";
+        a.style.backgroundColor = "rgba(" + Math.round(rgb1[0]) + "," + Math.round(rgb1[1]) + "," + Math.round(rgb1[2]) + "," + bc.a + ")!important";
         a.style.color = "rgba(" + Math.round(rgb2[0]) + "," + Math.round(rgb2[1]) + "," + Math.round(rgb2[2]) + "," + c.a + ")";
         a.style.borderColor = "rgba(" + Math.round(rgb3[0]) + "," + Math.round(rgb3[1]) + "," + Math.round(rgb3[2]) + "," + boc.a + ")";
       }
@@ -150,7 +150,7 @@ registerNSMethod(self, "changeContrast", (
 
         a.cacheCSSProperties(["background-color", "color", "border-color"]);
 
-        a.style.backgroundColor = "rgba(" + bc.r + "," + bc.g + "," + bc.b + "," + bc.a + ")";
+        a.style.backgroundColor = "rgba(" + bc.r + "," + bc.g + "," + bc.b + "," + bc.a + ")!important";
         a.style.color = "rgba(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")";
         a.style.borderColor = "rgba(" + boc.r + "," + boc.g + "," + boc.b + "," + boc.a + ")";
       }
@@ -217,7 +217,7 @@ registerNSMethod(self, "changeBrightness", (
 
         a.cacheCSSProperties(["background-color", "color", "border-color"]);
 
-        a.style.backgroundColor = "rgba(" + bc.r + "," + bc.g + "," + bc.b + "," + bc.a + ")";
+        a.style.backgroundColor = "rgba(" + bc.r + "," + bc.g + "," + bc.b + "," + bc.a + ")!important";
         a.style.color = "rgba(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")";
         a.style.borderColor = "rgba(" + boc.r + "," + boc.g + "," + boc.b + "," + boc.a + ")";
       }
@@ -271,7 +271,7 @@ registerNSMethod(self, "invert", (
 
         a.cacheCSSProperties(["background-color", "color", "border-color"]);
 
-        a.style.backgroundColor = "rgba(" + bc.r + "," + bc.g + "," + bc.b + "," + bc.a + ")";
+        a.style.backgroundColor = "rgba(" + bc.r + "," + bc.g + "," + bc.b + "," + bc.a + ")!important";
         a.style.color = "rgba(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")";
         a.style.borderColor = "rgba(" + boc.r + "," + boc.g + "," + boc.b + "," + boc.a + ")";
       }
@@ -345,7 +345,7 @@ registerNSMethod(self, "nightShifter", (
 
           a.cacheCSSProperties(["background-color", "color", "border-color"]);
 
-          a.style.backgroundColor = "rgba(" + bc.r + "," + bc.g + "," + bc.b + "," + bc.a + ")";
+          a.style.backgroundColor = "rgba(" + bc.r + "," + bc.g + "," + bc.b + "," + bc.a + ")!important";
           a.style.color = "rgba(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")";
           a.style.borderColor = "rgba(" + boc.r + "," + boc.g + "," + boc.b + "," + boc.a + ")";
         });
