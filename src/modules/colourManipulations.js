@@ -43,7 +43,7 @@ registerNSMethod(self, "changeSaturation", (
         if (!self.isActive) return;
 
         img = window.getComputedStyle(a, null).backgroundImage;
-        if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
+        if (img.valueOf() != "none") {
           a.cacheCSSProperties(["style.backgroundImage"]);
           a.style.backgroundImage = "none";
         }
@@ -121,7 +121,7 @@ registerNSMethod(self, "changeContrast", (
         if (!self.isActive) return;
 
         img = window.getComputedStyle(a, null).backgroundImage;
-        if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
+        if (img.valueOf() != "none") {
           a.cacheCSSProperties(["style.backgroundImage"]);
           a.style.backgroundImage = "none";
         }
@@ -201,7 +201,7 @@ registerNSMethod(self, "changeBrightness", (
         if (!self.isActive) return;
 
         img = window.getComputedStyle(a, null).backgroundImage;
-        if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
+        if (img.valueOf() != "none") {
           a.cacheCSSProperties(["style.backgroundImage"]);
           a.style.backgroundImage = "none";
         }
@@ -209,8 +209,9 @@ registerNSMethod(self, "changeBrightness", (
         c = rgbaValue(extractColour(a, "color"));
         boc = rgbaValue(extractColour(a, "border-color"));
 
+        console.log(bc);
         bc = {r: bc.r + Math.round(value), g: bc.g + Math.round(value), b: bc.b + Math.round(value)};
-
+        console.log(bc);
         c = {r: c.r + Math.round(value), g: c.g + Math.round(value), b: c.b + Math.round(value)};
 
         boc = {r: boc.r + Math.round(value), g: boc.g + Math.round(value), b: boc.b + Math.round(value)};
@@ -257,7 +258,7 @@ registerNSMethod(self, "invert", (
         if (!self.isActive) return;
 
         img = window.getComputedStyle(a, null).backgroundImage;
-        if (img.valueOf() != "none" && a.style.backgroundImage.indexOf("linear-gradient")) {
+        if (img.valueOf() != "none") {
           a.cacheCSSProperties(["style.backgroundImage"]);
           a.style.backgroundImage = "none";
         }
