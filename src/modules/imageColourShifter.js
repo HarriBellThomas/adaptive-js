@@ -66,8 +66,6 @@ registerNSMethod(self, "apply", (
 
     forall(VISUALS).do(a=>applyToImage(a, SOFTIDENTITY));
 
-    uk.org.adaptive.videoTools.apply((xy, rgba)=> {return {r:rgba.r, g:0, b:rgba.g, a:155};});
-
     targets().where(a=> a instanceof HTMLElement).do(
       function (a) {
         if (!self.isActive) return;
@@ -113,6 +111,17 @@ registerNSMethod(self, "apply", (
             a: rgba.a
           }
         })
+    });
+    uk.org.adaptive.videoTools.apply((xy, rgba)=> {
+      if (!self.isActive) return;
+      type = properties["identifier"];
+      matrix = ColorMatrixMatrixes[type];
+      return {
+        r: rgba.r * matrix.R[0] / 100.0 + rgba.g * matrix.R[1] / 100.0 + rgba.b * matrix.R[2] / 100.0,
+        g: rgba.r * matrix.G[0] / 100.0 + rgba.g * matrix.G[1] / 100.0 + rgba.b * matrix.G[2] / 100.0,
+        b: rgba.r * matrix.B[0] / 100.0 + rgba.g * matrix.B[1] / 100.0 + rgba.b * matrix.B[2] / 100.0,
+        a: rgba.a
+      }
     });
 }));
 
@@ -161,6 +170,8 @@ registerNSMethod(self, "daltonize", (
       }
       return m;
     };
+
+    forall(VISUALS).do(a=>applyToImage(a, SOFTIDENTITY));
 
     targets().where(a=> a instanceof HTMLElement).do(
       function (a) {
@@ -245,6 +256,29 @@ registerNSMethod(self, "daltonize", (
           }
         })
       });
+
+    uk.org.adaptive.videoTools.apply((xy, rgba)=> {
+      if (!self.isActive) return;
+      let type = properties["identifier"];
+      let LMSMatrix = multiply(rgb2lms, [[rgba.r], [rgba.g], [rgba.b]]);
+      let colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
+      let simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
+      let errorMatrix = [[Math.abs(rgba.r - simulatedMatrix[0][0])], [Math.abs(rgba.g - simulatedMatrix[1][0])], [Math.abs(rgba.b - simulatedMatrix[2][0])]];
+      let modMatrix = [[0, 0, 0], [0.7, 1, 0], [0.7, 0, 1]];
+      let fixedMatrix = multiply(modMatrix, errorMatrix);
+
+      let limit = function (a) {
+        if (a > 255) return 255;
+        else if (a < 0) return 0;
+        else return a;
+      };
+      return {
+        r: limit(rgba.r + fixedMatrix[0][0]),
+        g: limit(rgba.g + fixedMatrix[1][0]),
+        b: limit(rgba.b + fixedMatrix[2][0]),
+        a: rgba.a
+      }
+    });
   }));
 
 
