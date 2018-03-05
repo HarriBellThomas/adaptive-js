@@ -156,25 +156,25 @@ registerNSMethod(uk.org.adaptive, "init", (
             adaptiveBar.id = "adaptive-bar";
 
             var imageLink = document.createElement("a");
-            imageLink.href = "https://adaptive.org.uk/";
             imageLink.setAttribute("data-adaptive", "ignore");
+            imageLink.href = "https://adaptive.org.uk/";
 
             var image = document.createElement("img");
-            image.src = "https://adaptive.org.uk/images/logo-colourful.png";
             image.setAttribute("data-adaptive", "ignore");
+            image.src = "https://adaptive.org.uk/images/logo-colourful.png";
 
             imageLink.appendChild(image);
 
             var status = document.createElement("span");
+            status.setAttribute("data-adaptive", "ignore");
             status.id = "status";
             status.classList.add("box");
-            status.setAttribute("data-adaptive", "ignore");
 
             var number = document.createElement("span");
+            number.setAttribute("data-adaptive", "ignore");
             number.id = "number";
             number.innerHTML = "#";
             number.classList.add("box");
-            number.setAttribute("data-adaptive", "ignore");
 
             adaptiveBar.appendChild(imageLink);
             adaptiveBar.appendChild(status);
