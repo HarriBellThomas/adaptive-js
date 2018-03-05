@@ -55,7 +55,7 @@ registerNSMethod(self, "apply",(
         output.style.color = "rgb(127,127,127)";
         output.style.height = area.height;
 
-        a.appendChild(clickBlock);
+        document.body.appendChild(clickBlock);
         area.appendChild(slider);
         area.appendChild(output);
         a.parentNode.insertBefore(area, a.nextSibling);
