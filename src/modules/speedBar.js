@@ -43,6 +43,7 @@ registerNSMethod(self, "apply",(
         clickBlock.style.width = "150px";
         clickBlock.onmousedown = (a)=>{a.stopPropagation(); a.preventDefault(); return false};
         clickBlock.onmouseup = (a)=>{a.stopPropagation();a.preventDefault();return false};
+        clickBlock.style.backgroundImage= "url(https://cdn.londonandpartners.com/visit/general-london/areas/westminster-st-james/100347-433x298-bigben433.jpg)";
 
         slider.type = "range";
         slider.min = "0.2";
@@ -57,10 +58,10 @@ registerNSMethod(self, "apply",(
         output.style.color = "rgb(127,127,127)";
         output.style.height = area.height;
 
-        a.appendChild(clickBlock);
         area.appendChild(slider);
         area.appendChild(output);
         a.parentNode.insertBefore(area, a.nextSibling);
+        area.parentNode.insertBefore(clickBlock, area.nextSibling);
         fadeTimer = window.setTimeout(function(){},0);
 
 
