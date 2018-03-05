@@ -83,6 +83,90 @@ registerNSMethod(self, "remove",(
   }
 ));
 
+registerNSMethod(self, "controlBar", function(bottom, onPlay, onPause, onFast, onSlow) {
+   var slowSrc = "https://js.adaptive.org.uk/assets/slow.png";
+   var playSrc = "https://js.adaptive.org.uk/assets/play.png";
+   var pauseSrc = "https://js.adaptive.org.uk/assets/pause.png";
+   var fastSrc = "https://js.adaptive.org.uk/assets/fast.png";
+
+   // div container
+   var width = 288;
+   var div = document.createElement("div");
+   div.style.position = "absolute";
+   div.style.bottom = bottom + "px";
+   div.style.left = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)/2 - width/2;
+   div.style.display = "block";
+   div.style.width = width + "px";
+   div.style.backgroundColor = "#e5e5e5";
+   div.style.paddingLeft = div.style.paddingRight = "1.5em";
+   div.style.borderRadius = "5em";
+   div.style.boxShadow = "5px 5px 5px -2px rgba(0,0,0,0.53)";
+   
+   // UI element template
+   const createUIElem = function(src) {
+      var elem = document.createElement("img");
+      elem.src = src;
+      elem.style.position = "relative";
+      elem.style.top = "0px";
+      elem.style.left = "0px";
+      elem.ondragstart = function() { return false; };
+      return elem;
+   };
+   
+   // Rewind button
+   var fr = createUIElem(slowSrc);
+   fr.onmousedown = function() {
+      fr.style.top = "1px";
+      fr.style.left = "-1px";
+   }
+   fr.onmouseup = function() {
+      fr.style.top = "0px";
+      fr.style.left = "0px";
+      onSlow();
+   }
+   fr.onmouseout = function() {
+      fr.style.top = "0px";
+      fr.style.left = "0px";
+   }
+   
+   // Play/pause button
+   var pp = createUIElem(playSrc);
+   pp.state = "play";
+   pp.onmouseup = function() {
+      if (pp.state === "play") {
+         pp.state = "pause";
+         pp.src = pauseSrc;
+         onPlay();
+      } else {
+         pp.state = "play";
+         pp.src = playSrc;
+         onPause();
+      }
+   }
+   
+   // Fast forward button
+   var ff = createUIElem(fastSrc);
+   ff.onmousedown = function() {
+      ff.style.top = "1px";
+      ff.style.left = "-1px";
+   }
+   ff.onmouseup = function() {
+      ff.style.top = "0px";
+      ff.style.left = "0px";
+      onFast();
+   }
+   ff.onmouseout = function() {
+      ff.style.top = "0px";
+      ff.style.left = "0px";
+   }
+   
+   div.appendChild(fr);
+   div.appendChild(pp);
+   div.appendChild(ff);
+   
+   return div;
+});
+
 registerNSMethod(self, "disposeDisplayForegroundPanel", function(){
   if (self.activePanel === false) return;
   self.activePanel.innerHTML = self.activePanel.decoyText;
@@ -238,7 +322,6 @@ registerNSMethod(self, "onWordBoundary", function(text){
   self.wordReadIndex++;
 
 });
-
 
 /* We can now include this module in page by adding
     "linkHighlighter" to the list of modules in the URL and then

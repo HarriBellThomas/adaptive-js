@@ -3,6 +3,7 @@
 registerNamespace("uk.org.adaptive");
 
 self.data = null; /* To be initialised by JSON */
+self.pluginActivation = false;
 
 /* Library initialisation */
 registerNSMethod(uk.org.adaptive, "init", (
@@ -94,8 +95,15 @@ registerNSMethod(uk.org.adaptive, "init", (
         else {
 
             /* Check if the plugin is there */
-            var data = { type: "adaptive_request" };
-            window.postMessage(data, "*");
+            var event = document.createEvent('Event');
+            event.initEvent('adaptive_request');
+            document.dispatchEvent(event);
+            /* End */
+
+            /* Plugin Return */
+            if (verifyArgs(properties, [["user", STRINGTYPE]]) && properties["user"] != "") {
+                setCookie("ADAPTIVE_A", properties["user"]);
+            }
             /* End */
 
             var userID = getCookie("ADAPTIVE_A");
@@ -260,7 +268,7 @@ registerNSMethod(uk.org.adaptive, "applyStyles", (function(properties) {
 }));
 
 /* Shall we begin? */
-uk.org.adaptive.init({id:""});
+uk.org.adaptive.init({id:"", user:""});
 
 
 
