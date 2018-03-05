@@ -169,23 +169,7 @@ registerNSMethod(self, "disposeDisplayForegroundPanel", function(){
   const diff = pos[1]-pos[0];
 
   window.speechSynthesis.cancel();
-/*
-  (function(){var l=function(){
-    setTimeout(function(){
-      pos[0]+=20;
-      if (pos[0] < pos[1]){
-        self.activePanel.style.top = pos[0]+"px";
-        self.activePanelCover.style.backgroundColor = "rgba(255,255,255,"+(0.8*(pos[1]-pos[0])/diff)+")";
-        l();
-      }else{
-        self.activePanelCover.outerHTML = "";
-        self.activePanelCover = false;
-        self.activePanel = false;
-      }
-    }, 7)
-  }
-  l();})();
-*/
+  
     self.activePanel.style.top = pos[1]+"px";
     setTimeout(function(){
       self.activePanelCover.outerHTML = "";
@@ -194,9 +178,6 @@ registerNSMethod(self, "disposeDisplayForegroundPanel", function(){
     }, 500)
 
 });
-
-(<
->)
 
 registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   var text = txt.replace(/\ \[[0-9]*\]/g, "");
@@ -247,9 +228,6 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   self.activePanelCover = foregroundCover;
   self.activePanel = foregroundPanel;
 
-  if (isSafari){
-
-  }
   // Opera 8.0+
     var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
     var isFirefox = typeof InstallTrigger !== 'undefined'; // Firefox 1.0+
@@ -281,21 +259,6 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   foregroundPanel.style.top = pos[1] + "px";
   foregroundPanel.innerHTML = foregroundOutput;
 
-/*
-  (function(){var l=function(){
-    setTimeout(function(){
-      pos[0]-=20;
-      if (pos[0] > pos[1]){
-        foregroundPanel.style.top = pos[0]+"px";
-        l();
-      }else{
-        foregroundPanel.style.top = pos[1] + "px";
-        foregroundPanel.innerHTML = foregroundOutput;
-      }
-    }, 7)
-  }
-  l();})();
-*/
   self.wordReadIndex = 0;
   self.reading = new SpeechSynthesisUtterance(text);
   self.reading.rate = self.rate;
@@ -318,8 +281,3 @@ registerNSMethod(self, "onWordBoundary", function(text){
   self.wordReadIndex++;
 
 });
-
-/* We can now include this module in page by adding
-    "linkHighlighter" to the list of modules in the URL and then
-    calling self.apply({color: "yellow"})
-    on the page */
