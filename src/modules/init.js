@@ -123,7 +123,7 @@ registerNSMethod(uk.org.adaptive, "init", (
 
                 } catch(e) {
                     // something failed
-                    console.log("Failed to parse hash.");
+                    // console.log("Failed to parse hash.");
 
                     // if you want to be specific and only catch the error which means
                     // the base 64 was invalid, then check for 'e.code === 5'.
@@ -223,7 +223,7 @@ registerNSMethod(uk.org.adaptive, "init", (
                         location.reload();
                     }
                     else {
-                        alert("Invalid");
+                        //alert("Invalid");
                     }
                 }
             });
@@ -270,15 +270,9 @@ registerNSMethod(uk.org.adaptive, "applyStyles", (function(properties) {
 }));
 
 
-/* Check if the plugin is there */
-var event = document.createEvent('Event');
-event.initEvent('hello');
-document.dispatchEvent(event);
-/* End */
-
-
 /* Shall we begin? */
-uk.org.adaptive.init({id:"", user:""});
+if (typeof _adaptiveAuth !== 'undefined') uk.org.adaptive.init({id:"", user: _adaptiveAuth});
+else uk.org.adaptive.init({id:"", user: ""});
 
 
 
