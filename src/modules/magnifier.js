@@ -105,7 +105,7 @@ registerNSMethod(self, "apply", function(properties) {
    magnifyingGlass.style.cursor = "none";
    magnifyingGlass.style.backgroundRepeat = "no-repeat";
 
-   magnifyingGlass.style.position = "absolute";
+   magnifyingGlass.style.position = "fixed";
    magnifyingGlass.style.top = (-magnifierSize) + "px";
    magnifyingGlass.style.left = (-magnifierSize) + "px";
    magnifyingGlass.style.width = magnifierSize + "px";
