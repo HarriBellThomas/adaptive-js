@@ -25,7 +25,7 @@ registerNSMethod(self, "requestDescriptions",(
         }
       }
     };
-    xhttp.open("POST", "https://cp.md/adaptive/vx/cognitive.php", true);
+    xhttp.open("POST", "https://js.adaptive.org.uk/helpers/cognitive.php", true);
     xhttp.send(formd);
 }));
 
@@ -51,10 +51,10 @@ registerNSMethod(self, "apply", (
     var inputImages = forall(VISUALS).where(a=> a.hasModifiedSourceBehavior || (a.width*a.height > 1000 && a.alt.length < 1)
                           && (a.src.indexOf("://")>0||(a.oldsrc!=undefined && a.oldsrc.indexOf("://")>0)) > -1);
 
-    k.innerHTML = "<img src='https://cp.md/adaptive/vx/spin.gif?0' width=40/> Describing "+inputImages.count()+" images...";
+    k.innerHTML = "<img src='https://js.adaptive.org.uk/spin.gif?0' width=40/> Describing "+inputImages.count()+" images...";
     self.requestDescriptions(inputImages.having(a=>(a.oldsrc==undefined)?a.src:a.oldsrc).elements, function(tags){
       if (tags === false){
-        k.innerHTML = "<img src='https://cp.md/adaptive/vx/spin.gif?0' width=40/> Failed...";
+        k.innerHTML = "<img src='https://js.adaptive.org.uk/spin.gif?0' width=40/> Failed...";
         setTimeout(function(){k.outerHTML = "";}, 1000);
         return;
       }
