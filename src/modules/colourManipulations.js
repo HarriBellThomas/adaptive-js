@@ -168,7 +168,7 @@ registerNSMethod(self, "changeContrast", (
             b: Math.round(limit(factor * (rgba.b - 128) + 128)),
             a: rgba.a
           }
-        })
+        }, true)
       }
     );
   }
@@ -233,7 +233,7 @@ registerNSMethod(self, "changeBrightness", (
             b: rgba.b + Math.round(value),
             a: rgba.a
           }
-        })
+        },true)
       }
     );
   }
@@ -287,7 +287,7 @@ registerNSMethod(self, "invert", (
             b: 255 - rgba.b,
             a: rgba.a
           }
-        })
+        },true)
       }
     );
   }
@@ -319,7 +319,7 @@ registerNSMethod(self, "nightShifter", (
     if (timeUntilAM < 0 && timeUntilPM > 0) {
       forall(VISUALS).do(
         function (a) {
-          applyToImage(a,SOFTIDENTITY);
+          applyToImage(a,SOFTIDENTITY,true);
           img = window.getComputedStyle(a, null).backgroundImage;
           if (img.valueOf() != "none") {
             a.cacheCSSProperties(["style.backgroundImage"]);
@@ -360,7 +360,7 @@ registerNSMethod(self, "nightShifter", (
               b: rgba.b + Math.round(value),
               a: rgba.a
             }
-          })
+          },true)
         }
       );
       return true;
@@ -379,7 +379,7 @@ registerNSMethod(self, "nightShifter", (
               b: rgba.b + Math.round(value),
               a: rgba.a
             }
-          })
+          },true)
         }
       );
       return true;
