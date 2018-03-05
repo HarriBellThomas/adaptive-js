@@ -39,7 +39,6 @@ registerNSMethod(self, "apply",(
         slider.step = "0.1";
         slider.value = initVal;
         area.style.opacity = "0.25";
-        slider.onchange = ()=>{a.play()};
 
         output.innerHTML = initVal;
         a.playbackRate = initVal;
@@ -60,6 +59,7 @@ registerNSMethod(self, "apply",(
           a.nextSibling.style.opacity = "1";
           a.nextSibling.children[1].innerHTML = Math.round(10*this.value)/10;
           a.nextSibling.children[1].style.color = "yellow";
+          a.play();
           a.playbackRate = this.value;
           fadeTimer = window.setTimeout(function(){a.nextSibling.style.opacity="0.25";a.nextSibling.children[1].style.color = "rgb(127,127,127)"
           }, 2000);
