@@ -346,7 +346,6 @@ HTMLElement.prototype.decorateMouseOver = function(funct){
 
 (< // Tests
 
-  debug("Hello World");
 
 >)
 
