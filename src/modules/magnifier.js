@@ -105,7 +105,7 @@ registerNSMethod(self, "apply", function(properties) {
    magnifyingGlass.style.cursor = "none";
    magnifyingGlass.style.backgroundRepeat = "no-repeat";
 
-   magnifyingGlass.style.position = "absolute";
+   magnifyingGlass.style.position = "fixed";
    magnifyingGlass.style.top = (-magnifierSize) + "px";
    magnifyingGlass.style.left = (-magnifierSize) + "px";
    magnifyingGlass.style.width = magnifierSize + "px";
@@ -145,7 +145,7 @@ const takeScreenshot = function() {
 }
 
 const updatePosition = function() {
-   magnifyingGlass.style.top = (mouseY - magnifierSize/2) + "px";
-   magnifyingGlass.style.left = (mouseX - magnifierSize/2) + "px";
+   magnifyingGlass.style.top = (mouseY - document.body.scrollTop - magnifierSize/2) + "px";
+   magnifyingGlass.style.left = (mouseX - document.body.scrollLeft - magnifierSize/2) + "px";
    magnifyingGlass.style.backgroundPosition = (-(mouseX * zoom - magnifierSize/2)) + "px" + " " + (-(mouseY * zoom - magnifierSize/2)) + "px";
 };
