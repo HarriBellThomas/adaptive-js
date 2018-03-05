@@ -1,12 +1,3 @@
-/* This is an example module which will cause all links
-    on a given page to highlight when they exprience
-    a mouseover. This example exhibits the main parts of
-    what each module should have to prepare for future
-    integration.                                         */
-
-/* We register a unique namespace for the module, so that
-    it can be referenced later                           */
-
 registerNamespace("uk.org.adaptive.paragraphReader");
 
 /* We can now set/use member variables */
@@ -58,14 +49,14 @@ registerNSMethod(self, "apply",(
       a.style["user-select"] = "none";
 
 
-      a.decorateMouseOver(function(){ if (!hasKeyDown(16)) return;
+      a.decorateMouseOver(function(){ if (!self.isActive || !hasKeyDown(16)) return;
       this.resetCSS();
       differentto(this).where(a=> a.resetCSS != undefined).
       do(c=>{c.cacheCSSProperties(["opacity"]); c.style.opacity = 0.4})})});
 
 
     forall(PARAGRAPHS).do(a=>{
-      a.decorateMouseUp(function(){ if (!hasKeyDown(16)) return;
+      a.decorateMouseUp(function(){ if (!self.isActive || !hasKeyDown(16)) return;
         self.initDisplayForegroundPanel(this.innerText);
       })});
 
@@ -82,10 +73,10 @@ registerNSMethod(self, "removeImmediateEffect", function(){
   forall().where(function(a){return a.cachedCSS != undefined}).do(function(a){a.resetCSSProperty("opacity")});
 });
 
-registerNSMethod(self, "remove",(
-  function(){
-  }
-));
+registerNSMethod(self, "remove", function() {
+   self.removeImmediateEffect();
+   self.isActive = false;
+});
 
 registerNSMethod(self, "controlBar", function(bottom, onPlay, onPause, onFast, onSlow) {
    var slowSrc = "https://js.adaptive.org.uk/assets/slow.png";
