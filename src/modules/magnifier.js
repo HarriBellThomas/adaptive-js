@@ -149,5 +149,5 @@ const updatePosition = function() {
    var y = mouseY - Math.max(document.body.scrollTop, document.documentElement.scrollTop);
    magnifyingGlass.style.top = (y - magnifierSize/2) + "px";
    magnifyingGlass.style.left = (x - magnifierSize/2) + "px";
-   magnifyingGlass.style.backgroundPosition = (-(x * zoom - magnifierSize/2)) + "px" + " " + (-(y * zoom - magnifierSize/2)) + "px";
+   magnifyingGlass.style.backgroundPosition = (-(mouseX * zoom - magnifierSize/2)) + "px" + " " + (-(mouseY * zoom - magnifierSize/2)) + "px";
 };
