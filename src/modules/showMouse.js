@@ -89,5 +89,5 @@ registerNSMethod(self, "showMouse", function() {
    require(self.speed === "fast");
    self.showMouse();
    require(self.circle.parentNode);
-   setTimeout(function() { require(!self.circle.parentNode); }, 350);
+   setTimeout(function() { require(!self.circle.parentNode); pass(); }, 350);
 >)
