@@ -94,7 +94,7 @@ registerNSMethod(self, "apply", (
         a.cacheCSSProperties(["border-color"]);
 
         a.style.backgroundColor = "rgba("+r+","+g+","+b+","+bc.a+")";
-        a.style.color = "rgba("+cr+","+cg+","+cb+","+c.a+")";
+        a.style.color = "rgb("+cr+","+cg+","+cb+")";
         a.style.borderColor = "rgba("+bocr+","+bocg+","+bocb+","+boc.a+")";
       });
 
@@ -215,7 +215,7 @@ registerNSMethod(self, "daltonize", (
         g = Math.round(limit(c.g + fixedMatrix[1][0]));
         b = Math.round(limit(c.b + fixedMatrix[2][0]));
 
-        a.style.color = "rgba("+r+","+g+","+b+","+c.a+")";
+        a.style.color = "rgb("+r+","+g+","+b+")";
 
         LMSMatrix = multiply(rgb2lms, [[boc.r], [boc.g], [boc.b]]);
         colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
@@ -287,10 +287,8 @@ registerNSMethod(self, "daltonize", (
 registerNSMethod(self, "remove", (
   function () {
     self.isActive = false;
-    forall(VISUALS).do(function(a){applyToImage(a, function (xy,rgba) {
-      return {r: rgba.r, g:rgba.g, b: rgba.b, a:rgba.a}
-    })});
-    uk.org.adaptive.videoTools.apply((xy,rgba)=> rgba);
+    forall(VISUALS).do(function(a){applyToImage(a, HARDIDENTITY)});
+    uk.org.adaptive.videoTools.apply(HARDIDENTITY);
       forall().where(a=> a instanceof HTMLElement).do(a=> {
         a.resetCSS();
       }
