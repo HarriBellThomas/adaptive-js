@@ -19,6 +19,8 @@ self.wordReadIndex = 0;
 self.reading = false;
 self.words = false;
 self.rate = 0;
+self.reduceTransparency;
+self.size;
 
 /* Now, we can define the member method "apply", which
     takes an object, containing the required properties.
@@ -36,6 +38,8 @@ registerNSMethod(self, "apply",(
                                   ["defaultRate", NUMTYPE]])) return false;
 
     self.rate = properties["defaultRate"];
+    self.reduceTransparency = properties["reduceTransparency"];
+    self.size = properties["size"];
 
     /* Ensure idempotence by first removing the
         effect if it is present                   */
@@ -201,8 +205,6 @@ registerNSMethod(self, "disposeDisplayForegroundPanel", function(){
 });
 
 (<
-  debug("This is a debug message.");
-  require(window.location.href.indexOf("cp.md")<0);
 >)
 
 registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
@@ -216,7 +218,7 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   foregroundCover.style.height = "100%";
   foregroundCover.style.top = "0px";
   foregroundCover.style.left = "0px";
-  foregroundCover.style.backgroundColor = "rgba(255,255,255,0.8)";
+  foregroundCover.style.backgroundColor = self.reduceTransparency ? "rgba(255,255,200,1)" : "rgba(255,255,255,0.8)";
   foregroundCover.style.overflow = "hidden";
   foregroundCover.style.backdropFilter = "blur(4px)";
   foregroundCover.style.webkitBackdropFilter = "blur(4px)";
@@ -234,7 +236,7 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   foregroundPanel.style.borderRadius = "10px";
   foregroundPanel.style.border = "1px solid black";
   foregroundPanel.style.fontFamily = "Comic Neue Bold";
-  foregroundPanel.style.fontSize = "48px";
+  foregroundPanel.style.fontSize = self.size;
   foregroundPanel.style.color = "black";
   foregroundPanel.style.padding = "40px 40px 40px 40px";
   foregroundPanel.style.textAlign = "center";
