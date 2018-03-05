@@ -183,18 +183,18 @@ registerNSMethod(self, "changeBrightness", (
     if (!verifyArgs(properties, [["factor", NUMTYPE]]))
       return false;
 
-    if (self.isActive)
+  /*  if (self.isActive)
       self.remove();
-
+*/
     self.isActive = true;
+    value = properties["factor"];
 
-    limit = function (v) {
+    /*limit = function (v) {
       if (v < 0) return 0;
       if (v > 1) return 1;
       return v;
     };
 
-    value = properties["factor"];
 
     targets().where(a => a instanceof HTMLElement).do(
       function (a) {
@@ -219,7 +219,7 @@ registerNSMethod(self, "changeBrightness", (
         a.style.color = "rgba(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")";
         a.style.borderColor = "rgba(" + boc.r + "," + boc.g + "," + boc.b + "," + boc.a + ")";
       }
-    );
+    );*/
 
     forall(VISUALS).do(
       function (a) {
