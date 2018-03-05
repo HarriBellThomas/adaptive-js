@@ -67,3 +67,10 @@ const flash = function() {
       currentlyFlashing = false;
    }
 };
+
+(<
+   ASYNC_TEST();
+   sound = new Audio("https://js.adaptive.org.uk/assets/error.wav");
+   sound.onerror = fail;
+   sound.onloadeddata = pass;
+>)
