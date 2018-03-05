@@ -72,6 +72,7 @@ registerNSMethod(uk.org.adaptive, "init", (
         });
 
 
+
         var requireAuth = true;
         var hasAuth = false;
         var userMode = false;
@@ -89,7 +90,14 @@ registerNSMethod(uk.org.adaptive, "init", (
         }
         /* End Demo Mode Bypass */
 
+
         else {
+
+            /* Check if the plugin is there */
+            var data = { type: "adaptive_request" };
+            window.postMessage(data, "*");
+            /* End */
+
             var userID = getCookie("ADAPTIVE_A");
             var styleID = getCookie("ADAPTIVE_B");
 
