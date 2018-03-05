@@ -2,6 +2,8 @@ registerNamespace("uk.org.adaptive.colourManipulations");
 
 self.isActive = false;
 
+if (rgbaValue(extractColour(document.body, "backgroundColor")).a===0) document.body.style.backgroundColor = "rgba(255,255,255,1)";
+
 /* apply method depending on user selected parameters */
 
 registerNSMethod(self, "apply", (
