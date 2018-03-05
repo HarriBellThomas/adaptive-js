@@ -26,7 +26,6 @@ registerNSMethod(self, "apply",(
         area = document.createElement("DIV");
         slider = document.createElement("INPUT");
         output = document.createElement("DIV");
-        clickBlock = document.createElement("DIV");
 
         area.className = "slider";
         area.style.position = "absolute";
@@ -34,22 +33,13 @@ registerNSMethod(self, "apply",(
         area.style.left = a.offsetLeft+"px";
         area.style.zIndex = "9999";
 
-        clickBlock.className = "blocker";
-        clickBlock.style.position = "absolute";
-        clickBlock.style.top = a.offsetTop+"px";
-        clickBlock.style.left = a.offsetLeft+"px";
-        clickBlock.style.zIndex = "9998";
-        clickBlock.style.height = "27px";
-        clickBlock.style.width = "150px";
-        clickBlock.onmousedown = ()=>{return false};
-        clickBlock.onmouseup = ()=>{a.play()};
-
         slider.type = "range";
         slider.min = "0.2";
         slider.max = "2";
         slider.step = "0.1";
         slider.value = initVal;
         area.style.opacity = "0.25";
+        slider.onchange = ()=>{a.play()};
 
         output.innerHTML = initVal;
         a.playbackRate = initVal;
