@@ -41,6 +41,13 @@ Operable.prototype.forEach=function(f){
   }
   return this;
 }
+Operable.prototype.having=function(f){
+  var nElements = [];
+  for(var i=0;i<this.elements.length;i++){
+    nElements.push(f(this.elements[i]));
+  }
+  return new Operable(nElements);
+}
 Operable.prototype.count=function(){
   return this.elements.length;
 }
@@ -187,12 +194,24 @@ document.onkeyup = documentKeyUp;
 const applyToImage = function(img, f, composite, cb){
   if (img.tagName != "IMG"){
     // we create a proxy image to apply changes to
-    const prox = document.createElement("img");
-    imageIndex++;
     img.originFix = false;
-    prox.uid = img.uid;
-    prox.src = img.src;
-    prox.onload = function(){
+    var prox;
+    if (img.imageProxy == undefined){
+      img.imageProxy = document.createElement("img");
+      img.imageProxy.uid = img.uid;
+      img.imageProxy.src = img.src;
+      prox = img.imageProxy;
+      prox.onload = function(){
+        uk.org.adaptive.core.imageReplaceSmart(prox, f, prox.uid, function(){
+          img.style.backgroundImage = "url("+prox.src+")";
+          img.originFix = true;
+          if (cb!=undefined){
+            cb();
+          }
+        }, composite==undefined?false:composite);
+      }
+    }else{
+      prox = img.imageProxy;
       uk.org.adaptive.core.imageReplaceSmart(prox, f, prox.uid, function(){
         img.style.backgroundImage = "url("+prox.src+")";
         img.originFix = true;
@@ -201,6 +220,9 @@ const applyToImage = function(img, f, composite, cb){
         }
       }, composite==undefined?false:composite);
     }
+
+
+
   }
   uk.org.adaptive.core.imageReplaceSmart(img, f, img.uid, cb==undefined?function(){}:cb, composite==undefined?false:composite);
 }
