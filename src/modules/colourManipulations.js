@@ -187,6 +187,7 @@ registerNSMethod(self, "changeBrightness", (
       self.remove();
 */
     self.isActive = true;
+    value = properties["factor"];
 
     /*limit = function (v) {
       if (v < 0) return 0;
@@ -194,7 +195,6 @@ registerNSMethod(self, "changeBrightness", (
       return v;
     };
 
-    value = properties["factor"];
 
     targets().where(a => a instanceof HTMLElement).do(
       function (a) {
