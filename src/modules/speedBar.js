@@ -39,6 +39,8 @@ registerNSMethod(self, "apply",(
         clickBlock.style.top = a.offsetTop+"px";
         clickBlock.style.left = a.offsetLeft+"px";
         clickBlock.style.zIndex = "9998";
+        clickBlock.height = "27px";
+        clickBlock.width = "150px";
         clickBlock.onmousedown = (a)=>{a.stopPropagation(); a.preventDefault(); return false};
         clickBlock.onmouseup = (a)=>{a.stopPropagation();a.preventDefault();return false};
 
