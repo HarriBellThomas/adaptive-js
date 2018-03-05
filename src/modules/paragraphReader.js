@@ -30,14 +30,14 @@ registerNSMethod(self, "apply",(
         which properties are permitted, we can simply
         perform simple field/type-checking like:      */
 
-    if (!verifyArgs(properties, [["fadeCoefficient", NUMTYPE]]))
-                                              return false;
+    if (!verifyArgs(properties, [["reduceTransparency", BOOLTYPE],
+                                  ["size", STRINGTYPE],
+                                  ["defaultRate", NUMTYPE]])) return false;
 
     /* Ensure idempotence by first removing the
         effect if it is present                   */
 
-    if (self.isActive)
-            self.remove();
+    if (self.isActive) self.remove();
 
     if (forall(PARAGRAPHS).count() < 5) return false;
     self.isActive = true;
