@@ -1,7 +1,8 @@
 registerNamespace("uk.org.adaptive.showMouse");
 
+self.circle;
 self.isActive = false;
-var speed = "fast";
+self.speed = "fast";
 
 var mouseX = undefined;
 var mouseY = undefined;
@@ -13,7 +14,7 @@ registerNSMethod(self, "apply", function(properties) {
    if (self.isActive) self.remove();
    
    self.isActive = true;
-   speed = properties["speed"];
+   self.speed = properties["speed"];
    
    doOnMouseMove(function(x, y) {
       mouseX = x;
@@ -22,7 +23,7 @@ registerNSMethod(self, "apply", function(properties) {
 
    doOnKeyDown(17, function(e) {
       if (!keyDown) {
-         showMouse();
+         self.showMouse();
          keyDown = true;
       }
    });
@@ -38,7 +39,7 @@ registerNSMethod(self, "remove", function() {
    self.isActive = false;
 });
 
-const showMouse = function() {
+registerNSMethod(self, "showMouse", function() {
    if (typeof mouseX == "undefined" || typeof mouseY == "undefined" || performingAnimation || !self.isActive) return;
    debug("Showing mouse at X: " + mouseX + ", Y: " + mouseY);
    
@@ -46,16 +47,16 @@ const showMouse = function() {
    var borderWidth = 8;
    var delta = 5;
    
-   var circle = document.createElement("div");
-   circle.style.border = borderWidth + "px solid #000";
-   circle.style.borderRadius = "50%";
-   circle.style.zIndex = "999999999";
-   circle.style.position = "absolute";
-   circle.style.top = (mouseY - startSize/2) + "px";
-   circle.style.left = (mouseX - startSize/2) + "px";
-   circle.style.width = startSize + "px";
-   circle.style.height = startSize + "px";
-   document.body.appendChild(circle);
+   self.circle = document.createElement("div");
+   self.circle.style.border = borderWidth + "px solid #000";
+   self.circle.style.borderRadius = "50%";
+   self.circle.style.zIndex = "999999999";
+   self.circle.style.position = "absolute";
+   self.circle.style.top = (mouseY - startSize/2) + "px";
+   self.circle.style.left = (mouseX - startSize/2) + "px";
+   self.circle.style.width = startSize + "px";
+   self.circle.style.height = startSize + "px";
+   document.body.appendChild(self.circle);
    
    // Animation
    var size = startSize;
@@ -65,20 +66,28 @@ const showMouse = function() {
    function frame() {
       if (size <= 0) {
          clearInterval(id);
-         circle.parentNode.removeChild(circle);
+         self.circle.parentNode.removeChild(self.circle);
          performingAnimation = false;
       } else {
-         circle.style.top = (mouseY - size/2) + "px";
-         circle.style.left = (mouseX - size/2) + "px";
-         circle.style.width = size + "px";
-         circle.style.height = size + "px";
+         self.circle.style.top = (mouseY - size/2) + "px";
+         self.circle.style.left = (mouseX - size/2) + "px";
+         self.circle.style.width = size + "px";
+         self.circle.style.height = size + "px";
          
          var scale = (startSize - size)/startSize;
          var colour = 255 * scale;
-         circle.style.borderWidth = (borderWidth - scale * borderWidth) + "px";
-         circle.style.borderColor = "rgb(" + colour + ", " + colour + ", " + colour + ")";
+         self.circle.style.borderWidth = (borderWidth - scale * borderWidth) + "px";
+         self.circle.style.borderColor = "rgb(" + colour + ", " + colour + ", " + colour + ")";
          
-         size -= speed === "fast" ? 6 : 2;
+         size -= self.speed === "fast" ? 6 : 2;
       }
    }
-};
+});
+
+(<
+   ASYNC_TEST();
+   require(self.speed === "fast");
+   self.showMouse();
+   require(self.circle.parentNode);
+   setTimeout(function() { require(!self.circle.parentNode); }, 350);
+>)
