@@ -16,7 +16,7 @@ registerNSMethod(self, "apply",(
     self.isActive = true;
 
     document.body.cacheCSSProperties(["color", "background-color"]);
-    document.body.style.backgroundColor = "rgb(25,25,25)";
+    document.body.style.backgroundColor = "rgb(25,25,25)!important";
     document.body.style.color = "white";
 
     relevantTargets().where(a=> a instanceof HTMLElement).do(
@@ -26,7 +26,7 @@ registerNSMethod(self, "apply",(
           a.cacheCSSProperties(["color", "background-color"]);
           alpha = rgbaValue(extractColour(a, "backgroundColor")).a;
           a.style.color = "white";
-          a.style.backgroundColor = "rgba(25,25,25,"+alpha+")";
+          a.style.backgroundColor = "rgba(25,25,25,"+alpha+")!important";
       }
     );
 
