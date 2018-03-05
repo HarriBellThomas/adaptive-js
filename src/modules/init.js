@@ -1,5 +1,4 @@
 // 1000 commits!
-
 registerNamespace("uk.org.adaptive");
 
 self.data = null; /* To be initialised by JSON */
@@ -9,6 +8,7 @@ self.pluginActivation = false;
 registerNSMethod(uk.org.adaptive, "init", (
     function(properties) {
 
+        /* Set a persistant cookie for the current domain */
         var setCookie = ((cname, cvalue, exdays) => {
             var d = new Date();
             d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -16,6 +16,7 @@ registerNSMethod(uk.org.adaptive, "init", (
             document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
         });
 
+        /* Try to retrieve a persistant cookie from the current domain's scope */
         var getCookie = ((cname) => {
             var name = cname + "=";
             var decodedCookie = decodeURIComponent(document.cookie);
@@ -32,6 +33,7 @@ registerNSMethod(uk.org.adaptive, "init", (
             return "";
         });
 
+        /* Loop through every module removing them */
         var removeStyles = function() {
             if(self.data != null && "modules" in self.data) {
                 for(i = 0; i < self.data["modules"][0].length; i++) {
@@ -45,7 +47,7 @@ registerNSMethod(uk.org.adaptive, "init", (
             }
         }
 
-
+        /* Retrieve remove JSON configurations */
         var retrieveJSON = ((url) => {
             console.log("Starting async JSON retrieval");
             var xhr = new XMLHttpRequest();
@@ -73,7 +75,7 @@ registerNSMethod(uk.org.adaptive, "init", (
         });
 
 
-
+        /* Initialisation parameters */
         var requireAuth = true;
         var hasAuth = false;
         var userMode = false;
@@ -93,12 +95,6 @@ registerNSMethod(uk.org.adaptive, "init", (
 
 
         else {
-
-            /* Check if the plugin is there */
-            var event = document.createEvent('Event');
-            event.initEvent('hello');
-            document.dispatchEvent(event);
-            /* End */
 
             /* Plugin Return */
             if (verifyArgs(properties, [["user", STRINGTYPE]]) && properties["user"] != "") {
@@ -135,6 +131,7 @@ registerNSMethod(uk.org.adaptive, "init", (
                 }
             }
 
+            /* Assess the mode we want to load into */
             if (verifyArgs(properties, [["id", STRINGTYPE]]) && properties["id"] != "") {
                 requireAuth = false;
                 setCookie("ADAPTIVE_B", properties["id"], 365);
@@ -149,6 +146,7 @@ registerNSMethod(uk.org.adaptive, "init", (
             }
 
 
+            /* Build the page's markup */
             var style = document.createElement("style");
             style.innerHTML = "div#adaptive-bar,div#adaptive-bar #status{background-color:#fff}div#adaptive-bar{position:fixed;z-index:999999;bottom:0;right:0;height:40px;padding:0;margin:0;font-family:Helvetica,system;font-weight:400;font-size:13px;line-height:40px;vertical-align:middle;border-color:#000;border-width:1px 0 0 1px;border-style:solid;-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}div#adaptive-bar .box,div#adaptive-bar img{padding:12px;float:right;max-height:16px;box-sizing:content-box}div#adaptive-bar .box{font-family:monospace;font-size:13px;line-height:16px;font-weight:1000}div#adaptive-bar #status:hover{opacity:.7}div#adaptive-bar #status.enabled{background-color:green;color:#fff;cursor:pointer}div#adaptive-bar #status.disabled,div#adaptive-bar #status.login{background-color:#e20000;color:#fff;cursor:pointer}div#adaptive-bar #number{cursor:pointer;background-color:#353535;color:#989898}";
             document.body.appendChild(style);
@@ -180,9 +178,10 @@ registerNSMethod(uk.org.adaptive, "init", (
 
             document.body.appendChild(adaptiveBar);
 
+            /* Interaction with the UI elements */
             status.addEventListener("click", function(event){
                 event.preventDefault();
-                if(status.className == "disabled") {
+                if(status.classList.contains("disabled")) {
                     var lastIndex = window.location.href.indexOf('#');
                     if(lastIndex > -1) {
                         var url = window.location.href.substr(0, lastIndex);
@@ -203,12 +202,15 @@ registerNSMethod(uk.org.adaptive, "init", (
 
                 else {
                     removeStyles();
-                    status.className = "disabled";
+                    status.classList
+                    status.classList.add("disabled");
+                    status.classList.add("box");
                     status.innerHTML = "Disabled";
                 }
             });
 
 
+            /* On clicking the Grey Hash button */
             number.addEventListener("click", function(event) {
                 var input_id = prompt("Style ID (0 for default)", "0");
                 if (input_id == null || input_id == "") {
@@ -236,12 +238,12 @@ registerNSMethod(uk.org.adaptive, "init", (
                 status.innerHTML = "Enabled";
 
                 if(userMode) {
-                    // get style from user default style url
+                    // Get style from user default style url
                     retrieveJSON(userJSONRoute + userID);
                 }
 
                 else {
-                    // get style from style route
+                    // Get style from style route
                     retrieveJSON(styleJSONRoute + styleID);
                 }
 
@@ -252,7 +254,7 @@ registerNSMethod(uk.org.adaptive, "init", (
     }
 ));
 
-
+ /* Public method, take loaded data and apply it to loaded modules */
 registerNSMethod(uk.org.adaptive, "applyStyles", (function(properties) {
     if(self.data != null && "modules" in self.data) {
         for(i = 0; i < self.data["modules"].length; i++) {
@@ -267,13 +269,21 @@ registerNSMethod(uk.org.adaptive, "applyStyles", (function(properties) {
     }
 }));
 
+
+/* Check if the plugin is there */
+var event = document.createEvent('Event');
+event.initEvent('hello');
+document.dispatchEvent(event);
+/* End */
+
+
 /* Shall we begin? */
 uk.org.adaptive.init({id:"", user:""});
 
 
 
-
 (<
+    /**** Testing Block ****/
 
     function guid() {
         function s4() {
