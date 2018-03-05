@@ -155,6 +155,7 @@ registerNSMethod(self, "imageGetRawSize", function(src,callback,cb){
 });
 
 registerNSMethod(self, "imageReplaceSmartUnchecked", function(img, indx, cache, f, cb, comps){
+  console.log("index:"+indx);
     const c = document.createElement("canvas");
     const IMAGEWIDTH = self.IMAGE_SIZES[indx].width;
     const IMAGEHEIGHT = self.IMAGE_SIZES[indx].height;
@@ -164,10 +165,12 @@ registerNSMethod(self, "imageReplaceSmartUnchecked", function(img, indx, cache, 
     ctx.drawImage(img,0,0);
     var canvasDataOld = ctx.getImageData(0, 0, c.width, c.height);
     if (self.IMAGE_CACHE[indx] == undefined){
+      console.log("Not in cache");
       img.adaptiveMode = true;
       var copy = self.copyImageDataFromArray(canvasDataOld, c.width, c.height);
       self.IMAGE_CACHE[indx] = copy;
     }else{
+      console.log("In cache");
       if (!comps){
         canvasDataOld = self.copyImageDataFromArray(self.IMAGE_CACHE[indx], c.width, c.height);
       }
