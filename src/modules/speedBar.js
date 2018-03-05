@@ -33,8 +33,6 @@ registerNSMethod(self, "apply",(
         area.style.top = a.offsetTop+"px";
         area.style.left = a.offsetLeft+"px";
         area.style.zIndex = "9999";
-        area.onmousedown = (a)=>{a.stopPropagation(); return false};
-        area.onmouseup = (a)=>{a.stopPropagation();return false};
 
         clickBlock.className = "blocker";
         clickBlock.style.position = "absolute";
