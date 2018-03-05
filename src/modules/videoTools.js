@@ -71,8 +71,10 @@ registerNSMethod(self, "applyDomainFixToVideo",(
 
 
 registerNSMethod(self, "apply",(
-  function(func){
-    self.f = (func==undefined)?self.f:func;
+  function(func, composite){
+    const oldf = self.f;
+    self.f = (composite)?((xy,rgba)=>func(xy,oldf(xy,rgba))):
+              (func==undefined)?self.f:func;
     self.isActive = true;
     if (self.domainFixApplied){
       console.log("Fix was applied.");
@@ -251,7 +253,7 @@ registerNSMethod(self, "ytVideoDescription",(
     var httpRequest = new XMLHttpRequest()
     httpRequest.onreadystatechange = function (data) {
       if (this.readyState == 4){
-        debug("YT Support.")
+        debug("Checking YT support...")
         require(this.status == 200);
         pass();
       }
