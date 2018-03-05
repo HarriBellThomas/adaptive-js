@@ -16,8 +16,8 @@ registerNSMethod(self, "apply",(
     self.isActive = true;
 
     document.body.cacheCSSProperties(["color", "background-color"]);
-    document.body.setAttribute('style', 'background-color:rgb(25,25,25) !important');
-    //document.body.style.backgroundColor = "rgb(25,25,25)!important";
+    //document.body.setAttribute('style', 'background-color:rgb(25,25,25) !important');
+    document.body.style.backgroundColor = "rgb(25,25,25)!important";
     document.body.style.color = "white";
 
     relevantTargets().where(a=> a instanceof HTMLElement).do(
