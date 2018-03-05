@@ -145,7 +145,7 @@ const takeScreenshot = function() {
 }
 
 const updatePosition = function() {
-   console.log(document.documentElement.scrollLeft + ", " + document.documentElement.scrollTop);
+   console.log(document.documentElement.scrollLeft + ", " + document.documentElement.scrollTop + " : " + mouseX + ", " + mouseY);
    var x = mouseX - Math.max(document.body.scrollLeft, document.documentElement.scrollLeft);
    var y = mouseY - Math.max(document.body.scrollTop, document.documentElement.scrollTop);
    magnifyingGlass.style.top = (y - magnifierSize/2) + "px";
