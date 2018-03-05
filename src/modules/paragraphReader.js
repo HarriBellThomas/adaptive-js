@@ -18,6 +18,7 @@ self.activePanel = false;
 self.wordReadIndex = 0;
 self.reading = false;
 self.words = false;
+self.rate = 0;
 
 /* Now, we can define the member method "apply", which
     takes an object, containing the required properties.
@@ -33,6 +34,8 @@ registerNSMethod(self, "apply",(
     if (!verifyArgs(properties, [["reduceTransparency", BOOLTYPE],
                                   ["size", STRINGTYPE],
                                   ["defaultRate", NUMTYPE]])) return false;
+
+    self.rate = properties["defaultRate"];
 
     /* Ensure idempotence by first removing the
         effect if it is present                   */
@@ -164,7 +167,21 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   self.activePanelCover = foregroundCover;
   self.activePanel = foregroundPanel;
 
-  var foregroundOutput = text.replace(/\S+/g, a=>"<span>"+a+"</span>");
+  if (isSafari){
+
+  }
+  // Opera 8.0+
+    var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+    var isFirefox = typeof InstallTrigger !== 'undefined'; // Firefox 1.0+
+    // Safari 3.0+ "[object HTMLElementConstructor]"
+    var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+    var isIE = /*@cc_on!@*/false || !!document.documentMode; // Internet Explorer 6-11
+    var isEdge = !isIE && !!window.StyleMedia; // Edge 20+
+    var isChrome = !!window.chrome && !!window.chrome.webstore; // Chrome 1+
+
+  var boundaryEx = /[^\s\.\,\!]+|\.|\,|\!/g;
+  if (isSafari) boundaryEx = /[^\s\.\,]+|\.\,/g;
+  var foregroundOutput = text.replace(boundaryEx, a=>"<span>"+a+"</span>");
   foregroundPanel.style.top = window.innerHeight + "px";
   foregroundPanel.style.left = ((window.innerWidth-foregroundPanel.clientWidth)/2) + "px";
   var aimTop = 0;
@@ -201,7 +218,8 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
 */
   self.wordReadIndex = 0;
   self.reading = new SpeechSynthesisUtterance(text);
-  self.reading.rate = 1;
+  self.reading.rate = self.rate;
+  self.reading.pitch = 0.1;
   window.speechSynthesis.speak(self.reading);
   self.reading.onboundary = self.onWordBoundary;
   self.words = self.activePanel.getElementsByTagName("span");
@@ -210,14 +228,14 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
 
 
 registerNSMethod(self, "onWordBoundary", function(text){
-  self.wordReadIndex++;
   self.words[self.wordReadIndex].style.backgroundColor = "yellow";
-  self.words[self.wordReadIndex-1].style.backgroundColor = "";
+  if(self.wordReadIndex>0)self.words[self.wordReadIndex-1].style.backgroundColor = "";
 
   if (self.words[self.wordReadIndex].offsetTop+self.activePanel.dOffset > (window.innerHeight/2)){
     self.activePanel.dOffset -= self.words[self.wordReadIndex].offsetHeight;
     self.activePanel.style.top = self.activePanel.dOffset + "px";
   }
+  self.wordReadIndex++;
 
 });
 
