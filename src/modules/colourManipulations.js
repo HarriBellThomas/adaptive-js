@@ -8,9 +8,9 @@ registerNSMethod(self, "apply", (
   function (properties) {
     console.log(rgbaValue(extractColour(document.body, "backgroundColor")));
     if (rgbaValue(extractColour(document.body, "backgroundColor")).a===0) document.body.style.backgroundColor = rgba(255,255,255,1);
-    if ("changeSaturation" in properties) self.changeSaturation(properties["factor"]);
-    if ("changeContrast" in properties) self.changeContrast(properties["factor"]);
-    if ("changeBrightness" in properties) self.changeBrightness(properties["factor"]);
+    if ("changeSaturation" in properties) self.changeSaturation(properties["changeSaturation"]);
+    if ("changeContrast" in properties) self.changeContrast(properties["changeContrast"]);
+    if ("changeBrightness" in properties) self.changeBrightness(properties["changeBrightness"]);
     if ("nightShifter" in properties) self.nightShifter();
     if ("invert" in properties) self.invert();
     return true;
