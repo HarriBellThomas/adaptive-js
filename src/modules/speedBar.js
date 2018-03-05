@@ -50,7 +50,6 @@ registerNSMethod(self, "apply",(
         area.appendChild(slider);
         area.appendChild(output);
         a.parentNode.insertBefore(area, a.nextSibling);
-        area.parentNode.insertBefore(clickBlock, area.nextSibling);
         fadeTimer = window.setTimeout(function(){},0);
 
 
