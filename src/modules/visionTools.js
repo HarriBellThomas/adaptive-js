@@ -12,16 +12,26 @@ registerNamespace("uk.org.adaptive.visionTools");
 self.isActive = false;
 
 registerNSMethod(self, "requestDescriptions",(
-  function(imagesrcs, cb){
+  function(imagesrc_orig, cb){
     var xhttp = new XMLHttpRequest();
     var formd = new FormData();
+    var imagesrcs;
+    if (imagesrc_orig.length < 16){
+      imagesrcs = imagesrc_orig;
+    }else{
+      imagesrcs = imagesrc_orig.slice(0,16);
+    }
     formd.append('input', JSON.stringify(imagesrcs));
 
     xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        console.log(imagesrcs);
-        console.log(JSON.parse(this.responseText));
-        cb(JSON.parse(this.responseText));
+      if (this.readyState == 4){
+        if (this.status == 200) {
+          console.log(imagesrcs);
+          console.log(JSON.parse(this.responseText));
+          cb(JSON.parse(this.responseText));
+        }else{
+          cb(false);
+        }
       }
     };
     xhttp.open("POST", "https://cp.md/adaptive/vx/cognitive.php", true);
@@ -48,10 +58,15 @@ registerNSMethod(self, "apply", (
     document.body.appendChild(k);
 
     var inputImages = forall(IMAGES).where(a=> a.width*a.height > 1000
-                      && a.alt.length < 1 && a.src.indexOf("://") > -1);
+                      && a.alt.length < 1 && (a.src.indexOf("://")>0||(a.oldsrc!=undefined && a.oldsrc.indexOf("://")>0)) > -1);
 
     k.innerHTML = "<img src='https://cp.md/adaptive/vx/spin.gif?0' width=40/> Describing "+inputImages.count()+" images...";
-    self.requestDescriptions(inputImages.where(function(a){return true;}).do(function(a){return a.src}).elements, function(tags){
+    self.requestDescriptions(inputImages.where(function(a){return true;}).do(a=>(a.oldsrc==undefined)?a.src:a.oldsrc).elements, function(tags){
+      if (tags === false){
+        k.innerHTML = "<img src='https://cp.md/adaptive/vx/spin.gif?0' width=40/> Failed...";
+        setTimeout(function(){k.outerHTML = "";}, 1000);
+        return;
+      }
       for (var i=0;i<tags.length;i++) {
         inputImages.elements[i].alt = tags[i];
       }
@@ -70,5 +85,6 @@ registerNSMethod(self, "apply", (
 
 registerNSMethod(self, "remove",(
   function(){
+    // Why would you want to do that??
   }
 ));
