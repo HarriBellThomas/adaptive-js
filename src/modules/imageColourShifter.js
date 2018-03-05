@@ -57,7 +57,7 @@ if (Object.freeze)
 /* Applies the simulation of colour blindness based on input */
 registerNSMethod(self, "apply", (
   function (properties) {
-    if (!verifyArgs(properties, [["blindType", STRINGTYPE]]))
+    if (!verifyArgs(properties, [["identifier", STRINGTYPE]]))
       return false;
 
     if (self.isActive)
@@ -72,7 +72,7 @@ registerNSMethod(self, "apply", (
       function (a) {
         if (!self.isActive) return;
 
-        type = properties["blindType"];
+        type = properties["identifier"];
         matrix = ColorMatrixMatrixes[type];
 
         bc = rgbaValue(extractColour(a, "backgroundColor"));
@@ -139,7 +139,7 @@ const lms2rgb = [[8.09444479e-02, -1.30504409e-01, 1.16721066e-01],
 
 registerNSMethod(self, "daltonize", (
   function (properties) {
-    if (!verifyArgs(properties, [["blindType", STRINGTYPE]]))
+    if (!verifyArgs(properties, [["identifier", STRINGTYPE]]))
       return false;
 
     if (self.isActive)
@@ -167,14 +167,13 @@ registerNSMethod(self, "daltonize", (
 
         if (!self.isActive) return;
 
-        type = properties["blindType"];
         matrix = ColorMatrixMatrixes[type];
 
         bc = rgbaValue(extractColour(a, "backgroundColor"));
         c = rgbaValue(extractColour(a, "color"));
         boc = rgbaValue(extractColour(a, "border-color"));
 
-        let type = properties["blindType"];
+        let type = properties["identifier"];
         let LMSMatrix = multiply(rgb2lms, [[bc.r], [bc.g], [bc.b]]);
         let colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
         let simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
@@ -195,7 +194,6 @@ registerNSMethod(self, "daltonize", (
         a.cacheCSSProperties(["border-color"]);
         a.style.backgroundColor = "rgba("+r+","+g+","+b+","+bc.a+")";
 
-        type = properties["blindType"];
         LMSMatrix = multiply(rgb2lms, [[c.r], [c.g], [c.b]]);
         colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
         simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
@@ -208,7 +206,6 @@ registerNSMethod(self, "daltonize", (
 
         a.style.color = "rgba("+r+","+g+","+b+","+c.a+")";
 
-        type = properties["blindType"];
         LMSMatrix = multiply(rgb2lms, [[boc.r], [boc.g], [boc.b]]);
         colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
         simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
@@ -227,7 +224,7 @@ registerNSMethod(self, "daltonize", (
       function (a) {
         applyToImage(a, function (xy, rgba) {
           if (!self.isActive) return;
-          let type = properties["blindType"];
+          let type = properties["identifier"];
           let LMSMatrix = multiply(rgb2lms, [[rgba.r], [rgba.g], [rgba.b]]);
           let colourBlindChangeMatrix = multiply(cb_matrices[type], LMSMatrix);
           let simulatedMatrix = multiply(lms2rgb, colourBlindChangeMatrix);
