@@ -26,14 +26,23 @@ registerNSMethod(self, "apply",(
         area = document.createElement("DIV");
         slider = document.createElement("INPUT");
         output = document.createElement("DIV");
+        clickBlock = document.createElement("DIV");
 
         area.className = "slider";
         area.style.position = "absolute";
         area.style.top = a.offsetTop+"px";
         area.style.left = a.offsetLeft+"px";
         area.style.zIndex = "9999";
-        area.onmousedown = ()=>{return false};
-        area.onmouseup = ()=>{return false};
+        area.onmousedown = (a)=>{a.stopPropagation(); return false};
+        area.onmouseup = (a)=>{a.stopPropagation();return false};
+
+        clickBlock.className = "blocker";
+        clickBlock.style.position = "absolute";
+        clickBlock.style.top = a.offsetTop+"px";
+        clickBlock.style.left = a.offsetLeft+"px";
+        clickBlock.style.zIndex = "9998";
+        clickBlock.onmousedown = (a)=>{a.stopPropagation(); a.preventDefault(); return false};
+        clickBlock.onmouseup = (a)=>{a.stopPropagation();a.preventDefault();return false};
 
         slider.type = "range";
         slider.min = "0.2";
@@ -48,6 +57,7 @@ registerNSMethod(self, "apply",(
         output.style.color = "rgb(127,127,127)";
         output.style.height = area.height;
 
+        a.appendChild(clickBlock);
         area.appendChild(slider);
         area.appendChild(output);
         a.parentNode.insertBefore(area, a.nextSibling);
