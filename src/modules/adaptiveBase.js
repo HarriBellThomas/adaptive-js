@@ -140,9 +140,10 @@ registerNSMethod(self, "copyImageDataFromArray", function(canvasdata, width, hei
   return newdata;
 });
 
-registerNSMethod(self, "imageGetRawSize", function(src,callback){
+registerNSMethod(self, "imageGetRawSize", function(src,callback,cb){
   const i=document.createElement("img");
   i.style.visibility = "hidden";
+  i.onerror = function(){ cb(false); };
   i.onload = function(){
     const output = {width:i.clientWidth, height:i.clientHeight};
     i.outerHTML = "";
@@ -175,7 +176,8 @@ registerNSMethod(self, "imageReplaceSmartUnchecked", function(img, indx, cache, 
     ctx.putImageData(canvasDataNew, 0, 0);
     const newdata = c.toDataURL("image/png");
     img.src = newdata;
-    img.onload = cb;
+    img.onload = function(){cb(true);}
+    img.onerror = function(){cb(false);}
 });
 
 registerENUM(["SOFTIDENTITY"]);
@@ -186,6 +188,7 @@ registerNSMethod(self, "imageReplaceSmart", function(img, f, i, cb, comps){
     if (img.crossFix !== true){
       img.crossFix = true;
       var imageurl = img.src;
+      img.oldsrc = img.src;
       var hostname = self.extractHostname(img.src);
       if (hostname != document.domain && hostname != "adaptive.org.uk" &&
             img.src.substring(0, "data:image/".length) != "data:image/"){
@@ -199,15 +202,17 @@ registerNSMethod(self, "imageReplaceSmart", function(img, f, i, cb, comps){
         img.src = imageurl;
         img.onload = function(){
           this.onload = function(){};
+          this.onerror = function(){ cb(false);}
           self.imageGetRawSize(imageurl, function(j){
             self.IMAGE_SIZES[i] = j;
             img.originFix = true;
             img.crossFix = false;
             if (f!==SOFTIDENTITY) self.imageReplaceSmartUnchecked(img, i, true, f, cb, comps);
-          });
+          }, cb);
 
         }
-      }, 100);
+        img.onerror = function(){ cb(false); };
+      }, 500);
     }else{
       return;
     }
