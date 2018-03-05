@@ -55,6 +55,7 @@ registerNSMethod(self, "remove", (
 
 
 /* This discards elements children to elements with background images */
+
 const relevantTargets = function (typ) {
     var output = [];
     var queue = [document.body];
