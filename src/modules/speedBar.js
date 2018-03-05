@@ -41,9 +41,8 @@ registerNSMethod(self, "apply",(
         clickBlock.style.zIndex = "9998";
         clickBlock.style.height = "27px";
         clickBlock.style.width = "150px";
-        clickBlock.onmousedown = (a)=>{a.stopPropagation(); a.preventDefault(); return false};
-        clickBlock.onmouseup = (a)=>{a.stopPropagation();a.preventDefault();return false};
-        clickBlock.style.backgroundImage= "url(https://cdn.londonandpartners.com/visit/general-london/areas/westminster-st-james/100347-433x298-bigben433.jpg)";
+        clickBlock.onmousedown = ()=>{return false};
+        clickBlock.onmouseup = ()=>{a.play()};
 
         slider.type = "range";
         slider.min = "0.2";
