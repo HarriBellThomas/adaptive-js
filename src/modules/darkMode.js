@@ -27,7 +27,10 @@ registerNSMethod(self, "apply",(
           a.cacheCSSProperties(["color", "background-color"]);
           alpha = rgbaValue(extractColour(a, "backgroundColor")).a;
           a.style.color = "white";
-          a.style.backgroundColor = "rgba(25,25,25,"+alpha+")";
+          if (a.style.backgroundColor.indexOf("!important"))
+          //a.style.backgroundColor = "rgba(25,25,25,"+alpha+")";
+          a.setAttribute('style', 'background-color:rgba(25,25,25,"+alpha+") !important');
+
       }
     );
 
