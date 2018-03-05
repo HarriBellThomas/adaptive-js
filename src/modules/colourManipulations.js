@@ -6,12 +6,13 @@ self.isActive = false;
 
 registerNSMethod(self, "apply", (
   function (properties) {
-    if(rgbaValue(extractColour(document.body, "backgroundColor")).a===0) document.body.style.backgroundColor = rgba(255,255,255,1);
-    if ("changeSaturation" in properties) self.changeSaturation(properties["changeSaturation"]);
-    if ("changeContrast" in properties) self.changeContrast(properties["changeContrast"]);
-    if ("changeBrightness" in properties) self.changeBrightness(properties["changeBrightness"]);
-    if ("nightShifter" in properties) self.nightShifter(properties["nightShifter"]);
-    if ("invert" in properties) self.invert(properties["invert"]);
+    console.log(rgbaValue(extractColour(document.body, "backgroundColor")));
+    if (rgbaValue(extractColour(document.body, "backgroundColor")).a===0) document.body.style.backgroundColor = rgba(255,255,255,1);
+    if ("changeSaturation" in properties) self.changeSaturation(properties["factor"]);
+    if ("changeContrast" in properties) self.changeContrast(properties["factor"]);
+    if ("changeBrightness" in properties) self.changeBrightness(properties["factor"]);
+    if ("nightShifter" in properties) self.nightShifter();
+    if ("invert" in properties) self.invert();
     return true;
   }
 ));
@@ -21,7 +22,7 @@ registerNSMethod(self, "apply", (
 registerNSMethod(self, "changeSaturation", (
   function (properties) {
 
-    if (!verifyArgs(properties, [["changeSaturation", NUMTYPE]]))
+    if (!verifyArgs(properties, [["factor", NUMTYPE]]))
       return false;
 
     if (self.isActive)
@@ -35,7 +36,7 @@ registerNSMethod(self, "changeSaturation", (
       return v;
     };
 
-    value = properties["changeSaturation"];
+    value = properties["factor"];
 
     targets().where(a => a instanceof HTMLElement).do(
       function (a) {
@@ -98,7 +99,7 @@ registerNSMethod(self, "changeSaturation", (
 registerNSMethod(self, "changeContrast", (
   function (properties) {
 
-    if (!verifyArgs(properties, [["changeContrast", NUMTYPE]]))
+    if (!verifyArgs(properties, [["factor", NUMTYPE]]))
       return false;
 
     if (self.isActive)
@@ -112,7 +113,7 @@ registerNSMethod(self, "changeContrast", (
       return v;
     };
 
-    value = properties["changeContrast"];
+    value = properties["factor"];
     factor = (259 * (value + 255)) / (255 * (259 - value));
 
     targets().where(a => a instanceof HTMLElement).do(
@@ -179,7 +180,7 @@ registerNSMethod(self, "changeContrast", (
 registerNSMethod(self, "changeBrightness", (
   function (properties) {
 
-    if (!verifyArgs(properties, [["changeBrightness", NUMTYPE]]))
+    if (!verifyArgs(properties, [["factor", NUMTYPE]]))
       return false;
 
     if (self.isActive)
@@ -193,7 +194,7 @@ registerNSMethod(self, "changeBrightness", (
       return v;
     };
 
-    value = properties["changeBrightness"];
+    value = properties["factor"];
 
     targets().where(a => a instanceof HTMLElement).do(
       function (a) {
@@ -244,7 +245,7 @@ registerNSMethod(self, "changeBrightness", (
 /* Invert colour of page elements */
 
 registerNSMethod(self, "invert", (
-  function (properties) {
+  function () {
 
     if (self.isActive)
       self.remove();
@@ -298,7 +299,7 @@ registerNSMethod(self, "invert", (
 /* Apply night shift function to reduce blue hue during the night */
 
 registerNSMethod(self, "nightShifter", (
-  function (properties) {
+  function () {
 
     if (self.isActive)
       self.remove();
