@@ -88,7 +88,12 @@ registerNSMethod(self, "showMouse", function() {
 
 (<
    ASYNC_TEST();
-   uk.org.adaptive.showMouse.isActive = true;               // Make sure the module is active
+   
+   // Set the variables so the test can take place
+   uk.org.adaptive.showMouse.isActive = true;
+   uk.org.adaptive.showMouse.mouseX = 0;
+   uk.org.adaptive.showMouse.mouseY = 0;
+   
    require(uk.org.adaptive.showMouse.speed === "fast");     // Test default parameter value
    require(uk.org.adaptive.showMouse.showMouse());          // Check that the function works
    require(uk.org.adaptive.showMouse.circle.parentNode);    // Check that the circle exists
