@@ -40,7 +40,7 @@ registerNSMethod(self, "apply",(
           if (!self.isActive) return;
           /* Ensure non-destructiveness by caching CSS */
           this.cacheCSSProperties(["color", "background-color",
-                                  "padding", "margin", "font-size"
+                                  "padding", "margin", "font-size",
                                   "border-radius"]);
           this.style.fontSize = properties["size"] + "pt";
           this.style.backgroundColor = properties["backgroundColour"];
