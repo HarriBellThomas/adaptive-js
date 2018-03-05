@@ -96,7 +96,7 @@ registerNSMethod(uk.org.adaptive, "init", (
 
             /* Check if the plugin is there */
             var event = document.createEvent('Event');
-            event.initEvent('adaptive_request');
+            event.initEvent('hello');
             document.dispatchEvent(event);
             /* End */
 
