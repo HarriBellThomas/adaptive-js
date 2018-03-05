@@ -104,7 +104,7 @@ registerNSMethod(self, "apply", (
       function (a) {
         applyToImage(a, function (xy, rgba) {
           if (!self.isActive) return;
-          type = properties["blindType"];
+          type = properties["identifier"];
           matrix = ColorMatrixMatrixes[type];
           return {
             r: rgba.r * matrix.R[0] / 100.0 + rgba.g * matrix.R[1] / 100.0 + rgba.b * matrix.R[2] / 100.0,
