@@ -218,6 +218,7 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   foregroundCover.style.height = "100%";
   foregroundCover.style.top = "0px";
   foregroundCover.style.left = "0px";
+  console.log(self.reduceTransparency);
   foregroundCover.style.backgroundColor = self.reduceTransparency ? "rgba(255,255,200,1)" : "rgba(255,255,255,0.8)";
   foregroundCover.style.overflow = "hidden";
   foregroundCover.style.backdropFilter = "blur(4px)";
@@ -236,6 +237,7 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   foregroundPanel.style.borderRadius = "10px";
   foregroundPanel.style.border = "1px solid black";
   foregroundPanel.style.fontFamily = "Comic Neue Bold";
+  console.log(self.size);
   foregroundPanel.style.fontSize = self.size;
   foregroundPanel.style.color = "black";
   foregroundPanel.style.padding = "40px 40px 40px 40px";
