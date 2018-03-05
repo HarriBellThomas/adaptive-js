@@ -192,13 +192,14 @@ registerNSMethod(uk.org.adaptive, "init", (
 
 
             number.addEventListener("click", function(event) {
-                var input_id = prompt("Style ID", "Harry Potter");
+                var input_id = prompt("Style ID (0 for default)", "0");
                 if (input_id == null || input_id == "") {
-                    alert("Cancelled");
+                    //alert("Cancelled");
                 } else {
                     var n = Math.floor(Number(input_id));
                     if(n !== Infinity && String(n) === input_id && n >= 0) {
-                        setCookie("ADAPTIVE_B", n, 365);
+                        if(n == 0) setCookie("ADAPTIVE_B", "", 365);
+                        else setCookie("ADAPTIVE_B", n, 365);
                         location.reload();
                     }
                     else {
