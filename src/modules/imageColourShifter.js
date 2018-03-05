@@ -110,7 +110,7 @@ registerNSMethod(self, "apply", (
             b: rgba.r * matrix.B[0] / 100.0 + rgba.g * matrix.B[1] / 100.0 + rgba.b * matrix.B[2] / 100.0,
             a: rgba.a
           }
-        })
+        },true);
     });
     uk.org.adaptive.videoTools.apply((xy, rgba)=> {
       if (!self.isActive) return;
@@ -122,7 +122,7 @@ registerNSMethod(self, "apply", (
         b: rgba.r * matrix.B[0] / 100.0 + rgba.g * matrix.B[1] / 100.0 + rgba.b * matrix.B[2] / 100.0,
         a: rgba.a
       }
-    });
+    },true);
 }));
 
 
@@ -254,7 +254,7 @@ registerNSMethod(self, "daltonize", (
             b: limit(rgba.b + fixedMatrix[2][0]),
             a: rgba.a
           }
-        })
+        },true)
       });
 
     uk.org.adaptive.videoTools.apply((xy, rgba)=> {
@@ -278,7 +278,7 @@ registerNSMethod(self, "daltonize", (
         b: limit(rgba.b + fixedMatrix[2][0]),
         a: rgba.a
       }
-    });
+    },true);
   }));
 
 

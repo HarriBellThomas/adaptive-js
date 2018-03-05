@@ -2,7 +2,7 @@
   require("compileScript.php");
   header("Access-Control-Allow-Origin: *");
 
-  $modules = ["onDOMChange", "adaptiveBase", "adaptiveTools", "colourTools", "linkHighlighter", "visionTools", "showMouse", "typeWarning", "passwordReveal", "magnifier", "videoTools","darkMode", "imageColourShifter", "colourManipulations", "motorFeatures", "paragraphReader", "speedBar", "debug","init"];
+  $modules = ["onDOMChange", "adaptiveBase", "adaptiveTools", "colourTools", "linkHighlighter", "visionTools", "showMouse", "typeWarning", "passwordReveal", "magnifier", "videoTools","darkMode", "imageColourShifter", "colourManipulations", "motorFeatures", "paragraphReader", "speedBar", "init"];
   $customScope = "NO";
   $selfURL = "https://js.adaptive.org.uk/adaptive.js";
 

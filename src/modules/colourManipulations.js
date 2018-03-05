@@ -25,10 +25,9 @@ registerNSMethod(self, "changeSaturation", (
     if (!verifyArgs(properties, [["factor", NUMTYPE]]))
       return false;
 
-    if (self.isActive)
-      self.remove();
-
     self.isActive = true;
+
+    forall(VISUALS).do(a=>applyToImage(a, SOFTIDENTITY));
 
     limit = function (v) {
       if (v < 0) return 0;
@@ -90,6 +89,22 @@ registerNSMethod(self, "changeSaturation", (
         },true);
       }
     );
+
+    uk.org.adaptive.videoTools.apply((xy, rgba)=> {
+
+      if (!self.isActive) return;
+
+      hsl = rgbToHsl(rgba.r, rgba.g, rgba.b);
+      hsl[1] = limit(hsl[1] * value);
+
+      rgb = hslToRgb(hsl[0], hsl[1], hsl[2]);
+      return {
+        r: Math.round(rgb[0]),
+        g: Math.round(rgb[1]),
+        b: Math.round(rgb[2]),
+        a: rgba.a
+      }
+    }, true);
   }
 ));
 
@@ -102,10 +117,9 @@ registerNSMethod(self, "changeContrast", (
     if (!verifyArgs(properties, [["factor", NUMTYPE]]))
       return false;
 
-    if (self.isActive)
-      self.remove();
-
     self.isActive = true;
+
+    forall(VISUALS).do(a=>applyToImage(a, SOFTIDENTITY));
 
     limit = function (v) {
       if (v < 0) return 0;
@@ -171,6 +185,18 @@ registerNSMethod(self, "changeContrast", (
         }, true)
       }
     );
+
+    uk.org.adaptive.videoTools.apply((xy, rgba)=> {
+
+      if (!self.isActive) return;
+
+      return {
+        r: Math.round(limit(factor * (rgba.r - 128) + 128)),
+        g: Math.round(limit(factor * (rgba.g - 128) + 128)),
+        b: Math.round(limit(factor * (rgba.b - 128) + 128)),
+        a: rgba.a
+      }
+    }, true);
   }
 ));
 
@@ -183,18 +209,16 @@ registerNSMethod(self, "changeBrightness", (
     if (!verifyArgs(properties, [["factor", NUMTYPE]]))
       return false;
 
-    if (self.isActive)
-      self.remove();
-
     self.isActive = true;
+    value = properties["factor"];
+
+    forall(VISUALS).do(a=>applyToImage(a, SOFTIDENTITY));
 
     limit = function (v) {
       if (v < 0) return 0;
       if (v > 1) return 1;
       return v;
     };
-
-    value = properties["factor"];
 
     targets().where(a => a instanceof HTMLElement).do(
       function (a) {
@@ -236,6 +260,18 @@ registerNSMethod(self, "changeBrightness", (
         },true)
       }
     );
+
+    uk.org.adaptive.videoTools.apply((xy, rgba)=> {
+
+      if (!self.isActive) return;
+
+      return {
+        r: rgba.r + Math.round(value),
+        g: rgba.g + Math.round(value),
+        b: rgba.b + Math.round(value),
+        a: rgba.a
+      }
+    }, true);
   }
 ));
 
@@ -245,10 +281,9 @@ registerNSMethod(self, "changeBrightness", (
 registerNSMethod(self, "invert", (
   function () {
 
-    if (self.isActive)
-      self.remove();
-
     self.isActive = true;
+
+    forall(VISUALS).do(a=>applyToImage(a, SOFTIDENTITY));
 
     targets().where(a => a instanceof HTMLElement).do(
       function (a) {
@@ -290,6 +325,18 @@ registerNSMethod(self, "invert", (
         },true)
       }
     );
+
+    uk.org.adaptive.videoTools.apply((xy, rgba)=> {
+
+      if (!self.isActive) return;
+
+      return {
+        r: 255 - rgba.r,
+        g: 255 - rgba.g,
+        b: 255 - rgba.b,
+        a: rgba.a
+      }
+    }, true);
   }
 ));
 
@@ -298,9 +345,6 @@ registerNSMethod(self, "invert", (
 
 registerNSMethod(self, "nightShifter", (
   function () {
-
-    if (self.isActive)
-      self.remove();
 
     self.isActive = true;
 
@@ -363,6 +407,18 @@ registerNSMethod(self, "nightShifter", (
           },true)
         }
       );
+
+      uk.org.adaptive.videoTools.apply((xy, rgba)=> {
+
+        if (!self.isActive) return;
+
+        return {
+          r: rgba.r,
+          g: rgba.g,
+          b: rgba.b + Math.round(value),
+          a: rgba.a
+        }
+      }, true);
       return true;
     };
 
@@ -427,14 +483,8 @@ registerNSMethod(self, "remove", (
   function () {
     if (!self.isActive) return true;
     self.isActive = false;
-    try {
-      forall(VISUALS).do(function (a) {
-        applyToImage(a, function (xy, rgba) {
-          return {r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a}
-        })
-      });
-    } catch (e) {
-    }
+    forall(VISUALS).do(function (a) {applyToImage(a, HARDIDENTITY)});
+    uk.org.adaptive.videoTools.apply(HARDIDENTITY);
     forall().where(a => a instanceof HTMLElement).do(function (a) {
       a.resetCSS();
     });
