@@ -145,7 +145,8 @@ const takeScreenshot = function() {
 }
 
 const updatePosition = function() {
-   magnifyingGlass.style.top = (mouseY + document.body.scrollTop - magnifierSize/2) + "px";
-   magnifyingGlass.style.left = (mouseX + document.body.scrollLeft - magnifierSize/2) + "px";
+   console.log(document.body.scrollLeft + ", " + document.body.scrollTop);
+   magnifyingGlass.style.top = (mouseY - document.body.scrollTop - magnifierSize/2) + "px";
+   magnifyingGlass.style.left = (mouseX - document.body.scrollLeft - magnifierSize/2) + "px";
    magnifyingGlass.style.backgroundPosition = (-(mouseX * zoom - magnifierSize/2)) + "px" + " " + (-(mouseY * zoom - magnifierSize/2)) + "px";
 };
