@@ -402,7 +402,7 @@ registerNSMethod(self, "nightShifter", (
       }, 1000)
     };
 
-    /*if (timeUntilAM < 0 && timeUntilPM > 0) {
+    if (timeUntilAM < 0 && timeUntilPM > 0) {
       window.setTimeout(function () {
         fadeIn(25,25);
       }, timeUntilPM);
@@ -415,10 +415,8 @@ registerNSMethod(self, "nightShifter", (
       window.setTimeout(function () {
         fadeOut(25);
       }, timeUntilAM);
-    };*/
+    };
 
-    fadeIn(12, 12);
-    window.setTimeout(()=>fadeOut(12), 12000);
   }
 ));
 
