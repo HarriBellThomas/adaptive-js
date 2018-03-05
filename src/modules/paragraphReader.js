@@ -234,7 +234,7 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   foregroundPanel.style.backgroundColor = "white";
   foregroundPanel.style.borderRadius = "10px";
   foregroundPanel.style.border = "1px solid black";
-  comicNeue.loaded.then(function() { foregroundPanel.style.fontFamily = "Comic Neue Bold"; });
+  comicNeue.loaded.then(function(fontFace) { foregroundPanel.style.fontFamily = fontFace; });
   foregroundPanel.style.fontSize = "48px";
   foregroundPanel.style.color = "black";
   foregroundPanel.style.padding = "40px 40px 40px 40px";
