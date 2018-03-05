@@ -225,7 +225,8 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   }
 
 
-  document.fonts.add(new FontFace("Comic Neue Bold", "url(https://js.adaptive.org.uk/assets/comic-neue-bold.woff)"));
+  var comicNeue = new FontFace("Comic Neue Bold", "url(https://js.adaptive.org.uk/assets/comic-neue-bold.woff)");
+  document.fonts.add(comicNeue);
   
   const foregroundPanel = document.createElement("div");
   foregroundPanel.style.width = "600px";
@@ -233,7 +234,7 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   foregroundPanel.style.backgroundColor = "white";
   foregroundPanel.style.borderRadius = "10px";
   foregroundPanel.style.border = "1px solid black";
-  foregroundPanel.style.fontFamily = "Comic Neue Bold";
+  comicNeue.loaded.then(function() { foregroundPanel.style.fontFamily = "Comic Neue Bold"; });
   foregroundPanel.style.fontSize = "48px";
   foregroundPanel.style.color = "black";
   foregroundPanel.style.padding = "40px 40px 40px 40px";
