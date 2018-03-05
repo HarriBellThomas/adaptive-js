@@ -4,8 +4,8 @@ self.circle;
 self.isActive = false;
 self.speed = "fast";
 
-var mouseX = undefined;
-var mouseY = undefined;
+self.mouseX = undefined;
+self.mouseY = undefined;
 var keyDown = false;
 var performingAnimation = false;
 
@@ -17,8 +17,8 @@ registerNSMethod(self, "apply", function(properties) {
    self.speed = properties["speed"];
    
    doOnMouseMove(function(x, y) {
-      mouseX = x;
-      mouseY = y;
+      self.mouseX = x;
+      self.mouseY = y;
    });
 
    doOnKeyDown(17, function(e) {
@@ -40,8 +40,8 @@ registerNSMethod(self, "remove", function() {
 });
 
 registerNSMethod(self, "showMouse", function() {
-   if (typeof mouseX == "undefined" || typeof mouseY == "undefined" || performingAnimation || !self.isActive) return;
-   debug("Showing mouse at X: " + mouseX + ", Y: " + mouseY);
+   if (typeof self.mouseX == "undefined" || typeof self.mouseY == "undefined" || performingAnimation || !self.isActive) return false;
+   debug("Showing mouse at X: " + self.mouseX + ", Y: " + self.mouseY);
    
    var startSize = 400;
    var borderWidth = 8;
@@ -52,8 +52,8 @@ registerNSMethod(self, "showMouse", function() {
    self.circle.style.borderRadius = "50%";
    self.circle.style.zIndex = "999999999";
    self.circle.style.position = "absolute";
-   self.circle.style.top = (mouseY - startSize/2) + "px";
-   self.circle.style.left = (mouseX - startSize/2) + "px";
+   self.circle.style.top = (self.mouseY - startSize/2) + "px";
+   self.circle.style.left = (self.mouseX - startSize/2) + "px";
    self.circle.style.width = startSize + "px";
    self.circle.style.height = startSize + "px";
    document.body.appendChild(self.circle);
@@ -69,8 +69,8 @@ registerNSMethod(self, "showMouse", function() {
          self.circle.parentNode.removeChild(self.circle);
          performingAnimation = false;
       } else {
-         self.circle.style.top = (mouseY - size/2) + "px";
-         self.circle.style.left = (mouseX - size/2) + "px";
+         self.circle.style.top = (self.mouseY - size/2) + "px";
+         self.circle.style.left = (self.mouseX - size/2) + "px";
          self.circle.style.width = size + "px";
          self.circle.style.height = size + "px";
          
@@ -82,12 +82,14 @@ registerNSMethod(self, "showMouse", function() {
          size -= self.speed === "fast" ? 6 : 2;
       }
    }
+   
+   return true;
 });
 
 (<
    ASYNC_TEST();
    require(uk.org.adaptive.showMouse.speed === "fast");
-   uk.org.adaptive.showMouse.showMouse();
+   require(uk.org.adaptive.showMouse.showMouse());
    require(uk.org.adaptive.showMouse.circle.parentNode);
    setTimeout(function() { require(!uk.org.adaptive.showMouse.circle.parentNode); pass(); }, 350);
 >)
