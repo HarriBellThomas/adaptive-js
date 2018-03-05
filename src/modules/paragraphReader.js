@@ -201,7 +201,7 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
 */
   self.wordReadIndex = 0;
   self.reading = new SpeechSynthesisUtterance(text);
-  self.reading.rate = 4;
+  self.reading.rate = 1;
   window.speechSynthesis.speak(self.reading);
   self.reading.onboundary = self.onWordBoundary;
   self.words = self.activePanel.getElementsByTagName("span");
