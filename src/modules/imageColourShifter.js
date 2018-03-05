@@ -56,8 +56,6 @@ registerNSMethod(self, "apply", (
         if (!verifyArgs(properties, [["identifier", STRINGTYPE]]))
             return false;
 
-        if (self.isActive)
-            self.remove();
         self.isActive = true;
 
         forall(VISUALS).do(a => applyToImage(a, SOFTIDENTITY));
@@ -145,8 +143,6 @@ registerNSMethod(self, "daltonize", (
         if (!verifyArgs(properties, [["identifier", STRINGTYPE]]))
             return false;
 
-        if (self.isActive)
-            self.remove();
         self.isActive = true;
 
         let type = properties["identifier"];

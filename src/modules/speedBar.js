@@ -15,10 +15,7 @@ registerNSMethod(self, "apply", (
             return false;
 
         initVal = properties["default"];
-
-        if (self.isActive)
-            self.remove();
-
+        
         self.isActive = true;
 
         forall(VIDEOS).do(
