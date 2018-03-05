@@ -1,3 +1,5 @@
+// 1000 commits!
+
 registerNamespace("uk.org.adaptive");
 
 self.data = null; /* To be initialised by JSON */

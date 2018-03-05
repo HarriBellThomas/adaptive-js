@@ -5,14 +5,54 @@ var magnifierSize = 200;
 var zoom = 1.75;
 
 var isMagnifierOn = false;
-var magnifyingGlass = undefined;
+var magnifyingGlass;
 var mouseX = 0;
 var mouseY = 0;
 
 var dirty = true;
 var dirtyCheckIntervalId;
-
+var applyingIdentity = false;
+self.toXOriginFixes = 0;
+var consistentCalls = 0;
+var lastCall = 0;
 registerNSMethod(self, "apply", function(properties) {
+
+   if (applyingIdentity){
+      if (lastCall == self.toXOriginFixes){
+        consistentCalls++;
+      }else{
+        consistentCalls = 0;
+      }
+      lastCall = self.toXOriginFixes;
+
+      debug(self.toXOriginFixes+" remain to be fixed");
+      if (self.toXOriginFixes > 0 && consistentCalls < 5){
+        setTimeout(function(){
+          self.apply(properties);
+        }, 1000);
+        return;
+      }else{
+        applyingIdentity = false;
+      }
+   }else{
+     forall(VISUALS).where(a=> !a.originFix).do(a=>{
+       self.toXOriginFixes ++;
+       applyToImage(a, HARDIDENTITY, false, function(){
+         self.toXOriginFixes --;
+       }
+     )});
+     debug(self.toXOriginFixes+" remain to be fixed");
+     lastCall = self.toXOriginFixes;
+     if (self.toXOriginFixes>0){
+       applyingIdentity = true;
+       setTimeout(function(){
+         self.apply(properties);
+       }, 1000);
+       return;
+     }
+   }
+
+
    if (!verifyArgs(properties, [["size", NUMTYPE], ["zoom", NUMTYPE]])) return false;
    if (self.isActive) self.remove();
 
@@ -25,14 +65,14 @@ registerNSMethod(self, "apply", function(properties) {
       mouseY = y;
 
       // If we don't have the screenshot yet then don't do anything
-      if (typeof magnifyingGlass == "undefined" || !self.isActive) return;
+      if (magnifyingGlass == undefined || !self.isActive) return;
 
       if (isMagnifierOn) updatePosition();
    });
 
    doOnKeyDown(77, function(e) {
       // If we don't have the screenshot yet then don't do anything
-      if (typeof magnifyingGlass == "undefined" || !self.isActive) return;
+      if (magnifyingGlass == undefined || !self.isActive) return;
 
       if (!isMagnifierOn && e.ctrlKey) {
          document.body.appendChild(magnifyingGlass);
@@ -43,7 +83,7 @@ registerNSMethod(self, "apply", function(properties) {
 
    doOnKeyUp(17, function(e) {
       // If we don't have the screenshot yet then don't do anything
-      if (typeof magnifyingGlass == "undefined" || !self.isActive) return;
+      if (magnifyingGlass == undefined || !self.isActive) return;
 
       if (isMagnifierOn) {
          magnifyingGlass.parentNode.removeChild(magnifyingGlass);
@@ -55,9 +95,9 @@ registerNSMethod(self, "apply", function(properties) {
    dirtyCheckIntervalId = setInterval(function() {
       if (dirty) takeScreenshot();
    }, 2000);
-   
+
    window.addEventListener("resize", onResize);
-   
+
    // Initialise magnifying glass
    magnifyingGlass = document.createElement("div");
    magnifyingGlass.style.border = "3px solid #000";
@@ -71,9 +111,9 @@ registerNSMethod(self, "apply", function(properties) {
    magnifyingGlass.style.width = magnifierSize + "px";
    magnifyingGlass.style.height = magnifierSize + "px";
    magnifyingGlass.style.zIndex = "999999999";
-   
+
    // Take screenshot of page
-   console.log("Loading screenshot library");
+   debug("Loading screenshot library");
    var script = document.createElement("script");
    script.type = "text/javascript";
    script.async = true;
@@ -96,10 +136,10 @@ const onResize = function(e) {
 
 const takeScreenshot = function() {
    dirty = false;
-   console.log("Taking screenshot");
+   debug("Taking screenshot");
    magnifyingGlass.style.visibility = "hidden";
    html2canvas(document.body, { proxy:"https://js.adaptive.org.uk/helpers/canvas.php", scale: zoom, logging: true }).then(function(c) {
-      magnifyingGlass.style.backgroundImage = "url(\"" + c.toDataURL("image/png") + "\")";
+      magnifyingGlass.style.backgroundImage = "url('" + c.toDataURL("image/png") + "')";
       magnifyingGlass.style.visibility = "visible";
    });
 }
