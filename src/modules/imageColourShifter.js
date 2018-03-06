@@ -49,16 +49,58 @@ var ColorMatrixMatrixes = {
         B: [16.3, 32.0, 51.6]
     }
 };
+var applyingIdentity = false;
+self.toXOriginFixes = 0;
+var consistentCalls = 0;
+var lastCall = 0;
 
 /* Applies the simulation of colour blindness based on input */
 registerNSMethod(self, "apply", (
     function (properties) {
+
+
+        if (applyingIdentity){
+            if (lastCall == self.toXOriginFixes){
+                consistentCalls++;
+            }else{
+                consistentCalls = 0;
+            }
+            lastCall = self.toXOriginFixes;
+
+            debug(self.toXOriginFixes+" remain to be fixed");
+            if (self.toXOriginFixes > 0 && consistentCalls < 3){
+                setTimeout(function(){
+                    self.apply(properties);
+                }, 1000);
+                return;
+            }else{
+                applyingIdentity = false;
+            }
+        }else{
+            forall(VISUALS).where(a=> !a.originFix).do(a=>{
+                self.toXOriginFixes ++;
+                applyToImage(a, HARDIDENTITY, false, function(){
+                        self.toXOriginFixes --;
+                    }
+                )});
+            debug(self.toXOriginFixes+" remain to be fixed");
+            lastCall = self.toXOriginFixes;
+            if (self.toXOriginFixes>0){
+                applyingIdentity = true;
+                setTimeout(function(){
+                    self.apply(properties);
+                }, 1000);
+                return;
+            }
+        }
+
+
         if (!verifyArgs(properties, [["identifier", STRINGTYPE]]))
             return false;
 
         self.isActive = true;
 
-        forall(VISUALS).do(a => applyToImage(a, SOFTIDENTITY));
+        //forall(VISUALS).do(a => applyToImage(a, SOFTIDENTITY));
 
         targets().where(a => a instanceof HTMLElement).do(
             function (a) {
