@@ -202,7 +202,11 @@ registerNSMethod(self, "imageReplaceSmart", function(img, f, i, cb, comps){
             self.IMAGE_SIZES[i] = j;
             img.originFix = true;
             img.crossFix = false;
-            if (f!==SOFTIDENTITY) self.imageReplaceSmartUnchecked(img, i, true, f, cb, comps);
+            if (f!==SOFTIDENTITY){
+              self.imageReplaceSmartUnchecked(img, i, true, f, cb, comps);
+            }else{
+              cb();
+            }
           }, cb);
 
         }
@@ -213,7 +217,11 @@ registerNSMethod(self, "imageReplaceSmart", function(img, f, i, cb, comps){
     }
 
   }else{
-    if (f!==SOFTIDENTITY) self.imageReplaceSmartUnchecked(img, i, false, f, cb, comps);
+    if (f!==SOFTIDENTITY){
+      self.imageReplaceSmartUnchecked(img, i, false, f, cb, comps);
+    }else{
+      cb();
+    }
   }
 });
 

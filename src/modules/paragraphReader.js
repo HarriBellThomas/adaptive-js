@@ -1,12 +1,3 @@
-/* This is an example module which will cause all links
-    on a given page to highlight when they exprience
-    a mouseover. This example exhibits the main parts of
-    what each module should have to prepare for future
-    integration.                                         */
-
-/* We register a unique namespace for the module, so that
-    it can be referenced later                           */
-
 registerNamespace("uk.org.adaptive.paragraphReader");
 
 /* We can now set/use member variables */
@@ -58,14 +49,14 @@ registerNSMethod(self, "apply",(
       a.style["user-select"] = "none";
 
 
-      a.decorateMouseOver(function(){ if (!hasKeyDown(16)) return;
+      a.decorateMouseOver(function(){ if (!self.isActive || !hasKeyDown(16)) return;
       this.resetCSS();
       differentto(this).where(a=> a.resetCSS != undefined).
       do(c=>{c.cacheCSSProperties(["opacity"]); c.style.opacity = 0.4})})});
 
 
     forall(PARAGRAPHS).do(a=>{
-      a.decorateMouseUp(function(){ if (!hasKeyDown(16)) return;
+      a.decorateMouseUp(function(){ if (!self.isActive || !hasKeyDown(16)) return;
         self.initDisplayForegroundPanel(this.innerText);
       })});
 
@@ -82,10 +73,10 @@ registerNSMethod(self, "removeImmediateEffect", function(){
   forall().where(function(a){return a.cachedCSS != undefined}).do(function(a){a.resetCSSProperty("opacity")});
 });
 
-registerNSMethod(self, "remove",(
-  function(){
-  }
-));
+registerNSMethod(self, "remove", function() {
+   self.removeImmediateEffect();
+   self.isActive = false;
+});
 
 registerNSMethod(self, "controlBar", function(bottom, onPlay, onPause, onFast, onSlow) {
    var slowSrc = "https://js.adaptive.org.uk/assets/slow.png";
@@ -178,23 +169,7 @@ registerNSMethod(self, "disposeDisplayForegroundPanel", function(){
   const diff = pos[1]-pos[0];
 
   window.speechSynthesis.cancel();
-/*
-  (function(){var l=function(){
-    setTimeout(function(){
-      pos[0]+=20;
-      if (pos[0] < pos[1]){
-        self.activePanel.style.top = pos[0]+"px";
-        self.activePanelCover.style.backgroundColor = "rgba(255,255,255,"+(0.8*(pos[1]-pos[0])/diff)+")";
-        l();
-      }else{
-        self.activePanelCover.outerHTML = "";
-        self.activePanelCover = false;
-        self.activePanel = false;
-      }
-    }, 7)
-  }
-  l();})();
-*/
+  
     self.activePanel.style.top = pos[1]+"px";
     setTimeout(function(){
       self.activePanelCover.outerHTML = "";
@@ -203,9 +178,6 @@ registerNSMethod(self, "disposeDisplayForegroundPanel", function(){
     }, 500)
 
 });
-
-(<
->)
 
 registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   var text = txt.replace(/\ \[[0-9]*\]/g, "");
@@ -218,7 +190,8 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   foregroundCover.style.height = "100%";
   foregroundCover.style.top = "0px";
   foregroundCover.style.left = "0px";
-  foregroundCover.style.backgroundColor = self.reduceTransparency ? "rgba(255,255,200,1)" : "rgba(255,255,255,0.8)";
+  console.log(self.reduceTransparency);
+  foregroundCover.style.backgroundColor = "rgba(255,255,255,0.8)";
   foregroundCover.style.overflow = "hidden";
   foregroundCover.style.backdropFilter = "blur(4px)";
   foregroundCover.style.webkitBackdropFilter = "blur(4px)";
@@ -236,7 +209,7 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   foregroundPanel.style.borderRadius = "10px";
   foregroundPanel.style.border = "1px solid black";
   foregroundPanel.style.fontFamily = "Comic Neue Bold";
-  foregroundPanel.style.fontSize = self.size;
+  foregroundPanel.style.fontSize = "48px";
   foregroundPanel.style.color = "black";
   foregroundPanel.style.padding = "40px 40px 40px 40px";
   foregroundPanel.style.textAlign = "center";
@@ -255,9 +228,6 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   self.activePanelCover = foregroundCover;
   self.activePanel = foregroundPanel;
 
-  if (isSafari){
-
-  }
   // Opera 8.0+
     var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
     var isFirefox = typeof InstallTrigger !== 'undefined'; // Firefox 1.0+
@@ -289,21 +259,6 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   foregroundPanel.style.top = pos[1] + "px";
   foregroundPanel.innerHTML = foregroundOutput;
 
-/*
-  (function(){var l=function(){
-    setTimeout(function(){
-      pos[0]-=20;
-      if (pos[0] > pos[1]){
-        foregroundPanel.style.top = pos[0]+"px";
-        l();
-      }else{
-        foregroundPanel.style.top = pos[1] + "px";
-        foregroundPanel.innerHTML = foregroundOutput;
-      }
-    }, 7)
-  }
-  l();})();
-*/
   self.wordReadIndex = 0;
   self.reading = new SpeechSynthesisUtterance(text);
   self.reading.rate = self.rate;
@@ -326,8 +281,3 @@ registerNSMethod(self, "onWordBoundary", function(text){
   self.wordReadIndex++;
 
 });
-
-/* We can now include this module in page by adding
-    "linkHighlighter" to the list of modules in the URL and then
-    calling self.apply({color: "yellow"})
-    on the page */
