@@ -103,7 +103,7 @@ registerNSMethod(self, "changeSaturation", (
                 a.cacheCSSProperties(["background-color", "color", "border-color"]);
 
                 a.style.backgroundColor = "rgba(" + Math.round(rgb1[0]) + "," + Math.round(rgb1[1]) + "," + Math.round(rgb1[2]) + "," + bc.a + ")";
-                a.style.color = "rgba(" + Math.round(rgb2[0]) + "," + Math.round(rgb2[1]) + "," + Math.round(rgb2[2]) + "," + c.a + ")";
+                a.style.color = "rgb(" + Math.round(rgb2[0]) + "," + Math.round(rgb2[1]) + "," + Math.round(rgb2[2])+")";
                 a.style.borderColor = "rgba(" + Math.round(rgb3[0]) + "," + Math.round(rgb3[1]) + "," + Math.round(rgb3[2]) + "," + boc.a + ")";
             }
         );
