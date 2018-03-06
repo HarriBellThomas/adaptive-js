@@ -24,8 +24,6 @@ registerNSMethod(self, "apply", function(properties) {
         consistentCalls = 0;
       }
       lastCall = self.toXOriginFixes;
-
-      debug(self.toXOriginFixes+" remain to be fixed");
       if (self.toXOriginFixes > 0 && consistentCalls < 3){
         setTimeout(function(){
           self.apply(properties);
@@ -41,7 +39,6 @@ registerNSMethod(self, "apply", function(properties) {
          self.toXOriginFixes --;
        }
      )});
-     debug(self.toXOriginFixes+" remain to be fixed");
      lastCall = self.toXOriginFixes;
      if (self.toXOriginFixes>0){
        applyingIdentity = true;
