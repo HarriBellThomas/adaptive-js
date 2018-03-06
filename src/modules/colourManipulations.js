@@ -396,7 +396,7 @@ registerNSMethod(self, "invert", (
             debug(self.toXOriginFixes+" remain to be fixed");
             if (self.toXOriginFixes > 0 && consistentCalls < 3){
                 setTimeout(function(){
-                    self.invert(properties);
+                    self.invert();
                 }, 1000);
                 return;
             }else{
@@ -414,7 +414,7 @@ registerNSMethod(self, "invert", (
             if (self.toXOriginFixes>0){
                 applyingIdentity = true;
                 setTimeout(function(){
-                    self.invert(properties);
+                    self.invert();
                 }, 1000);
                 return;
             }
@@ -494,7 +494,7 @@ registerNSMethod(self, "nightShifter", (
             debug(self.toXOriginFixes+" remain to be fixed");
             if (self.toXOriginFixes > 0 && consistentCalls < 3){
                 setTimeout(function(){
-                    self.nightShifter(properties);
+                    self.nightShifter();
                 }, 1000);
                 return;
             }else{
@@ -512,7 +512,7 @@ registerNSMethod(self, "nightShifter", (
             if (self.toXOriginFixes>0){
                 applyingIdentity = true;
                 setTimeout(function(){
-                    self.nightShifter(properties);
+                    self.nightShifter();
                 }, 1000);
                 return;
             }
