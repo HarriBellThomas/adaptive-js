@@ -100,8 +100,6 @@ registerNSMethod(self, "apply", (
 
         self.isActive = true;
 
-        //forall(VISUALS).do(a => applyToImage(a, SOFTIDENTITY));
-
         targets().where(a => a instanceof HTMLElement).do(
             function (a) {
                 if (!self.isActive) return;
@@ -182,6 +180,42 @@ const lms2rgb = [[8.09444479e-02, -1.30504409e-01, 1.16721066e-01],
 
 registerNSMethod(self, "daltonize", (
     function (properties) {
+
+        if (applyingIdentity){
+            if (lastCall == self.toXOriginFixes){
+                consistentCalls++;
+            }else{
+                consistentCalls = 0;
+            }
+            lastCall = self.toXOriginFixes;
+
+            debug(self.toXOriginFixes+" remain to be fixed");
+            if (self.toXOriginFixes > 0 && consistentCalls < 3){
+                setTimeout(function(){
+                    self.daltonize(properties);
+                }, 1000);
+                return;
+            }else{
+                applyingIdentity = false;
+            }
+        }else{
+            forall(VISUALS).where(a=> !a.originFix).do(a=>{
+                self.toXOriginFixes ++;
+                applyToImage(a, HARDIDENTITY, false, function(){
+                        self.toXOriginFixes --;
+                    }
+                )});
+            debug(self.toXOriginFixes+" remain to be fixed");
+            lastCall = self.toXOriginFixes;
+            if (self.toXOriginFixes>0){
+                applyingIdentity = true;
+                setTimeout(function(){
+                    self.daltonize(properties);
+                }, 1000);
+                return;
+            }
+        }
+
         if (!verifyArgs(properties, [["identifier", STRINGTYPE]]))
             return false;
 

@@ -2,6 +2,11 @@ registerNamespace("uk.org.adaptive.colourManipulations");
 
 self.isActive = false;
 
+var applyingIdentity = false;
+self.toXOriginFixes = 0;
+var consistentCalls = 0;
+var lastCall = 0;
+
 if (rgbaValue(extractColour(document.body, "backgroundColor")).a === 0) document.body.style.backgroundColor = "rgba(255,255,255,1)";
 
 /* apply method depending on user selected parameters */
@@ -25,9 +30,42 @@ registerNSMethod(self, "changeSaturation", (
         if (!verifyArgs(properties, [["factor", NUMTYPE]]))
             return false;
 
-        self.isActive = true;
+        if (applyingIdentity){
+            if (lastCall == self.toXOriginFixes){
+                consistentCalls++;
+            }else{
+                consistentCalls = 0;
+            }
+            lastCall = self.toXOriginFixes;
 
-        forall(VISUALS).do(a => applyToImage(a, SOFTIDENTITY));
+            debug(self.toXOriginFixes+" remain to be fixed");
+            if (self.toXOriginFixes > 0 && consistentCalls < 3){
+                setTimeout(function(){
+                    self.changeSaturation(properties);
+                }, 1000);
+                return;
+            }else{
+                applyingIdentity = false;
+            }
+        }else{
+            forall(VISUALS).where(a=> !a.originFix).do(a=>{
+                self.toXOriginFixes ++;
+                applyToImage(a, HARDIDENTITY, false, function(){
+                        self.toXOriginFixes --;
+                    }
+                )});
+            debug(self.toXOriginFixes+" remain to be fixed");
+            lastCall = self.toXOriginFixes;
+            if (self.toXOriginFixes>0){
+                applyingIdentity = true;
+                setTimeout(function(){
+                    self.changeSaturation(properties);
+                }, 1000);
+                return;
+            }
+        }
+
+        self.isActive = true;
 
         limit = function (v) {
             if (v < 0) return 0;
@@ -117,9 +155,42 @@ registerNSMethod(self, "changeContrast", (
         if (!verifyArgs(properties, [["factor", NUMTYPE]]))
             return false;
 
-        self.isActive = true;
+        if (applyingIdentity){
+            if (lastCall == self.toXOriginFixes){
+                consistentCalls++;
+            }else{
+                consistentCalls = 0;
+            }
+            lastCall = self.toXOriginFixes;
 
-        forall(VISUALS).do(a => applyToImage(a, SOFTIDENTITY));
+            debug(self.toXOriginFixes+" remain to be fixed");
+            if (self.toXOriginFixes > 0 && consistentCalls < 3){
+                setTimeout(function(){
+                    self.changeContrast(properties);
+                }, 1000);
+                return;
+            }else{
+                applyingIdentity = false;
+            }
+        }else{
+            forall(VISUALS).where(a=> !a.originFix).do(a=>{
+                self.toXOriginFixes ++;
+                applyToImage(a, HARDIDENTITY, false, function(){
+                        self.toXOriginFixes --;
+                    }
+                )});
+            debug(self.toXOriginFixes+" remain to be fixed");
+            lastCall = self.toXOriginFixes;
+            if (self.toXOriginFixes>0){
+                applyingIdentity = true;
+                setTimeout(function(){
+                    self.changeContrast(properties);
+                }, 1000);
+                return;
+            }
+        }
+
+        self.isActive = true;
 
         limit = function (v) {
             if (v < 0) return 0;
@@ -209,10 +280,43 @@ registerNSMethod(self, "changeBrightness", (
         if (!verifyArgs(properties, [["factor", NUMTYPE]]))
             return false;
 
+        if (applyingIdentity){
+            if (lastCall == self.toXOriginFixes){
+                consistentCalls++;
+            }else{
+                consistentCalls = 0;
+            }
+            lastCall = self.toXOriginFixes;
+
+            debug(self.toXOriginFixes+" remain to be fixed");
+            if (self.toXOriginFixes > 0 && consistentCalls < 3){
+                setTimeout(function(){
+                    self.changeBrightness(properties);
+                }, 1000);
+                return;
+            }else{
+                applyingIdentity = false;
+            }
+        }else{
+            forall(VISUALS).where(a=> !a.originFix).do(a=>{
+                self.toXOriginFixes ++;
+                applyToImage(a, HARDIDENTITY, false, function(){
+                        self.toXOriginFixes --;
+                    }
+                )});
+            debug(self.toXOriginFixes+" remain to be fixed");
+            lastCall = self.toXOriginFixes;
+            if (self.toXOriginFixes>0){
+                applyingIdentity = true;
+                setTimeout(function(){
+                    self.changeBrightness(properties);
+                }, 1000);
+                return;
+            }
+        }
+
         self.isActive = true;
         value = properties["factor"];
-
-        forall(VISUALS).do(a => applyToImage(a, SOFTIDENTITY));
 
         limit = function (v) {
             if (v < 0) return 0;
@@ -281,9 +385,42 @@ registerNSMethod(self, "changeBrightness", (
 registerNSMethod(self, "invert", (
     function () {
 
-        self.isActive = true;
+        if (applyingIdentity){
+            if (lastCall == self.toXOriginFixes){
+                consistentCalls++;
+            }else{
+                consistentCalls = 0;
+            }
+            lastCall = self.toXOriginFixes;
 
-        forall(VISUALS).do(a => applyToImage(a, SOFTIDENTITY));
+            debug(self.toXOriginFixes+" remain to be fixed");
+            if (self.toXOriginFixes > 0 && consistentCalls < 3){
+                setTimeout(function(){
+                    self.invert(properties);
+                }, 1000);
+                return;
+            }else{
+                applyingIdentity = false;
+            }
+        }else{
+            forall(VISUALS).where(a=> !a.originFix).do(a=>{
+                self.toXOriginFixes ++;
+                applyToImage(a, HARDIDENTITY, false, function(){
+                        self.toXOriginFixes --;
+                    }
+                )});
+            debug(self.toXOriginFixes+" remain to be fixed");
+            lastCall = self.toXOriginFixes;
+            if (self.toXOriginFixes>0){
+                applyingIdentity = true;
+                setTimeout(function(){
+                    self.invert(properties);
+                }, 1000);
+                return;
+            }
+        }
+
+        self.isActive = true;
 
         targets().where(a => a instanceof HTMLElement).do(
             function (a) {
@@ -345,6 +482,41 @@ registerNSMethod(self, "invert", (
 
 registerNSMethod(self, "nightShifter", (
     function () {
+
+        if (applyingIdentity){
+            if (lastCall == self.toXOriginFixes){
+                consistentCalls++;
+            }else{
+                consistentCalls = 0;
+            }
+            lastCall = self.toXOriginFixes;
+
+            debug(self.toXOriginFixes+" remain to be fixed");
+            if (self.toXOriginFixes > 0 && consistentCalls < 3){
+                setTimeout(function(){
+                    self.nightShifter(properties);
+                }, 1000);
+                return;
+            }else{
+                applyingIdentity = false;
+            }
+        }else{
+            forall(VISUALS).where(a=> !a.originFix).do(a=>{
+                self.toXOriginFixes ++;
+                applyToImage(a, HARDIDENTITY, false, function(){
+                        self.toXOriginFixes --;
+                    }
+                )});
+            debug(self.toXOriginFixes+" remain to be fixed");
+            lastCall = self.toXOriginFixes;
+            if (self.toXOriginFixes>0){
+                applyingIdentity = true;
+                setTimeout(function(){
+                    self.nightShifter(properties);
+                }, 1000);
+                return;
+            }
+        }
 
         self.isActive = true;
 
