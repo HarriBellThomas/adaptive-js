@@ -96,7 +96,7 @@ registerNSMethod(self, "controlBar", function(bottom, onPlay, onPause, onFast, o
    div.style.paddingLeft = div.style.paddingRight = "1.5em";
    div.style.borderRadius = "5em";
    div.style.boxShadow = "5px 5px 5px -2px rgba(0,0,0,0.53)";
-   
+
    // UI element template
    const createUIElem = function(src) {
       var elem = document.createElement("img");
@@ -107,7 +107,7 @@ registerNSMethod(self, "controlBar", function(bottom, onPlay, onPause, onFast, o
       elem.ondragstart = function() { return false; };
       return elem;
    };
-   
+
    // Rewind button
    var fr = createUIElem(slowSrc);
    fr.onmousedown = function() {
@@ -123,7 +123,7 @@ registerNSMethod(self, "controlBar", function(bottom, onPlay, onPause, onFast, o
       fr.style.top = "0px";
       fr.style.left = "0px";
    }
-   
+
    // Play/pause button
    var pp = createUIElem(playSrc);
    pp.state = "play";
@@ -138,7 +138,7 @@ registerNSMethod(self, "controlBar", function(bottom, onPlay, onPause, onFast, o
          onPause();
       }
    }
-   
+
    // Fast forward button
    var ff = createUIElem(fastSrc);
    ff.onmousedown = function() {
@@ -154,11 +154,11 @@ registerNSMethod(self, "controlBar", function(bottom, onPlay, onPause, onFast, o
       ff.style.top = "0px";
       ff.style.left = "0px";
    }
-   
+
    div.appendChild(fr);
    div.appendChild(pp);
    div.appendChild(ff);
-   
+
    return div;
 });
 
@@ -169,7 +169,7 @@ registerNSMethod(self, "disposeDisplayForegroundPanel", function(){
   const diff = pos[1]-pos[0];
 
   window.speechSynthesis.cancel();
-  
+
     self.activePanel.style.top = pos[1]+"px";
     setTimeout(function(){
       self.activePanelCover.outerHTML = "";
@@ -180,7 +180,7 @@ registerNSMethod(self, "disposeDisplayForegroundPanel", function(){
 });
 
 registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
-  var text = txt.replace(/\ \[[0-9]*\]/g, "");
+  var text = txt.replace(/\[[0-9]*\]/g, "");
 
   if (self.activePanel !== false) return;
   self.removeImmediateEffect();
@@ -201,7 +201,7 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
 
 
   document.fonts.add(new FontFace("Comic Neue Bold", "url(https://js.adaptive.org.uk/assets/comic-neue-bold.woff)"));
-  
+
   const foregroundPanel = document.createElement("div");
   foregroundPanel.style.width = "600px";
   foregroundPanel.style.position = "absolute";
@@ -262,7 +262,6 @@ registerNSMethod(self, "initDisplayForegroundPanel", function(txt){
   self.wordReadIndex = 0;
   self.reading = new SpeechSynthesisUtterance(text);
   self.reading.rate = self.rate;
-  self.reading.pitch = 0.1;
   window.speechSynthesis.speak(self.reading);
   self.reading.onboundary = self.onWordBoundary;
   self.words = self.activePanel.getElementsByTagName("span");
