@@ -32,7 +32,7 @@ registerNSMethod(self, "applyDomainFixToVideo",(
     if (self.ytSpecialFeatures){
       /* If this is YouTube, then get raw stream URL */
       self.ytVideoDescription(self.ytID, function(o){
-        v.src = appropriateYTSource(o.sources).url;
+        v.src = self.appropriateYTSource(o.sources).url;
         osources = o.sources;
         console.log(o.sources);
         v.onprogress = function(){
@@ -151,22 +151,24 @@ registerNSMethod(self, "remove",(
   }
 ));
 
-const appropriateYTSource = function(sources){
-  var out = false;
-  for (s in sources){
-    if (sources[s].quality == "medium" && sources[s].type.indexOf("mp4")){
-      out = s;
-    }
-  }
-  if (out==false){
+registerNSMethod(self, "appropriateYTSource",(
+  function(sources){
+    var out = false;
     for (s in sources){
-      if (sources[s].quality == "small" && sources[s].type.indexOf("mp4")){
+      if (sources[s].quality == "medium" && sources[s].type.indexOf("mp4")){
         out = s;
       }
     }
+    if (out==false){
+      for (s in sources){
+        if (sources[s].quality == "small" && sources[s].type.indexOf("mp4")){
+          out = s;
+        }
+      }
+    }
+    return sources[out];
   }
-  return sources[out];
-}
+));
 
 registerNSMethod(self, "ytVideoDescription",(
   function(id, callback){
