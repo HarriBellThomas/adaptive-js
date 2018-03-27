@@ -66,7 +66,7 @@ registerNSMethod(self, "apply", (
         if (xy.x < 10 && xy.y < 10) return {r:255,g:0,b:0,a:255};
         return rgba;
       })});
-      debug("DOne");
+      debug("Done");
       k.outerHTML = "";
     });
   }
